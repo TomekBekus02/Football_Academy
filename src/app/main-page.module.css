@@ -1,3 +1,6 @@
+.mainPage{
+  background-color: beige;
+}
 .mainBG{
     position: relative;
     background-image: url("/mainPageBG.jpg");
@@ -15,7 +18,7 @@
   background-color: rgba(69, 65, 65, 0.7); /* biały z 20% kryciem */
   pointer-events: none; /* nie blokuje kliknięć */
 }
-.standingsBox{
+.contentBox{
   display: flex;
   justify-content: center;
   width: 100%;

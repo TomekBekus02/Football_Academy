@@ -1,0 +1,28 @@
+.labelBox{
+    width: 100%;
+}
+.labelBox:nth-child(even){
+    display: flex;
+    justify-content: end;
+}
+.labelContent{
+    background-color: rgba(96, 147, 96, 0.851);
+    margin: 10px 30px;
+    padding: 15px;
+    width: 47%;
+    border-radius: 30px;
+    border: 1px solid #444e3f58;
+}
+.labelContent h2{
+    font-size: 36px;
+    font-weight: 900;
+    color: aliceblue;
+    text-shadow: 0 2px 5px rgba(15, 50, 4, 0.794);
+    border-bottom: 1px solid #444e3f58;
+}
+.labelContent p {
+    font-size: 23px;
+    font-weight: 300;
+    color: rgb(0, 0, 0);
+    margin: 10px;
+}

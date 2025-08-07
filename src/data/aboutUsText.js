@@ -1,0 +1,6 @@
+export const aboutUsText = {
+    "Misja": "Naszą misją jest wspieranie młodych zawodników w ich piłkarskim rozwoju – od pierwszych kontaktów z piłką aż po zaawansowane treningi. Stawiamy na wychowanie poprzez sport, ucząc odpowiedzialności, współpracy i szacunku – zarówno na boisku, jak i poza nim.",
+    "Pasja": "Piłka nożna to nasza codzienność i źródło motywacji. Tworzymy środowisko, w którym dzieci mogą rozwijać swoje talenty w atmosferze radości, zdrowej rywalizacji i wzajemnego wsparcia. Każdy trening to okazja do nauki i dobrej zabawy.",
+    "Cel": "Naszym celem jest kształtowanie nie tylko dobrych zawodników, ale przede wszystkim silnych osobowości. Pomagamy dzieciom wierzyć w siebie, stawiamy wyzwania i wspieramy w ich osiąganiu – niezależnie od poziomu zaawansowania.",
+    "Rozwój": "W szkółce oferujemy treningi dopasowane do wieku i umiejętności zawodników, prowadzone przez wykwalifikowaną kadrę trenerską. Regularnie bierzemy udział w turniejach, organizujemy obozy i monitorujemy postępy, aby każdy młody piłkarz mógł rozwijać się w swoim tempie."
+}

@@ -20,26 +20,3 @@
   grid-template-columns: 1fr 1fr 1fr 1fr;
   gap: 20px;
 }
-.plateBox{
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 180px;
-  background-color: rgba(255, 255, 255, 0.1); /* delikatnie białawe, przezroczyste tło */
-  backdrop-filter: blur(10px); /* rozmycie tła za boxem */
-  -webkit-backdrop-filter: blur(10px); /* dla Safari */
-  border-radius: 20px;
-  padding: 30px 20px;
-  text-align: center;
-  color: white;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
-  border: 1px  solid rgba(255, 255, 255, 0.34);
-}
-.standingsBox h3{
-  font-size: 40px;
-  font-weight: 600;
-}
-.standingsBox h5{
-  font-size: 22px;
-  font-weight: 400;
-}
