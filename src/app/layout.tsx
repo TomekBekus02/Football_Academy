@@ -15,13 +15,14 @@ export default function RootLayout({
       <body>
         <nav className={classes.navBox}>
           <div className={classes.logoBox}>
-            <Link href="*"><Slack /> Football Academy</Link>
+            <Link href="/"><Slack /> Football Academy</Link>
           </div>
           <ul className={classes.linksBox}>
             <div className={classes.tabContainer}>
               <li><Link href="*">Zawodnicy</Link></li>
               <li><Link href="*">Sztab</Link></li>
-              <li><Link href="*">Kontakt</Link></li>
+              <li><Link href="*">Statystyki klubu</Link></li>
+              <li><Link href="*">O Nas</Link></li>
               <li><Link href="*">Kontakt</Link></li>
             </div>
             <div className={classes.joinUsButtonContainer}>
