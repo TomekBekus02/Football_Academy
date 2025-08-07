@@ -1,0 +1,66 @@
+.mainPage{
+    width: 100vw;
+
+}
+.mainBG{
+    position: relative;
+    background-image: url("/mainPageBG.jpg");
+    width: 100vw;
+    height: 760px;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    display: flex;
+    align-items: center;
+}
+.mainBG::before {
+  content: "";
+  position: absolute;
+  inset: 0; /* top:0; right:0; bottom:0; left:0; */
+  background-color: rgba(69, 65, 65, 0.7); /* biały z 20% kryciem */
+  pointer-events: none; /* nie blokuje kliknięć */
+}
+.contentBox{
+  margin-left: 30px;
+  color: rgb(255, 255, 255);
+  z-index: 1;
+  width: 58%;
+}
+.contentBox h1{
+  font-size: 80px;
+  font-weight: 600;
+  line-height: 1;
+  text-shadow: 0 2px 5px rgba(0, 0, 0, 0.5);
+}
+.contentBox h4 {
+  font-size: 26px;
+  margin: 25px 0px;
+}
+.statsBox{
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr;
+  gap: 20px;
+}
+.plateBox{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 180px;
+  background-color: rgba(255, 255, 255, 0.1); /* delikatnie białawe, przezroczyste tło */
+  backdrop-filter: blur(10px); /* rozmycie tła za boxem */
+  -webkit-backdrop-filter: blur(10px); /* dla Safari */
+  border-radius: 20px;
+  padding: 30px 20px;
+  text-align: center;
+  color: white;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+  border: 1px  solid rgba(255, 255, 255, 0.34);
+}
+.standingsBox h3{
+  font-size: 40px;
+  font-weight: 600;
+}
+.standingsBox h5{
+  font-size: 22px;
+  font-weight: 400;
+}
