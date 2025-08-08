@@ -1,0 +1,23 @@
+.cardBox {
+    padding: 14px;
+    width: 300px;
+    height: 140px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    border-radius: 15px;
+    box-shadow: 3px 3px 6px rgb(72, 70, 70);
+    background-color: white;
+}
+.header{
+    display: flex;
+    justify-content: space-between;
+    font-size: 24px;
+    color: rgb(66, 66, 66);
+}
+.content{
+    font-size: 35px;
+    font-weight: 800;
+    color: green;
+    text-shadow: 2px 2px 3.5px rgb(40, 79, 40);
+}
