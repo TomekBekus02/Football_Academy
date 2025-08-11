@@ -1,12 +1,8 @@
 "use client";
-import { Slack } from "lucide-react";
-import Link from "next/link";
-import { usePathname } from "next/navigation";
 
-import AdminLayout from "@/components/adminLayout";
-import UserLayout from "@/components/userLayout";
-import classes from "./dashboard.module.css";
-import "./globals.css";
+import { usePathname } from "next/navigation";
+import AdminLayout from "@/components/Layouts/adminLayout";
+import UserLayout from "@/components/Layouts/userLayout";
 
 export default function RootLayout({
     children,

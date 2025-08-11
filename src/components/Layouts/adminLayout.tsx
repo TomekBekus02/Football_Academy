@@ -27,7 +27,7 @@ export default function AdminLayout({
                             <Link href="/staff">Sztab</Link>
                         </li>
                         <li>
-                            <Link href="*">Turnieje</Link>
+                            <Link href="/admin/rozgrywki">Rozgrywki</Link>
                         </li>
                         <li>
                             <Link href="*">O Nas</Link>
