@@ -19,8 +19,8 @@ export default function RootLayout({
           </div>
           <ul className={classes.linksBox}>
             <div className={classes.tabContainer}>
-              <li><Link href="*">Zawodnicy</Link></li>
-              <li><Link href="*">Sztab</Link></li>
+              <li><Link href="/players">Zawodnicy</Link></li>
+              <li><Link href="/staff">Sztab</Link></li>
               <li><Link href="*">Statystyki klubu</Link></li>
               <li><Link href="*">O Nas</Link></li>
               <li><Link href="*">Kontakt</Link></li>
