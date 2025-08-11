@@ -1,6 +1,6 @@
 import classes from './main-page.module.css'
-import MainPageContent from '../components/mainPageContent/mainPageContent'
-import Standings from '../components/standings/standings'
+import MainPageContent from '../../components/mainPageContent/mainPageContent'
+import Standings from '../../components/standings/standings'
 import AboutUs from '@/components/aboutUs/aboutUs';
 
 export default function Home() {

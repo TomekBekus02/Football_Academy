@@ -1,37 +1,35 @@
-import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
-import { Slack } from 'lucide-react';
-import classes from './dashboard.module.css'
-import "./globals.css";
+"use client";
+import { Slack } from "lucide-react";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
+
+import AdminLayout from "@/components/adminLayout";
+import UserLayout from "@/components/userLayout";
+import classes from "./dashboard.module.css";
+import "./globals.css";
 
 export default function RootLayout({
-  children,
+    children,
 }: Readonly<{
-  children: React.ReactNode;
+    children: React.ReactNode;
 }>) {
-  return (
-    <html lang="en">
-      <body>
-        <nav className={classes.navBox}>
-          <div className={classes.logoBox}>
-            <Link href="/"><Slack /> Football Academy</Link>
-          </div>
-          <ul className={classes.linksBox}>
-            <div className={classes.tabContainer}>
-              <li><Link href="/players">Zawodnicy</Link></li>
-              <li><Link href="/staff">Sztab</Link></li>
-              <li><Link href="*">Statystyki klubu</Link></li>
-              <li><Link href="*">O Nas</Link></li>
-              <li><Link href="*">Kontakt</Link></li>
-            </div>
-            <div className={classes.joinUsButtonContainer}>
-              <li><Link href="*">Dołącz do nas</Link></li>
-            </div>
-          </ul>
-        </nav>
-        {children}
-      </body>
-    </html>
-  );
+    const pathname = usePathname();
+
+    if (pathname.startsWith("/admin")) {
+        return (
+            <html lang="en">
+                <body>
+                    <AdminLayout>{children}</AdminLayout>
+                </body>
+            </html>
+        );
+    } else {
+        return (
+            <html lang="en">
+                <body>
+                    <UserLayout>{children}</UserLayout>
+                </body>
+            </html>
+        );
+    }
 }

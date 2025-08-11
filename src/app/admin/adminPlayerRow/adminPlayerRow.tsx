@@ -1,5 +1,5 @@
-import { playersData } from '@/data/players'
-import Image from 'next/image'
+import { playersData } from "@/data/players";
+import Image from "next/image";
 import Link from "next/link";
 
 type Player = {
@@ -19,7 +19,7 @@ type Player = {
     yellowCards: number;
 };
 
-export default function playerRow() {
+export default function adminPlayerRow() {
     return (
         <>
             {playersData.map((player: Player) => (
@@ -47,6 +47,10 @@ export default function playerRow() {
                     <td>{player.yellowCards}</td>
                     <td>{player.MVPs}</td>
                     <td>{player.position}</td>
+                    <td>
+                        <button>Usuń</button>
+                        <button>Edytuj</button>
+                    </td>
                 </tr>
             ))}
         </>
