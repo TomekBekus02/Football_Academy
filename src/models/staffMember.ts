@@ -20,6 +20,6 @@ const StaffMemberSchema: Schema<IStaffMember> = new Schema({
 
 const StaffMember: Model<IStaffMember> =
     mongoose.models.Player ||
-    mongoose.model<IStaffMember>("StaffMember", StaffMemberSchema);
+    mongoose.model<IStaffMember>("StaffMember", StaffMemberSchema, "Staff");
 
 export default StaffMember;

@@ -1,8 +1,10 @@
 "use client";
-
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { usePathname } from "next/navigation";
 import AdminLayout from "@/components/Layouts/adminLayout";
 import UserLayout from "@/components/Layouts/userLayout";
+
+const queryClient = new QueryClient();
 
 export default function RootLayout({
     children,
@@ -10,22 +12,14 @@ export default function RootLayout({
     children: React.ReactNode;
 }>) {
     const pathname = usePathname();
-
-    if (pathname.startsWith("/admin")) {
-        return (
+    const Layout = pathname.startsWith("/admin") ? AdminLayout : UserLayout;
+    return (
+        <QueryClientProvider client={queryClient}>
             <html lang="en">
                 <body>
-                    <AdminLayout>{children}</AdminLayout>
+                    <Layout>{children}</Layout>
                 </body>
             </html>
-        );
-    } else {
-        return (
-            <html lang="en">
-                <body>
-                    <UserLayout>{children}</UserLayout>
-                </body>
-            </html>
-        );
-    }
+        </QueryClientProvider>
+    );
 }

@@ -1,54 +1,68 @@
-import { playersData } from '@/data/players'
-import Image from 'next/image'
+"use client";
+//import { playersData } from '@/data/players'
+import Image from "next/image";
 import Link from "next/link";
-
-type Player = {
-    id: number;
-    name: string;
-    dateBirth: string;
-    photo: string;
-    position: string;
-    team: string;
-    ageGroup: string;
-    appearances: number;
-    cleanSheet: number;
-    goals: number;
-    assists: number;
-    MVPs: number;
-    redCards: number;
-    yellowCards: number;
-};
+import { IPlayer } from "@/types/IPlayer";
+import { fetchPlayers } from "@/services/PlayersFetches/usePlayers";
+import { useQuery } from "@tanstack/react-query";
 
 export default function playerRow() {
+    const {
+        data: playersData,
+        error,
+        isLoading,
+    } = useQuery<IPlayer[], Error>({
+        queryKey: ["players"],
+        queryFn: fetchPlayers,
+    });
+
+    if (isLoading)
+        return (
+            <tr>
+                <td>Ładowanie...</td>
+            </tr>
+        );
+    if (error)
+        return (
+            <tr>
+                <td>Błąd: {error.message}</td>
+            </tr>
+        );
+
     return (
         <>
-            {playersData.map((player: Player) => (
-                <tr key={player.id}>
-                    <th scope="row">
-                        {
-                            <Image
-                                src={player.photo}
-                                alt=""
-                                width={50}
-                                height={60}
-                            />
-                        }
-                    </th>
-                    <td>
-                        <Link href={`/players/${player.id}`}>
-                            {player.name}
-                        </Link>
-                    </td>
-                    <td>{player.appearances}</td>
-                    <td>{player.goals}</td>
-                    <td>{player.assists}</td>
-                    <td>{player.cleanSheet}</td>
-                    <td>{player.redCards}</td>
-                    <td>{player.yellowCards}</td>
-                    <td>{player.MVPs}</td>
-                    <td>{player.position}</td>
-                </tr>
-            ))}
+            {playersData!.length > 0 ? (
+                playersData!.map((player: IPlayer) => (
+                    <tr key={player._id}>
+                        <th scope="row">
+                            {
+                                <Image
+                                    src={player.photo}
+                                    alt=""
+                                    width={50}
+                                    height={60}
+                                />
+                            }
+                        </th>
+                        <td>{player.shirtNumber}</td>
+                        <td>
+                            <Link href={`/players/${player._id}`}>
+                                {player.name}
+                            </Link>
+                        </td>
+                        <td>{player.appearances}</td>
+                        <td>{player.goals}</td>
+                        <td>{player.assists}</td>
+                        <td>{player.cleanSheet}</td>
+                        <td>{player.redCards}</td>
+                        <td>{player.yellowCards}</td>
+                        <td>{player.MVPs}</td>
+                        <td>{player.position}</td>
+                    </tr>
+                ))
+            ) : (
+                <h1>No players</h1>
+            )}
         </>
     );
 }

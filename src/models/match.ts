@@ -27,6 +27,7 @@ const MatchSchema: Schema<IMatch> = new Schema({
 });
 
 const Match: Model<IMatch> =
-    mongoose.models.Player || mongoose.model<IMatch>("Match", MatchSchema);
+    mongoose.models.Player ||
+    mongoose.model<IMatch>("Match", MatchSchema, "Matches");
 
 export default Match;

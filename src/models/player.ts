@@ -2,6 +2,7 @@ import mongoose, { Document, Model, Schema } from "mongoose";
 
 export interface IPlayer extends Document {
     name: string;
+    shirtNumber: string;
     dateOfBirth: string;
     photo: string;
     position: string;
@@ -17,6 +18,7 @@ export interface IPlayer extends Document {
 
 const PlayerSchema: Schema<IPlayer> = new Schema({
     name: String,
+    shirtNumber: String,
     dateOfBirth: String,
     position: String,
     appearances: Number,
@@ -30,6 +32,7 @@ const PlayerSchema: Schema<IPlayer> = new Schema({
 });
 
 const Player: Model<IPlayer> =
-    mongoose.models.Player || mongoose.model<IPlayer>("Player", PlayerSchema);
+    mongoose.models.Player ||
+    mongoose.model<IPlayer>("Player", PlayerSchema, "Players");
 
 export default Player;
