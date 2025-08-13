@@ -1,3 +1,37 @@
+TO DO
+- [ ] NavBar modification by adding 'Accordion' for additional login button for admin
+- [ ] Whole backend and improved frontend for Admin side to manage players and staff in club:
+  - for players:
+      - adding
+        - [ ] frontend
+        - [ ] backend 
+      - editing
+        - [ ] frontend
+        - [ ] backend 
+      - deleting
+        - [ ] frontend
+        - [ ] backend
+  - for staff:
+      - adding
+        - [ ] frontend
+        - [ ] backend 
+      - editing
+        - [ ] frontend
+        - [ ] backend 
+      - deleting
+        - [ ] frontend
+        - [ ] backend
+- [ ] display details about player ( vizualization by graphs and diagrams )
+- [ ] change layout 'about us'
+- [ ] connect club stats with database instead of hardcode way
+- [ ] side for admin create new tournaments
+- [ ] side for admin create new matches (single or in tournament)
+- [ ] side to manage the tournament (each tournament will have the DB with player stats from this tournaments)
+- [ ] side to manage the matches (adding new events, by this modify player stats) (after the end of the game, 'finish match' button should aplied all stats to players)
+- [ ] display the details about each match or each tournament (top scorrers, winner, ect.)
+
+
+
 This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
 
 ## Getting Started
