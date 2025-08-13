@@ -1,7 +1,6 @@
 import { NextResponse } from "next/server";
 import { connectDB } from "@/lib/mongodb";
 import Player from "@/models/player";
-import Team from "@/models/team";
 
 //GET for club team layout
 export async function GET() {
@@ -12,7 +11,7 @@ export async function GET() {
         return NextResponse.json(players, { status: 200 });
     } catch (error) {
         return NextResponse.json(
-            { message: "Błąd pobierania graczy" },
+            { message: "Błąd przy pobieraniu graczy" },
             { status: 500 }
         );
     }
