@@ -1,5 +1,5 @@
 TO DO
-- [ ] NavBar modification by adding 'Accordion' for additional login button for admin
+- [ ] Login page for admin which is available only under '/admin' url (no other buttons)
 - [ ] Whole backend and improved frontend for Admin side to manage players and staff in club:
   - for players:
       - adding
