@@ -1,9 +1,17 @@
-import PlayerRow from "./playerRow/playerRow";
+import PlayerRow from "@/app/admin/sklad/playerRow/playerRow";
+import Link from "next/link";
 
 export default function Players() {
     return (
         <div>
             <h1>Drużyna Football Academy</h1>
+            <div>
+                <button>
+                    <Link href="/admin/sklad/dodaj-zawodnika">
+                        Dodaj zawodnika
+                    </Link>
+                </button>
+            </div>
             <table>
                 <thead>
                     <tr>

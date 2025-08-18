@@ -21,10 +21,10 @@ export default function AdminLayout({
                 <ul className={classes.linksBox}>
                     <div className={classes.tabContainer}>
                         <li>
-                            <Link href="/admin">Zawodnicy</Link>
+                            <Link href="/admin/sklad">Zawodnicy</Link>
                         </li>
                         <li>
-                            <Link href="/staff">Sztab</Link>
+                            <Link href="/admin/sztab">Sztab</Link>
                         </li>
                         <li>
                             <Link href="/admin/rozgrywki">Rozgrywki</Link>

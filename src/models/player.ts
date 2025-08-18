@@ -20,15 +20,20 @@ const PlayerSchema: Schema<IPlayer> = new Schema({
     name: String,
     shirtNumber: String,
     dateOfBirth: String,
+    photo: { type: String, default: "/players/default_player.png" },
     position: String,
-    appearances: Number,
-    cleanSheet: Number,
-    goals: Number,
-    assists: Number,
-    MVPs: Number,
-    redCards: Number,
-    yellowCards: Number,
-    teamId: { type: Schema.Types.ObjectId, ref: "Team" },
+    appearances: { type: Number, default: 0 },
+    cleanSheet: { type: Number, default: 0 },
+    goals: { type: Number, default: 0 },
+    assists: { type: Number, default: 0 },
+    MVPs: { type: Number, default: 0 },
+    redCards: { type: Number, default: 0 },
+    yellowCards: { type: Number, default: 0 },
+    teamId: {
+        type: Schema.Types.ObjectId,
+        ref: "Team",
+        default: "689a4c7170a41052e449061b",
+    },
 });
 
 const Player: Model<IPlayer> =

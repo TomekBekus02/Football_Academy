@@ -1,9 +1,11 @@
 "use client";
 import classes from "@/styles/staff.module.css";
-import Member from "./member/member";
+import Member from "@/app/staff/member/member";
 import { IStaffMember } from "@/types/IStaffMember";
 import { FetchStaff } from "@/services/StaffFetches/useStaff";
 import { useQuery } from "@tanstack/react-query";
+import { Trash, Pencil } from "lucide-react";
+import Link from "next/link";
 
 export default function Staff() {
     const {
@@ -22,14 +24,24 @@ export default function Staff() {
 
         return staffData.map((member) => (
             <>
-                <Member
-                    key={member._id}
-                    name={member.name}
-                    age={member.age}
-                    photo={member.photo}
-                    role={member.role}
-                    ageGroup={member.ageGroup}
-                />
+                <div>
+                    <button>
+                        <Link href={`/admin/sztab/${member._id}`}>
+                            Edytuj <Pencil />
+                        </Link>
+                    </button>
+                    <button>
+                        Usun <Trash />
+                    </button>
+                    <Member
+                        key={member._id}
+                        name={member.name}
+                        age={member.age}
+                        photo={member.photo}
+                        role={member.role}
+                        ageGroup={member.ageGroup}
+                    />
+                </div>
             </>
         ));
     };

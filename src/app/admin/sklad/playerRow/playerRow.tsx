@@ -1,10 +1,11 @@
 "use client";
-import { useQuery } from "@tanstack/react-query";
+
 import Image from "next/image";
 import Link from "next/link";
-
+import { Trash, Pencil } from "lucide-react";
 import { IPlayer } from "@/types/IPlayer";
 import { fetchPlayers } from "@/services/PlayersFetches/usePlayers";
+import { useQuery } from "@tanstack/react-query";
 
 export default function playerRow() {
     const {
@@ -58,6 +59,18 @@ export default function playerRow() {
                         <td>{player.yellowCards}</td>
                         <td>{player.MVPs}</td>
                         <td>{player.position}</td>
+                        <td>
+                            <button>
+                                <Link href={`/admin/sklad/${player._id}`}>
+                                    <Pencil />
+                                </Link>
+                            </button>
+                        </td>
+                        <td>
+                            <button>
+                                <Trash />
+                            </button>
+                        </td>
                     </tr>
                 ))
             ) : (
