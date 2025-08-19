@@ -3,12 +3,12 @@ import { connectDB } from "@/lib/mongodb";
 import Player from "@/models/player";
 import fs from "fs";
 
-//GET for club team layout
 export async function GET() {
     try {
         await connectDB();
         const teamID = "689a4c7170a41052e449061b"; //hard Coded for dev purposes
         const players = await Player.find({ teamId: teamID });
+
         return NextResponse.json(players, { status: 200 });
     } catch (error) {
         return NextResponse.json(
@@ -57,10 +57,16 @@ export async function POST(req: Request) {
         });
         await newPlayer.save();
 
-        return NextResponse.json({ status: 200 });
+        return NextResponse.json(
+            { message: "Dodano piłkarza" },
+            { status: 200 }
+        );
     } catch (error) {
         console.error("Błąd POST /api/players:", error);
-        return NextResponse.json({ status: 500 });
+        return NextResponse.json(
+            { message: "Nie udało się dodać piłkarza" },
+            { status: 500 }
+        );
     }
 }
 

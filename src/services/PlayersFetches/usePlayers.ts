@@ -16,3 +16,12 @@ export async function addPlayer(newPlayer: FormData) {
 
     return res.data.message;
 }
+
+export async function fetchSinglePlayer(playerId: string) {
+    const res = await fetch(`/api/players/${playerId}`);
+    if (!res.ok) {
+        throw new Error("Błąd podczas pobierania danych");
+    }
+
+    return res.json();
+}

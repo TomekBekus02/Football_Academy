@@ -1,15 +1,18 @@
 "use client";
 import { addPlayer } from "@/services/PlayersFetches/usePlayers";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { redirect } from "next/navigation";
+import { useRouter } from "next/navigation";
+import inputTemplate from "@/components/inputTemplate/inputTemplate";
 
 export default function addPlayerFunc() {
     const queryClient = useQueryClient();
+    const router = useRouter();
     const { mutate, isPending, isError } = useMutation({
         mutationFn: (newPlayer: FormData) => addPlayer(newPlayer),
         onSuccess: () => {
             queryClient.invalidateQueries({ queryKey: ["Players"] });
-            redirect("/admin/sklad");
+            router.push("/admin/sklad");
+            router.refresh();
         },
     });
     const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
@@ -18,11 +21,11 @@ export default function addPlayerFunc() {
         const form = e.currentTarget;
         const formData = new FormData(form);
 
-        const name = formData.get("name") as string;
-        const dateBirth = formData.get("dateOfBirth") as string;
-        const position = formData.get("position") as string;
-        const shirtNumber = formData.get("number") as string;
-        const photo = formData.get("photo") as File | null;
+        // const name = formData.get("name") as string;
+        // const dateBirth = formData.get("dateOfBirth") as string;
+        // const position = formData.get("position") as string;
+        // const shirtNumber = formData.get("number") as string;
+        // const photo = formData.get("photo") as File | null;
 
         mutate(formData);
     };
@@ -40,7 +43,12 @@ export default function addPlayerFunc() {
                 </div>
                 <div>
                     <label>Pozycja</label>
-                    <input type="text" name="position" required />
+                    <select name="position">
+                        <option value="Bramkarz">Bramkarz</option>
+                        <option value="Obrońca">Obrońca</option>
+                        <option value="Pomocnik">Pomocnik</option>
+                        <option value="Napastnik">Napastnik</option>
+                    </select>
                 </div>
                 <div>
                     <label>Numer na koszulce</label>
