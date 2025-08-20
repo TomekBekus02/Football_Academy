@@ -16,6 +16,11 @@ export async function addPlayer(newPlayer: FormData) {
 
     return res.data.message;
 }
+// export async function updatedPlayer(newPlayer: FormData) {
+//     const res = await axios.put("/api/players", newPlayer);
+
+//     return res.data.message;
+// }
 
 export async function fetchSinglePlayer(playerId: string) {
     const res = await fetch(`/api/players/${playerId}`);
@@ -24,4 +29,14 @@ export async function fetchSinglePlayer(playerId: string) {
     }
 
     return res.json();
+}
+
+export async function deletePlayer(playerId: string) {
+    const res = axios.delete(`/api/players/${playerId}`);
+    console.log('res', (await res).data.message);
+    if ((await res).status !== 200 ) {
+        throw new Error("Błąd podczas pobierania danych");
+    }
+
+    return (await res).status;
 }

@@ -8,6 +8,7 @@ import {
 } from "@/services/PlayersFetches/usePlayers";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
+import axios from "axios";
 
 export default function editPlayer({
     params,
@@ -19,9 +20,14 @@ export default function editPlayer({
     const playerId = params.editedPlayerId;
 
     const { mutate, isPending, isError } = useMutation({
-        mutationFn: (newPlayer: FormData) => addPlayer(newPlayer),
+        mutationFn: async (newPlayer: FormData) => {
+            const res = await axios.put(`/api/players/${playerId}`, newPlayer);
+            if (res.status != 200)
+                throw new Error("Nie udało się pobrać danych gracza");
+            return res.status;
+        },
         onSuccess: () => {
-            queryClient.invalidateQueries({ queryKey: ["Players"] });
+            queryClient.invalidateQueries({ queryKey: ["players"] });
             router.push("/admin/sklad");
             router.refresh();
         },
@@ -35,6 +41,7 @@ export default function editPlayer({
         queryFn: async () => {
             const res = await fetch(`/api/players/${playerId}`);
             if (!res.ok) throw new Error("Nie udało się pobrać danych gracza");
+            //console.log(res);
             return res.json();
         },
     });
@@ -103,11 +110,16 @@ export default function editPlayer({
                         type="file"
                         accept="image/png, image/jpeg, image/jpg"
                         name="photo"
-                        required
                     />
                 </div>
+                <input
+                    type="text"
+                    defaultValue={playerData?.photo}
+                    name="photoPath"
+                    hidden
+                />
                 <button type="submit" disabled={isPending}>
-                    {isPending ? "Dodawania..." : "Dodaj"}
+                    {isPending ? "Aktualizwanie..." : "Edytuj"}
                 </button>
             </form>
         </div>

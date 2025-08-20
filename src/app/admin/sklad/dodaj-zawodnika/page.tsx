@@ -10,7 +10,7 @@ export default function addPlayerFunc() {
     const { mutate, isPending, isError } = useMutation({
         mutationFn: (newPlayer: FormData) => addPlayer(newPlayer),
         onSuccess: () => {
-            queryClient.invalidateQueries({ queryKey: ["Players"] });
+            queryClient.invalidateQueries({ queryKey: ["players"] });
             router.push("/admin/sklad");
             router.refresh();
         },

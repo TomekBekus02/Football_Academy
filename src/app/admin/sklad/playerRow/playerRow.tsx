@@ -2,10 +2,13 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { Trash, Pencil } from "lucide-react";
+import { Trash, Pencil, Mouse } from "lucide-react";
 import { IPlayer } from "@/types/IPlayer";
-import { fetchPlayers } from "@/services/PlayersFetches/usePlayers";
-import { useQuery } from "@tanstack/react-query";
+import {
+    deletePlayer,
+    fetchPlayers,
+} from "@/services/PlayersFetches/usePlayers";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
 export default function playerRow() {
     const {
@@ -15,6 +18,13 @@ export default function playerRow() {
     } = useQuery<IPlayer[], Error>({
         queryKey: ["players"],
         queryFn: fetchPlayers,
+    });
+    const queryClient = useQueryClient();
+    const mutation = useMutation({
+        mutationFn: deletePlayer,
+        onSuccess: () => {
+            queryClient.invalidateQueries({ queryKey: ["players"] });
+        },
     });
 
     if (isLoading)
@@ -67,7 +77,12 @@ export default function playerRow() {
                             </button>
                         </td>
                         <td>
-                            <button>
+                            <button
+                                onClick={() =>
+                                    player._id && mutation.mutate(player._id)
+                                }
+                                style={{ cursor: "pointer" }}
+                            >
                                 <Trash />
                             </button>
                         </td>
