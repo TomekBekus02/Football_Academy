@@ -16,11 +16,19 @@ export async function addPlayer(newPlayer: FormData) {
 
     return res.data.message;
 }
-// export async function updatedPlayer(newPlayer: FormData) {
-//     const res = await axios.put("/api/players", newPlayer);
 
-//     return res.data.message;
-// }
+export async function updatedPlayer({
+    playerId,
+    newPlayer,
+}: {
+    playerId: string;
+    newPlayer: FormData;
+}) {
+    const res = await axios.put(`/api/players/${playerId}`, newPlayer);
+    if (res.status != 200)
+        throw new Error("Nie udało się pobrać danych gracza");
+    return res.status;
+}
 
 export async function fetchSinglePlayer(playerId: string) {
     const res = await fetch(`/api/players/${playerId}`);

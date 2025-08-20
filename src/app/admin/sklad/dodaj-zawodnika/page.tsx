@@ -21,12 +21,6 @@ export default function addPlayerFunc() {
         const form = e.currentTarget;
         const formData = new FormData(form);
 
-        // const name = formData.get("name") as string;
-        // const dateBirth = formData.get("dateOfBirth") as string;
-        // const position = formData.get("position") as string;
-        // const shirtNumber = formData.get("number") as string;
-        // const photo = formData.get("photo") as File | null;
-
         mutate(formData);
     };
     return (
@@ -64,7 +58,7 @@ export default function addPlayerFunc() {
                     />
                 </div>
                 <button type="submit" disabled={isPending}>
-                    {isPending ? "Dodawania..." : "Dodaj"}
+                    {isPending ? "Dodawanie..." : "Dodaj"}
                 </button>
             </form>
         </div>

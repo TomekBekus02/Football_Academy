@@ -3,12 +3,11 @@
 import React from "react";
 import { IPlayer } from "@/models/player";
 import {
-    addPlayer,
     fetchSinglePlayer,
+    updatedPlayer,
 } from "@/services/PlayersFetches/usePlayers";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
-import axios from "axios";
 
 export default function editPlayer({
     params,
@@ -20,12 +19,7 @@ export default function editPlayer({
     const playerId = params.editedPlayerId;
 
     const { mutate, isPending, isError } = useMutation({
-        mutationFn: async (newPlayer: FormData) => {
-            const res = await axios.put(`/api/players/${playerId}`, newPlayer);
-            if (res.status != 200)
-                throw new Error("Nie udało się pobrać danych gracza");
-            return res.status;
-        },
+        mutationFn: updatedPlayer,
         onSuccess: () => {
             queryClient.invalidateQueries({ queryKey: ["players"] });
             router.push("/admin/sklad");
@@ -37,12 +31,10 @@ export default function editPlayer({
         error,
         isLoading,
     } = useQuery({
-        queryKey: ["players", playerId] as const,
-        queryFn: async () => {
-            const res = await fetch(`/api/players/${playerId}`);
-            if (!res.ok) throw new Error("Nie udało się pobrać danych gracza");
-            //console.log(res);
-            return res.json();
+        queryKey: ["players", playerId],
+        queryFn: ({ queryKey }) => {
+            const [, playerId] = queryKey;
+            return fetchSinglePlayer(playerId as string);
         },
     });
     const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
@@ -50,7 +42,7 @@ export default function editPlayer({
 
         const form = e.currentTarget;
         const formData = new FormData(form);
-        mutate(formData);
+        mutate({ playerId, newPlayer: formData });
     };
     if (isLoading)
         return (
