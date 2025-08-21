@@ -1,5 +1,5 @@
 export interface IStaffMember {
-    _id?: number;
+    _id?: string;
     name: string;
     age: number;
     photo: string;

@@ -2,18 +2,29 @@
 import classes from "@/styles/staff.module.css";
 import Member from "@/app/staff/member/member";
 import { IStaffMember } from "@/types/IStaffMember";
-import { FetchStaff } from "@/services/StaffFetches/useStaff";
-import { useQuery } from "@tanstack/react-query";
+import {
+    deleteStaffMember,
+    FetchStaff,
+} from "@/services/StaffFetches/useStaff";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { Trash, Pencil } from "lucide-react";
 import Link from "next/link";
 
 export default function Staff() {
+    const queryClient = useQueryClient();
+
+    const mutation = useMutation({
+        mutationFn: deleteStaffMember,
+        onSuccess: () => {
+            queryClient.invalidateQueries({ queryKey: ["staffMembers"] });
+        },
+    });
     const {
         data: staffData,
         error,
         isLoading,
     } = useQuery<IStaffMember[], Error>({
-        queryKey: ["StaffMembers"],
+        queryKey: ["staffMembers"],
         queryFn: FetchStaff,
     });
 
@@ -30,7 +41,12 @@ export default function Staff() {
                             Edytuj <Pencil />
                         </Link>
                     </button>
-                    <button>
+                    <button
+                        onClick={() =>
+                            member._id && mutation.mutate(member._id)
+                        }
+                        style={{ cursor: "pointer" }}
+                    >
                         Usun <Trash />
                     </button>
                     <Member
@@ -48,7 +64,14 @@ export default function Staff() {
 
     return (
         <div className={classes.staffBox}>
-            <div className={classes.staffContent}>{renderContent()}</div>
+            <div>
+                <button>
+                    <Link href={"/admin/sztab/dodaj-czlonka-sztabu"}>
+                        Dodaj członka sztabu
+                    </Link>
+                </button>
+                <div className={classes.staffContent}>{renderContent()}</div>
+            </div>
         </div>
     );
 }

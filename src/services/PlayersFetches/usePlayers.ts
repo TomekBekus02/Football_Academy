@@ -41,7 +41,7 @@ export async function fetchSinglePlayer(playerId: string) {
 
 export async function deletePlayer(playerId: string) {
     const res = axios.delete(`/api/players/${playerId}`);
-    console.log('res', (await res).data.message);
+
     if ((await res).status !== 200 ) {
         throw new Error("Błąd podczas pobierania danych");
     }
