@@ -1,4 +1,5 @@
 "use client";
+
 import classes from "@/styles/staff.module.css";
 import Member from "@/app/staff/member/member";
 import { IStaffMember } from "@/types/IStaffMember";

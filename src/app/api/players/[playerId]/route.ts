@@ -84,7 +84,6 @@ export async function PUT(
             { status: 200 }
         );
     } catch (error) {
-        console.error("Błąd POST /api/players:", error);
         return NextResponse.json(
             { message: "Nie udało się dodać piłkarza" },
             { status: 500 }
