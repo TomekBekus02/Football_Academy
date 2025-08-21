@@ -4,23 +4,23 @@ TO DO
   - for players:
       - adding
         - [ ] frontend
-        - [ ] backend 
+        - [x] backend 
       - editing
         - [ ] frontend
-        - [ ] backend 
+        - [x] backend 
       - deleting
         - [ ] frontend
-        - [ ] backend
+        - [x] backend
   - for staff:
       - adding
         - [ ] frontend
-        - [ ] backend 
+        - [x] backend 
       - editing
         - [ ] frontend
-        - [ ] backend 
+        - [x] backend 
       - deleting
         - [ ] frontend
-        - [ ] backend
+        - [x] backend
 - [ ] display details about player ( vizualization by graphs and diagrams )
 - [ ] change layout 'about us'
 - [ ] connect club stats with database instead of hardcode way
