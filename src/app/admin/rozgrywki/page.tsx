@@ -1,7 +1,13 @@
+import Link from "next/link";
+
 export default function tournaments() {
     return (
         <div>
-            <button>Stwórz nowe wydarzenie</button>
+            <button>
+                <Link href={`/admin/rozgrywki/stworz-nowe-rozgrywki`}>
+                    Stwórz nowe wydarzenie
+                </Link>
+            </button>
             <div>
                 <h1>Trwające Rozgrywki</h1>
                 <div>
