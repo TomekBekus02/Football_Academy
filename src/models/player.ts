@@ -30,7 +30,7 @@ const PlayerSchema: Schema<IPlayer> = new Schema({
     redCards: { type: Number, default: 0 },
     yellowCards: { type: Number, default: 0 },
     teamId: {
-        type: Schema.Types.ObjectId,
+        type: mongoose.Schema.Types.ObjectId,
         ref: "Team",
         default: "689a4c7170a41052e449061b",
     },

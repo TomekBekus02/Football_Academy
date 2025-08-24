@@ -15,7 +15,7 @@ const StaffMemberSchema: Schema<IStaffMember> = new Schema({
     photo: String,
     role: String,
     ageGroup: String,
-    teamId: { type: Schema.Types.ObjectId, ref: "Team" },
+    teamId: { type: mongoose.Schema.Types.ObjectId, ref: "Team" },
 });
 
 const StaffMember: Model<IStaffMember> =

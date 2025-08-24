@@ -1,6 +1,11 @@
 import mongoose, { Document, Model, Schema } from "mongoose";
 
 export interface IMatch extends Document {
+    isOngoing: boolean;
+    label: string;
+    matchDate: string;
+    matchHour: string;
+    place: string;
     homeTeamId: mongoose.Types.ObjectId;
     awayTeamId: mongoose.Types.ObjectId;
     result: string;
@@ -11,23 +16,33 @@ export interface IMatch extends Document {
             playerId: mongoose.Types.ObjectId;
         }
     ];
+    tournamentId: string | mongoose.Types.ObjectId;
 }
 
 const MatchSchema: Schema<IMatch> = new Schema({
-    homeTeamId: mongoose.Types.ObjectId,
-    awayTeamId: mongoose.Types.ObjectId,
+    isOngoing: Boolean,
+    label: String,
+    matchDate: String,
+    matchHour: String,
+    place: String,
+    homeTeamId: { type: mongoose.Schema.Types.ObjectId, ref: "Team" },
+    awayTeamId: { type: mongoose.Schema.Types.ObjectId, ref: "Team" },
     result: String,
     events: [
         {
             type: String,
             minute: Number,
-            playerId: { type: mongoose.Types.ObjectId, ref: "Player" },
+            playerId: { type: mongoose.Schema.Types.ObjectId, ref: "Player" },
         },
     ],
+    tournamentId: String || {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Tournament",
+    },
 });
 
 const Match: Model<IMatch> =
-    mongoose.models.Player ||
+    mongoose.models.Match ||
     mongoose.model<IMatch>("Match", MatchSchema, "Matches");
 
 export default Match;
