@@ -3,7 +3,7 @@ export default function createTournament() {
         <div>
             <form>
                 <label htmlFor="">Nazwa Turnieju</label>
-                <input type="hidden" name="label" value="tournament" />
+                <input type="hidden" name="label" value="Tournament" />
             </form>
         </div>
     );

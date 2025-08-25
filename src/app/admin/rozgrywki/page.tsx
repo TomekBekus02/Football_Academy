@@ -1,4 +1,5 @@
 import Link from "next/link";
+import OnGoingCompetitions from "@/components/competitions/onGoingCompetitions/onGoingCompetitions";
 
 export default function tournaments() {
     return (
@@ -10,13 +11,7 @@ export default function tournaments() {
             </button>
             <div>
                 <h1>Trwające Rozgrywki</h1>
-                <div>
-                    <div>
-                        <h1></h1>
-                        <p></p>
-                    </div>
-                    <div></div>
-                </div>
+                <OnGoingCompetitions />
             </div>
             <div>
                 <h1>Zakończone Rozgrywki</h1>

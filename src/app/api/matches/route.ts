@@ -1,5 +1,7 @@
 import { connectDB } from "@/lib/mongodb";
+import { addCompetition } from "@/lib/updateCompetitions";
 import Match from "@/models/match";
+import mongoose from "mongoose";
 import { NextResponse } from "next/server";
 
 export async function POST(req: Request) {
@@ -12,10 +14,8 @@ export async function POST(req: Request) {
         const matchDate = formData.get("matchDate") as string;
         const matchHour = formData.get("matchHour") as string;
         const place = formData.get("place") as string;
-
+        console.log("te kurwa tutaj label: ", label);
         const newMatch = new Match({
-            isOngoing: true,
-            label,
             homeTeamId,
             awayTeamId,
             matchDate,
@@ -26,6 +26,8 @@ export async function POST(req: Request) {
             tournamentId: "",
         });
         await newMatch.save();
+
+        await addCompetition(label, newMatch._id as mongoose.Types.ObjectId);
 
         return NextResponse.json(
             { message: "Stworzono mecz" },

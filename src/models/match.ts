@@ -1,8 +1,6 @@
 import mongoose, { Document, Model, Schema } from "mongoose";
 
 export interface IMatch extends Document {
-    isOngoing: boolean;
-    label: string;
     matchDate: string;
     matchHour: string;
     place: string;
@@ -20,8 +18,6 @@ export interface IMatch extends Document {
 }
 
 const MatchSchema: Schema<IMatch> = new Schema({
-    isOngoing: Boolean,
-    label: String,
     matchDate: String,
     matchHour: String,
     place: String,

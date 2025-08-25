@@ -31,7 +31,7 @@ export default function createNewMatch() {
                 />
                 <InputTeamsOption selectName="awayTeamId" labelText="Gość" />
             </div>
-            <input type="hidden" name="label" value="match" />
+            <input type="string" name="label" value="Match" hidden />
             <div>
                 <label>Data meczu</label>
                 <input type="date" name="matchDate" />
