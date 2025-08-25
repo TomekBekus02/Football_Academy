@@ -14,7 +14,7 @@ export async function POST(req: Request) {
         const matchDate = formData.get("matchDate") as string;
         const matchHour = formData.get("matchHour") as string;
         const place = formData.get("place") as string;
-        console.log("te kurwa tutaj label: ", label);
+
         const newMatch = new Match({
             homeTeamId,
             awayTeamId,
