@@ -7,9 +7,12 @@ import { IMatchCompetition } from "@/types/ICompetition";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import Image from "next/image";
 
-export default function onGoingCompetitions() {
-    const isOnGoing = true;
-    const queryClient = useQueryClient();
+interface CompetitionParams {
+    isOnGoing: boolean;
+}
+
+export default function Competitions({ isOnGoing }: CompetitionParams) {
+    //const queryClient = useQueryClient();
     const {
         data: activeCompetitions,
         isLoading,
