@@ -1,8 +1,8 @@
 import { IPlayer } from "@/types/IPlayer";
 import axios from "axios";
 
-export async function fetchPlayers(): Promise<IPlayer[]> {
-    const res = await fetch("/api/players");
+export async function fetchTeamSquad(teamId: string): Promise<IPlayer[]> {
+    const res = await fetch(`/api/players?teamId=${teamId}`);
 
     if (!res.ok) {
         throw new Error("Błąd podczas pobierania danych");

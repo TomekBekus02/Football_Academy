@@ -3,11 +3,16 @@ import { connectDB } from "@/lib/mongodb";
 import Player from "@/models/player";
 import fs from "fs";
 
-export async function GET() {
+export async function GET(req: Request) {
     try {
+        const { searchParams } = new URL(req.url);
+        let teamId = searchParams.get("teamId");
         await connectDB();
-        const teamID = "689a4c7170a41052e449061b"; //hard Coded for dev purposes
-        const players = await Player.find({ teamId: teamID });
+        if (teamId === "") {
+            teamId = "689a4c7170a41052e449061b";
+        }
+        //const teamID = "689a4c7170a41052e449061b"; //hard Coded for dev purposes
+        const players = await Player.find({ teamId: teamId });
 
         return NextResponse.json(players, { status: 200 });
     } catch (error) {

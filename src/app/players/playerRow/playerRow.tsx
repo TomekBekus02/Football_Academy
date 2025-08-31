@@ -4,16 +4,20 @@ import Image from "next/image";
 import Link from "next/link";
 
 import { IPlayer } from "@/types/IPlayer";
-import { fetchPlayers } from "@/services/PlayersFetches/usePlayers";
+import { fetchTeamSquad } from "@/services/PlayersFetches/usePlayers";
 
 export default function playerRow() {
+    const teamId = "";
     const {
         data: playersData,
         error,
         isLoading,
     } = useQuery<IPlayer[], Error>({
-        queryKey: ["players"],
-        queryFn: fetchPlayers,
+        queryKey: ["players", teamId],
+        queryFn: ({ queryKey }) => {
+            const [, teamId] = queryKey;
+            return fetchTeamSquad(teamId as string);
+        },
     });
 
     if (isLoading)
