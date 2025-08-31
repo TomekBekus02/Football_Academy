@@ -4,7 +4,7 @@ export interface ICompetition extends Document {
     isOngoing: boolean;
     label: string;
     competitionId: mongoose.Types.ObjectId;
-    competitionType: "Match" | "Player"; //player na tournament
+    competitionType: "Match" | "Player"; //change player na tournament
 }
 
 const CompetitionSchema: Schema<ICompetition> = new Schema({
@@ -16,7 +16,7 @@ const CompetitionSchema: Schema<ICompetition> = new Schema({
     },
     competitionType: {
         type: String,
-        enum: ["Match", "Player"], //player na tournament
+        enum: ["Match", "Player"], //change player na tournament
     },
 });
 

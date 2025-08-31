@@ -9,11 +9,6 @@ export async function addCompetition(
 ) {
     try {
         await connectDB();
-        console.log(
-            label,
-            "type by label: ",
-            label === "Match" ? "Match" : "Player"
-        );
         const newCompetition = new Competition({
             isOngoing: true,
             label,
