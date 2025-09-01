@@ -24,12 +24,6 @@
     align-items: center;
     justify-content: center;
 }
-.halfHeader {
-    display: flex;
-    justify-content: space-between;
-    padding: 10px;
-}
-
 .awayteamSquadBox {
     display: flex;
     justify-content: end;

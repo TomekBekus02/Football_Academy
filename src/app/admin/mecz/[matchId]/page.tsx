@@ -7,6 +7,7 @@ import GetTeamSquad from "./teamSquad/teamSquad";
 import { useQuery } from "@tanstack/react-query";
 import GetTeamDetails from "./teamDetails/teamDetails";
 import MatchLayout from "./matchProgress.module.css";
+import MatchEvents from "./matchEvents/matchEvents";
 
 export default function MatchProgress({
     params,
@@ -65,20 +66,7 @@ export default function MatchProgress({
                                         isAwayTeam={false}
                                     />
                                 </div>
-                                <div className={MatchLayout.matchEventsBox}>
-                                    <div className={MatchLayout.matchHalfBox}>
-                                        <div className={MatchLayout.halfHeader}>
-                                            <h3>1. POŁOWA</h3>
-                                            <p>0-0</p>
-                                        </div>
-                                    </div>
-                                    <div className={MatchLayout.matchHalfBox}>
-                                        <div className={MatchLayout.halfHeader}>
-                                            <h3>2. POŁOWA</h3>
-                                            <p>0-0</p>
-                                        </div>
-                                    </div>
-                                </div>
+                                <MatchEvents matchId={matchId} />
                                 <div
                                     className={`${MatchLayout.teamSquadBox} ${MatchLayout.awayteamSquadBox}`}
                                 >
@@ -91,34 +79,6 @@ export default function MatchProgress({
                         </div>
                     </div>
                 ) : (
-                    // <div>
-                    //     <div>
-                    //         <h1>Miejsce: {matchData.place}</h1>
-                    //         <h1>
-                    //             Data: {matchData.matchDate},{" "}
-                    //             {matchData.matchHour}
-                    //         </h1>
-                    //     </div>
-                    //     <div>
-                    //         <h1>Wynik: {matchData.result}</h1>
-                    //     </div>
-                    //     <div>
-                    //         <h1>Gospodarze</h1>
-                    //         <GetTeamDetails
-                    //             teamId={matchData.homeTeamId.toString()}
-                    //         />
-
-                    //     </div>
-                    //     <div>
-                    //         <h1>Goscie</h1>
-                    //         <GetTeamDetails
-                    //             teamId={matchData.awayTeamId.toString()}
-                    //         />
-                    //         <GetTeamSquad
-                    //             teamId={matchData.awayTeamId.toString()}
-                    //         />
-                    //     </div>
-                    // </div>
                     <div>
                         <h1>Brak meczu</h1>
                     </div>
