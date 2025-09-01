@@ -5,6 +5,7 @@ import { IMatch } from "@/models/match";
 import { fetchMatchDetails } from "@/services/MatchFetches/useMatch";
 import GetTeamSquad from "./teamSquad/teamSquad";
 import { useQuery } from "@tanstack/react-query";
+import GetTeamDetails from "./teamDetails/teamDetails";
 
 export default function MatchProgress({
     params,
@@ -41,12 +42,18 @@ export default function MatchProgress({
                         </div>
                         <div>
                             <h1>Gospodarze</h1>
+                            <GetTeamDetails
+                                teamId={matchData.awayTeamId.toString()}
+                            />
                             <GetTeamSquad
                                 teamId={matchData.homeTeamId.toString()}
                             />
                         </div>
                         <div>
                             <h1>Goscie</h1>
+                            <GetTeamDetails
+                                teamId={matchData.awayTeamId.toString()}
+                            />
                             <GetTeamSquad
                                 teamId={matchData.awayTeamId.toString()}
                             />

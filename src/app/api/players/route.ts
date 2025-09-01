@@ -11,7 +11,7 @@ export async function GET(req: Request) {
         if (teamId === "") {
             teamId = "689a4c7170a41052e449061b";
         }
-        //const teamID = "689a4c7170a41052e449061b"; //hard Coded for dev purposes
+
         const players = await Player.find({ teamId: teamId });
 
         return NextResponse.json(players, { status: 200 });

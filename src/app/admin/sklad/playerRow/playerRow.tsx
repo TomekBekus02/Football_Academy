@@ -6,18 +6,22 @@ import { Trash, Pencil, Mouse } from "lucide-react";
 import { IPlayer } from "@/types/IPlayer";
 import {
     deletePlayer,
-    fetchPlayers,
+    fetchTeamSquad,
 } from "@/services/PlayersFetches/usePlayers";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
 export default function playerRow() {
+    const teamId = "";
     const {
         data: playersData,
         error,
         isLoading,
     } = useQuery<IPlayer[], Error>({
-        queryKey: ["players"],
-        queryFn: fetchPlayers,
+        queryKey: ["players", teamId],
+        queryFn: ({ queryKey }) => {
+            const [, teamId] = queryKey;
+            return fetchTeamSquad(teamId as string);
+        },
     });
     const queryClient = useQueryClient();
     const mutation = useMutation({
