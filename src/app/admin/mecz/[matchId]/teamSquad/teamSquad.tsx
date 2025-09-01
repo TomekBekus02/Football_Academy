@@ -3,11 +3,13 @@ import LoadProvider from "@/components/LoadProvider/LoadProvider";
 import { fetchTeamSquad } from "@/services/PlayersFetches/usePlayers";
 import { IPlayer } from "@/types/IPlayer";
 import { useQuery } from "@tanstack/react-query";
+import TeamSquadLayout from "./teamSquad.module.css";
 
 interface TeamDetailsProps {
     teamId: string;
+    isAwayTeam: boolean;
 }
-export default function getTeamSquad({ teamId }: TeamDetailsProps) {
+export default function getTeamSquad({ teamId, isAwayTeam }: TeamDetailsProps) {
     const {
         data: playersData,
         isLoading,
@@ -25,9 +27,23 @@ export default function getTeamSquad({ teamId }: TeamDetailsProps) {
                 {playersData && playersData!.length > 0 ? (
                     playersData.map((player: IPlayer) => (
                         <div>
-                            <p>
-                                {player.shirtNumber}. {player.name}
-                            </p>
+                            {isAwayTeam ? (
+                                <div
+                                    className={`${TeamSquadLayout.playerInfo} ${TeamSquadLayout.awayPlayerInfo}`}
+                                >
+                                    <p>{player.name}</p>
+                                    <p className={TeamSquadLayout.playerNumber}>
+                                        {player.shirtNumber}
+                                    </p>
+                                </div>
+                            ) : (
+                                <div className={TeamSquadLayout.playerInfo}>
+                                    <p className={TeamSquadLayout.playerNumber}>
+                                        {player.shirtNumber}
+                                    </p>
+                                    <p>{player.name}</p>
+                                </div>
+                            )}
                         </div>
                     ))
                 ) : (

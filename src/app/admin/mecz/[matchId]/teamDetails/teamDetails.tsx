@@ -3,6 +3,7 @@ import { fetchTeamDetails } from "@/services/TeamsFetches/useTeams";
 import { ITeam } from "@/types/ITeam";
 import { useQuery } from "@tanstack/react-query";
 import Image from "next/image";
+import TeamDetailsLayout from "./teamDetails.module.css";
 
 interface TeamDetailsProps {
     teamId: string;
@@ -22,14 +23,15 @@ export default function GetTeamDetails({ teamId }: TeamDetailsProps) {
     });
     return (
         <LoadProvider error={error} isLoading={isLoading}>
-            <div>
+            <div className={TeamDetailsLayout.pageBox}>
                 {teamData ? (
-                    <div>
+                    <div className={TeamDetailsLayout.contentBox}>
                         <Image
                             src={teamData.logo}
                             alt={teamData.name}
                             height={100}
                             width={100}
+                            className={TeamDetailsLayout.teamImage}
                         ></Image>
                         {teamData.name}
                     </div>

@@ -1,0 +1,36 @@
+.pageBox {
+    display: flex;
+    justify-content: center;
+}
+.contentBox {
+    border: 1px solid black;
+    width: 80%;
+}
+.content {
+    display: grid;
+    grid-template-columns: 27% 46% 27%;
+    padding: 20px;
+}
+.teamBox {
+    margin: 0 40px;
+}
+.homeTeamBox {
+    display: flex;
+    justify-content: end;
+}
+.gameInfo {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+.halfHeader {
+    display: flex;
+    justify-content: space-between;
+    padding: 10px;
+}
+
+.awayteamSquadBox {
+    display: flex;
+    justify-content: end;
+}

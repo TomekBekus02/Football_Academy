@@ -1,0 +1,14 @@
+.playerInfo {
+    display: flex;
+}
+.playerInfo p {
+    margin: 3px 4px;
+    font-size: 20px;
+    font-weight: 500;
+}
+.awayPlayerInfo {
+    justify-content: end;
+}
+.playerNumber {
+    margin: auto;
+}
