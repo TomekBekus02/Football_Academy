@@ -43,7 +43,7 @@ export default function MatchProgress({
                         <div>
                             <h1>Gospodarze</h1>
                             <GetTeamDetails
-                                teamId={matchData.awayTeamId.toString()}
+                                teamId={matchData.homeTeamId.toString()}
                             />
                             <GetTeamSquad
                                 teamId={matchData.homeTeamId.toString()}
