@@ -1,7 +1,7 @@
 "use client";
 
 import { IEvent } from "@/types/IEvent";
-import { ReactNode, useContext, createContext, useState } from "react";
+import React, { ReactNode, useContext, createContext, useState } from "react";
 
 type MatchTeamsType = {
     homeTeam?: {
@@ -29,24 +29,22 @@ type MatchTeamsType = {
 };
 type MatchContextType = {
     events: Array<IEvent>;
-    handleEvents: (eventData: IEvent) => void;
     matchTeams: MatchTeamsType;
     setMatchTeams: (matchTeamsData: MatchTeamsType) => void;
+    addEvent: (newEvent: IEvent) => void;
 };
 const MatchContext = createContext<MatchContextType | undefined>(undefined);
 
 export const MatchProvider = ({ children }: { children: ReactNode }) => {
     const [events, setEvents] = useState<IEvent[]>([]);
     const [matchTeams, setMatchTeams] = useState<MatchTeamsType>({});
-
-    const handleEvents = (eventData: IEvent) => {
-        console.log("events z BD: ", eventData);
-        setEvents((prev) => [...prev, eventData]);
+    const addEvent = (newEvent: IEvent) => {
+        setEvents((prev) => [...prev, newEvent]);
+        console.log("newEvent: ", newEvent);
     };
-
     return (
         <MatchContext.Provider
-            value={{ events, matchTeams, setMatchTeams, handleEvents }}
+            value={{ events, matchTeams, setMatchTeams, addEvent }}
         >
             {children}
         </MatchContext.Provider>

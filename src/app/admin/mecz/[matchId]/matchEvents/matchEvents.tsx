@@ -1,8 +1,10 @@
 "use client";
-import Link from "next/link";
+
 import MatchEventsLayout from "./matchEvetns.module.css";
 import { AddEventDialog } from "../dialogs/addEventDialog";
 import { useRef } from "react";
+import { useMatch } from "@/contexts/matchContext";
+import { EventsHalf } from "./eventsHalf/eventsHalf";
 
 type matchEventProps = {
     matchId: string;
@@ -15,6 +17,7 @@ export default function matchEvents({
     awayTeamId,
 }: matchEventProps) {
     const eventDialog = useRef<HTMLDialogElement>(null);
+    const { events } = useMatch();
     return (
         <div className={MatchEventsLayout.matchEventsBox}>
             <AddEventDialog
@@ -31,12 +34,15 @@ export default function matchEvents({
                     <h3>1. POŁOWA</h3>
                     <p>0-0</p>
                 </div>
+
+                <EventsHalf half={1} />
             </div>
             <div className={MatchEventsLayout.matchHalfBox}>
                 <div className={MatchEventsLayout.halfHeader}>
                     <h3>2. POŁOWA</h3>
                     <p>0-0</p>
                 </div>
+                <EventsHalf half={2} />
             </div>
         </div>
     );
