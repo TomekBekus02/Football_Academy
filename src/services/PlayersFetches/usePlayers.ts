@@ -48,3 +48,13 @@ export async function deletePlayer(playerId: string) {
 
     return (await res).status;
 }
+
+export async function fetchAllPlayersForMatch(
+    homeTeam: string,
+    awayTeam: string
+) {
+    const res = await fetch(
+        `/api/matches?homeTeam=${homeTeam}&awayTeam=${awayTeam}`
+    );
+    return (await res).json();
+}

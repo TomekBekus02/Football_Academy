@@ -11,6 +11,7 @@ export interface IMatch extends Document {
         {
             type: string;
             minute: number;
+            extraMinute: number;
             playerId: mongoose.Types.ObjectId;
         }
     ];
@@ -28,6 +29,7 @@ const MatchSchema: Schema<IMatch> = new Schema({
         {
             type: String,
             minute: Number,
+            extraMinute: Number,
             playerId: { type: mongoose.Schema.Types.ObjectId, ref: "Player" },
         },
     ],

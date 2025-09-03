@@ -1,17 +1,30 @@
 "use client";
 import Link from "next/link";
 import MatchEventsLayout from "./matchEvetns.module.css";
+import { AddEventDialog } from "../dialogs/addEventDialog";
+import { useRef } from "react";
 
 type matchEventProps = {
     matchId: string;
+    awayTeamId: string;
+    homeTeamId: string;
 };
-export default function matchEvents({ matchId }: matchEventProps) {
+export default function matchEvents({
+    matchId,
+    homeTeamId,
+    awayTeamId,
+}: matchEventProps) {
+    const eventDialog = useRef<HTMLDialogElement>(null);
     return (
         <div className={MatchEventsLayout.matchEventsBox}>
-            <button>
-                <Link href={`/admin/mecz/${matchId}/dodaj-wydarzenie`}>
-                    Dodaj event
-                </Link>
+            <AddEventDialog
+                ref={eventDialog}
+                matchId={matchId}
+                homeTeamId={homeTeamId}
+                awayTeamId={awayTeamId}
+            />
+            <button onClick={() => eventDialog.current?.showModal()}>
+                Dodaj event
             </button>
             <div className={MatchEventsLayout.matchHalfBox}>
                 <div className={MatchEventsLayout.halfHeader}>

@@ -26,7 +26,7 @@ export default function getTeamSquad({ teamId, isAwayTeam }: TeamDetailsProps) {
             <div>
                 {playersData && playersData!.length > 0 ? (
                     playersData.map((player: IPlayer) => (
-                        <div>
+                        <div key={player._id}>
                             {isAwayTeam ? (
                                 <div
                                     className={`${TeamSquadLayout.playerInfo} ${TeamSquadLayout.awayPlayerInfo}`}
