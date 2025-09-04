@@ -2,6 +2,7 @@
 import { useMatch } from "@/contexts/matchContext";
 import { fetchAllPlayersForMatch } from "@/services/PlayersFetches/usePlayers";
 import { IEvent } from "@/types/IEvent";
+import { extractPlayerName } from "@/utils/utils";
 import { useQuery } from "@tanstack/react-query";
 import { forwardRef, useEffect, useRef, useState } from "react";
 
@@ -41,13 +42,30 @@ export const AddEventDialog = forwardRef<HTMLDialogElement, IDialog>(
         const handleEvents = (e: React.FormEvent<HTMLFormElement>) => {
             e.preventDefault();
             const formData = new FormData(e.currentTarget);
+            const selectEl1 = e.currentTarget.elements.namedItem(
+                "playerId"
+            ) as HTMLSelectElement;
+            const playerName = extractPlayerName(selectEl1);
+            const eventType = formData.get("eventType") as string;
+            let assist_playerName = "";
+            if (eventType === "Goal") {
+                const selectEl2 = e.currentTarget.elements.namedItem(
+                    "assist_playerId"
+                ) as HTMLSelectElement;
+                assist_playerName = extractPlayerName(selectEl2);
+            }
+
             const newEvent: IEvent = {
                 playerTeamId: formData.get("playerTeamId") as string,
-                eventType: formData.get("eventType") as string,
-                playerId: formData.get("playerId") as string,
-                assist_playerId: formData.get("assist_playerId") as
-                    | string
-                    | null,
+                eventType: eventType,
+                player: {
+                    id: formData.get("playerId") as string,
+                    name: playerName,
+                },
+                assist_player: {
+                    id: formData.get("assist_playerId") as string,
+                    name: assist_playerName,
+                },
                 basicTime: Number(formData.get("basicTime")),
                 extraTime: Number(formData.get("extraTime")),
             };

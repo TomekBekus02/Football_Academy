@@ -48,9 +48,12 @@ export const EventsHalf = ({ half }: EventType) => {
                         : ""
                 }`}</p>
                 {eventType(event.eventType)}
-                {/* <p>{shortName(event.playerId)}</p> przypał będzie trzeba wydobyć jeszcze player name bo mam tylko id*/}
-                <p>Nazwisko I.</p>
-                {event.eventType === "Goal" ? <p>{`(Nazwisko I.)`}</p> : ""}
+                <p>{event.player.name}</p>
+                {event.eventType === "Goal" ? (
+                    <p>{`(${event.assist_player?.name})`}</p>
+                ) : (
+                    ""
+                )}
                 {/*No tu kurcze tez xd*/}
             </div>
         );

@@ -40,7 +40,6 @@ export const MatchProvider = ({ children }: { children: ReactNode }) => {
     const [matchTeams, setMatchTeams] = useState<MatchTeamsType>({});
     const addEvent = (newEvent: IEvent) => {
         setEvents((prev) => [...prev, newEvent]);
-        console.log("newEvent: ", newEvent);
     };
     return (
         <MatchContext.Provider

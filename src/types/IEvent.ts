@@ -3,6 +3,12 @@ export interface IEvent {
     playerTeamId: string;
     basicTime: number;
     extraTime: number;
-    playerId: string;
-    assist_playerId?: string | null;
+    player: {
+        id: string;
+        name: string;
+    };
+    assist_player?: {
+        id: string;
+        name: string;
+    };
 }
