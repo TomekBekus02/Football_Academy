@@ -35,14 +35,14 @@ export default function matchEvents({
                     <p>0-0</p>
                 </div>
 
-                <EventsHalf half={1} />
+                <EventsHalf half={1} awayTeamId={awayTeamId} />
             </div>
             <div className={MatchEventsLayout.matchHalfBox}>
                 <div className={MatchEventsLayout.halfHeader}>
                     <h3>2. POŁOWA</h3>
                     <p>0-0</p>
                 </div>
-                <EventsHalf half={2} />
+                <EventsHalf half={2} awayTeamId={awayTeamId} />
             </div>
         </div>
     );

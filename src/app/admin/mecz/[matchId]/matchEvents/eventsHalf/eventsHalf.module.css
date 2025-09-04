@@ -1,0 +1,16 @@
+.eventBox {
+    display: flex;
+    margin: 5px;
+}
+.eventBox P {
+    margin: 5px;
+}
+.awayPlayerBox {
+    flex-direction: row-reverse;
+}
+.iconBox {
+    width: 30px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
