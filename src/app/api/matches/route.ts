@@ -69,6 +69,10 @@ export async function POST(req: Request) {
         const matchDate = formData.get("matchDate") as string;
         const matchHour = formData.get("matchHour") as string;
         const place = formData.get("place") as string;
+        let tournamentId = formData.get("tournamentId") as string;
+        if (!tournamentId) {
+            tournamentId = "";
+        }
 
         const newMatch = new Match({
             homeTeamId,
@@ -78,7 +82,8 @@ export async function POST(req: Request) {
             place,
             result: "-",
             events: [],
-            tournamentId: "",
+            tournamentId,
+            isOnGoing: true,
         });
         await newMatch.save();
 

@@ -14,7 +14,7 @@ type IDialog = {
 
 export const AddEventDialog = forwardRef<HTMLDialogElement, IDialog>(
     ({ matchId, homeTeamId, awayTeamId }, ref) => {
-        const { matchTeams, setMatchTeams, addEvent } = useMatch();
+        const { matchTeams, setMatchTeams, addEvent, updateScore } = useMatch();
 
         const {
             data: matchData,
@@ -42,6 +42,7 @@ export const AddEventDialog = forwardRef<HTMLDialogElement, IDialog>(
         const handleEvents = (e: React.FormEvent<HTMLFormElement>) => {
             e.preventDefault();
             const formData = new FormData(e.currentTarget);
+            const playerTeamId = formData.get("playerTeamId") as string;
             const selectEl1 = e.currentTarget.elements.namedItem(
                 "playerId"
             ) as HTMLSelectElement;
@@ -53,10 +54,11 @@ export const AddEventDialog = forwardRef<HTMLDialogElement, IDialog>(
                     "assist_playerId"
                 ) as HTMLSelectElement;
                 assist_playerName = extractPlayerName(selectEl2);
+                updateScore(playerTeamId);
             }
 
             const newEvent: IEvent = {
-                playerTeamId: formData.get("playerTeamId") as string,
+                playerTeamId: playerTeamId,
                 eventType: eventType,
                 player: {
                     id: formData.get("playerId") as string,

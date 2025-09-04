@@ -16,6 +16,7 @@ export interface IMatch extends Document {
         }
     ];
     tournamentId: string | mongoose.Types.ObjectId;
+    isOnGoing: boolean;
 }
 
 const MatchSchema: Schema<IMatch> = new Schema({
@@ -37,6 +38,7 @@ const MatchSchema: Schema<IMatch> = new Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: "Tournament",
     },
+    isOnGoing: Boolean,
 });
 
 const Match: Model<IMatch> =

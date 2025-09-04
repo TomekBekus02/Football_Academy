@@ -1,4 +1,4 @@
-import fetchTeams from "@/services/TeamsFetches/useTeams";
+import { fetchTeams } from "@/services/TeamsFetches/useTeams";
 import { ITeam } from "@/types/ITeam";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import Image from "next/image";

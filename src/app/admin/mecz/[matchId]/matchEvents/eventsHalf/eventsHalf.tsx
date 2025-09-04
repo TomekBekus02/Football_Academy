@@ -61,7 +61,8 @@ export const EventsHalf = ({ half, awayTeamId }: EventType) => {
                         {eventType(event.eventType)}
                     </span>
                     <p>{shortName(event.player.name)}</p>
-                    {event.eventType === "Goal" ? (
+                    {event.eventType === "Goal" &&
+                    event.assist_player?.name !== "" ? (
                         <p>{`(${shortName(event.assist_player?.name)})`}</p>
                     ) : (
                         ""

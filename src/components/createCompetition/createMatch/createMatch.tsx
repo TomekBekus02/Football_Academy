@@ -41,6 +41,7 @@ export default function createNewMatch() {
                 <label>Adres meczu</label>
                 <input type="text" name="place" />
             </div>
+            <input type="text" name="tournamentId" defaultValue="" hidden />
             <button type="submit">
                 {isPending ? "Tworzenie..." : "Stwórz mecz"}
             </button>

@@ -6,4 +6,5 @@ export interface IMatch {
     awayTeamId: string;
     result: string;
     tournamentId: string;
+    isOnGoing: boolean;
 }

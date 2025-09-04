@@ -8,6 +8,7 @@ import { useQuery } from "@tanstack/react-query";
 import GetTeamDetails from "./teamDetails/teamDetails";
 import MatchLayout from "./matchProgress.module.css";
 import MatchEvents from "./matchEvents/matchEvents";
+import { useMatch } from "@/contexts/matchContext";
 
 export default function MatchProgress({
     params,
@@ -26,7 +27,7 @@ export default function MatchProgress({
             return fetchMatchDetails(matchId as string);
         },
     });
-
+    const { resultObj } = useMatch();
     return (
         <LoadProvider isLoading={isLoading} error={error}>
             <div>
@@ -46,9 +47,9 @@ export default function MatchProgress({
                                         {matchData.matchDate}{" "}
                                         {matchData.matchHour}
                                     </h3>
-                                    <h1>{matchData.result}</h1>
+                                    <h1>{`${resultObj.homeTeamScore}:${resultObj.awayTeamScore}`}</h1>
                                     <h2>
-                                        {matchData.result.trim() == "-"
+                                        {matchData.isOnGoing
                                             ? "TRWA"
                                             : "KONIEC"}
                                     </h2>

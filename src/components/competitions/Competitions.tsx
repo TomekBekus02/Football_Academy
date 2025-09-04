@@ -15,7 +15,7 @@ interface CompetitionParams {
 export default function Competitions({ isOnGoing }: CompetitionParams) {
     //const queryClient = useQueryClient();
     const {
-        data: activeCompetitions,
+        data: competitions,
         isLoading,
         error,
     } = useQuery<IMatchCompetition[], Error>({
@@ -28,47 +28,63 @@ export default function Competitions({ isOnGoing }: CompetitionParams) {
     return (
         <LoadProvider isLoading={isLoading} error={error}>
             <div>
-                {activeCompetitions?.map((comp) => (
-                    <div key={comp._id}>
-                        {comp.label === "Match" ? (
-                            <div style={{ display: "flex" }}>
-                                <div>
-                                    <Image
-                                        src={comp.TeamDetails.homeTeamId.logo}
-                                        alt={comp.TeamDetails.homeTeamId.name}
-                                        width={150}
-                                        height={120}
-                                    ></Image>
-                                    <p>{comp.TeamDetails.homeTeamId.name}</p>
+                {competitions && competitions.length > 0 ? (
+                    competitions.map((comp) => (
+                        <div key={comp._id}>
+                            {comp.label === "Match" ? (
+                                <div style={{ display: "flex" }}>
+                                    <div>
+                                        <Image
+                                            src={
+                                                comp.TeamDetails.homeTeamId.logo
+                                            }
+                                            alt={
+                                                comp.TeamDetails.homeTeamId.name
+                                            }
+                                            width={150}
+                                            height={120}
+                                        ></Image>
+                                        <p>
+                                            {comp.TeamDetails.homeTeamId.name}
+                                        </p>
+                                    </div>
+                                    <h1>{comp.TeamDetails.result}</h1>
+                                    <div>
+                                        <Image
+                                            src={
+                                                comp.TeamDetails.awayTeamId.logo
+                                            }
+                                            alt={
+                                                comp.TeamDetails.awayTeamId.name
+                                            }
+                                            width={150}
+                                            height={120}
+                                        ></Image>
+                                        <p>
+                                            {comp.TeamDetails.awayTeamId.name}
+                                        </p>
+                                    </div>
+                                    <div>
+                                        <button>
+                                            <Link
+                                                href={`/admin/mecz/${comp.competitionId}`}
+                                            >
+                                                <Hammer /> Zarządzaj
+                                            </Link>
+                                        </button>
+                                        <button>
+                                            <Trash /> Usuń
+                                        </button>
+                                    </div>
                                 </div>
-                                <h1>{comp.TeamDetails.result}</h1>
-                                <div>
-                                    <Image
-                                        src={comp.TeamDetails.awayTeamId.logo}
-                                        alt={comp.TeamDetails.awayTeamId.name}
-                                        width={150}
-                                        height={120}
-                                    ></Image>
-                                    <p>{comp.TeamDetails.awayTeamId.name}</p>
-                                </div>
-                                <div>
-                                    <button>
-                                        <Link
-                                            href={`/admin/mecz/${comp.competitionId}`}
-                                        >
-                                            <Hammer /> Zarządzaj
-                                        </Link>
-                                    </button>
-                                    <button>
-                                        <Trash /> Usuń
-                                    </button>
-                                </div>
-                            </div>
-                        ) : (
-                            <div></div>
-                        )}
-                    </div>
-                ))}
+                            ) : (
+                                <div></div>
+                            )}
+                        </div>
+                    ))
+                ) : (
+                    <div>Brak Wydarzeń</div>
+                )}
             </div>
         </LoadProvider>
     );
