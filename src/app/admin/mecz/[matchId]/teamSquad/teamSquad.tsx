@@ -4,6 +4,9 @@ import { fetchTeamSquad } from "@/services/PlayersFetches/usePlayers";
 import { IPlayer } from "@/types/IPlayer";
 import { useQuery } from "@tanstack/react-query";
 import TeamSquadLayout from "./teamSquad.module.css";
+import { useMatch } from "@/contexts/matchContext";
+import DisplayPlayersEvents from "./playersEvents/playersEvents";
+import { YellowCard } from "@/components/icons/matchIcons";
 
 interface TeamDetailsProps {
     teamId: string;
@@ -21,29 +24,32 @@ export default function getTeamSquad({ teamId, isAwayTeam }: TeamDetailsProps) {
             return fetchTeamSquad(teamId);
         },
     });
+    const { playersEvents } = useMatch();
     return (
         <LoadProvider error={error} isLoading={isLoading}>
             <div>
                 {playersData && playersData!.length > 0 ? (
                     playersData.map((player: IPlayer) => (
-                        <div key={player._id}>
-                            {isAwayTeam ? (
-                                <div
-                                    className={`${TeamSquadLayout.playerInfo} ${TeamSquadLayout.awayPlayerInfo}`}
-                                >
-                                    <p>{player.name}</p>
-                                    <p className={TeamSquadLayout.playerNumber}>
-                                        {player.shirtNumber}
-                                    </p>
-                                </div>
-                            ) : (
-                                <div className={TeamSquadLayout.playerInfo}>
-                                    <p className={TeamSquadLayout.playerNumber}>
-                                        {player.shirtNumber}
-                                    </p>
-                                    <p>{player.name}</p>
-                                </div>
-                            )}
+                        <div
+                            key={player._id}
+                            className={TeamSquadLayout.awayTeamBox}
+                        >
+                            <div
+                                className={`${TeamSquadLayout.playerInfo} ${
+                                    isAwayTeam
+                                        ? TeamSquadLayout.awayPlayerInfo
+                                        : TeamSquadLayout.homePlayerInfo
+                                }`}
+                            >
+                                <DisplayPlayersEvents
+                                    playerId={player._id}
+                                    playersEvents={playersEvents}
+                                />
+                                <p>{player.name}</p>
+                                <p className={TeamSquadLayout.playerNumber}>
+                                    {player.shirtNumber}
+                                </p>
+                            </div>
                         </div>
                     ))
                 ) : (

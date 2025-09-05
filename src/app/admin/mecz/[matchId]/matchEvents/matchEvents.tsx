@@ -17,7 +17,7 @@ export default function matchEvents({
     awayTeamId,
 }: matchEventProps) {
     const eventDialog = useRef<HTMLDialogElement>(null);
-    const { events } = useMatch();
+    const { playersEvents } = useMatch();
     return (
         <div className={MatchEventsLayout.matchEventsBox}>
             <AddEventDialog
@@ -26,7 +26,11 @@ export default function matchEvents({
                 homeTeamId={homeTeamId}
                 awayTeamId={awayTeamId}
             />
-            <button onClick={() => eventDialog.current?.showModal()}>
+            <button
+                onClick={() => {
+                    eventDialog.current?.showModal();
+                }}
+            >
                 Dodaj event
             </button>
             <div className={MatchEventsLayout.matchHalfBox}>

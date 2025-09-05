@@ -41,9 +41,9 @@ export const EventsHalf = ({ half, awayTeamId }: EventType) => {
         return a.basicTime - b.basicTime;
     });
 
-    return filterEvents.map((event) => {
+    return filterEvents.map((event, index) => {
         return (
-            <div>
+            <div key={index}>
                 <div
                     className={`${eventLayout.eventBox} ${
                         awayTeamId === event.playerTeamId

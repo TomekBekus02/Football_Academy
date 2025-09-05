@@ -42,12 +42,15 @@ export const AddEventDialog = forwardRef<HTMLDialogElement, IDialog>(
         const handleEvents = (e: React.FormEvent<HTMLFormElement>) => {
             e.preventDefault();
             const formData = new FormData(e.currentTarget);
+
             const playerTeamId = formData.get("playerTeamId") as string;
+            const eventType = formData.get("eventType") as string;
+
             const selectEl1 = e.currentTarget.elements.namedItem(
                 "playerId"
             ) as HTMLSelectElement;
             const playerName = extractPlayerName(selectEl1);
-            const eventType = formData.get("eventType") as string;
+
             let assist_playerName = "";
             if (eventType === "Goal") {
                 const selectEl2 = e.currentTarget.elements.namedItem(
@@ -72,17 +75,21 @@ export const AddEventDialog = forwardRef<HTMLDialogElement, IDialog>(
                 extraTime: Number(formData.get("extraTime")),
             };
             addEvent(newEvent);
+            setSelectedTeam(matchTeams.homeTeam?._id.toString() as string);
+            e.currentTarget.reset();
             dialogRef?.current?.close();
         };
 
         const [selectedTeam, setSelectedTeam] = useState<string>("");
         const [eventType, setEventType] = useState<string>("");
+        let players = matchTeams.homeTeam?.players;
 
-        const players =
-            selectedTeam === matchTeams.homeTeam?._id.toString()
-                ? matchTeams.homeTeam?.players
-                : matchTeams.awayTeam?.players;
-
+        if (selectedTeam !== "") {
+            players =
+                selectedTeam === matchTeams.homeTeam?._id.toString()
+                    ? matchTeams.homeTeam?.players
+                    : matchTeams.awayTeam?.players;
+        }
         return (
             <dialog ref={ref}>
                 <form id="EventForm" onSubmit={handleEvents}>

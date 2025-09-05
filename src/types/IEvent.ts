@@ -12,3 +12,13 @@ export interface IEvent {
         name: string;
     };
 }
+
+export interface IPlayersEvent {
+    id: string;
+    name: string;
+    teamId: string;
+    events: {
+        eventType: string;
+        quantity: number;
+    }[];
+}

@@ -9,6 +9,10 @@
 .awayPlayerInfo {
     justify-content: end;
 }
+.homePlayerInfo{
+    flex-direction: row-reverse;
+    justify-content: start;
+}
 .playerNumber {
     margin: auto;
 }
