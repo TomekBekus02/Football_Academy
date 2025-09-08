@@ -10,13 +10,14 @@ import MatchLayout from "./matchProgress.module.css";
 import MatchEvents from "./matchEvents/matchEvents";
 import { IMatchEvent } from "@/types/IEvent";
 import { mapEventsToIMatchEvent } from "@/utils/utils";
+import React from "react";
 
 export default function MatchProgress({
     params,
 }: {
-    params: { matchId: string };
+    params: Promise<{ matchId: string }>;
 }) {
-    const { matchId } = params;
+    const { matchId } = React.use(params);
     const {
         data: matchData,
         isLoading,
@@ -78,6 +79,7 @@ export default function MatchProgress({
                                     homeTeamId={matchData.homeTeamId.toString()}
                                     homeTeamScore={matchData.homeTeamScore}
                                     awayTeamScore={matchData.awayTeamScore}
+                                    isOnGoing={matchData.isOnGoing}
                                     events={mappedEvents}
                                 />
                                 <div

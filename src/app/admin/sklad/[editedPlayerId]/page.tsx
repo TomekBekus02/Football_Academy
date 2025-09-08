@@ -12,11 +12,11 @@ import { useRouter } from "next/navigation";
 export default function editPlayer({
     params,
 }: {
-    params: { editedPlayerId: string };
+    params: Promise<{ editedPlayerId: string }>;
 }) {
     const queryClient = useQueryClient();
     const router = useRouter();
-    const playerId = params.editedPlayerId;
+    const { editedPlayerId: playerId } = React.use(params);
 
     const { mutate, isPending, isError } = useMutation({
         mutationFn: updatedPlayer,

@@ -58,3 +58,9 @@ export async function fetchAllPlayersForMatch(
     );
     return (await res).json();
 }
+
+export async function updatePlayerStats(matchId: string) {
+    const res = await axios.post("/api/players/stats", { matchId });
+
+    return res.status;
+}

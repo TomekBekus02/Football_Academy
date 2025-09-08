@@ -9,7 +9,6 @@ type EventType = {
 };
 
 const shortName = (name: string | undefined) => {
-    console.log("Imie gracza: ", name);
     if (!name) return "";
     return `${name[0].toUpperCase()}. ${name.substring(name.indexOf(" ") + 1)}`;
 };

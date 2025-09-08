@@ -1,11 +1,10 @@
 "use client";
 import { createEvent } from "@/services/MatchFetches/useMatch";
 import { fetchAllPlayersForMatch } from "@/services/PlayersFetches/usePlayers";
-import { IEvent, IMatchEvent, IMatchEventExt } from "@/types/IEvent";
+import { IMatchEventExt } from "@/types/IEvent";
 import { extractPlayerName, updateScore } from "@/utils/utils";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { useRouter } from "next/navigation";
-import { forwardRef, useEffect, useRef, useState } from "react";
+import { forwardRef, useState } from "react";
 
 type IDialog = {
     matchId: string;
