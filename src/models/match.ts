@@ -8,26 +8,25 @@ export interface IMatch extends Document {
     homeTeamScore: number;
     awayTeamId: mongoose.Types.ObjectId;
     awayTeamScore: number;
-    events: [
-        {
-            eventType: string;
-            teamId: string;
-            player: {
-                id: mongoose.Types.ObjectId;
-                name: string;
-                isAvailable: boolean;
-            };
-            assist_player?: {
-                id: mongoose.Types.ObjectId;
-                name: string;
-                isAvailable: boolean;
-            };
-            time: {
-                base: number;
-                extra: number;
-            };
-        }
-    ];
+    events: {
+        _id: mongoose.Types.ObjectId;
+        eventType: string;
+        teamId: string;
+        player: {
+            id: mongoose.Types.ObjectId;
+            name: string;
+            isAvailable: boolean;
+        };
+        assist_player?: {
+            id: mongoose.Types.ObjectId;
+            name: string;
+            isAvailable: boolean;
+        };
+        time: {
+            base: number;
+            extra: number;
+        };
+    }[];
     tournamentId: string | mongoose.Types.ObjectId;
     isOnGoing: boolean;
 }

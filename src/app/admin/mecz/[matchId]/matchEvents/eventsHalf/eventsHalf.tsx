@@ -1,23 +1,11 @@
 //import { useMatch } from "@/contexts/matchContext";
-import { YellowCard, RedCard } from "@/components/icons/matchIcons";
-import { Volleyball } from "lucide-react";
+import { eventTypeIcon } from "@/components/eventTypeIcons";
 import eventLayout from "./eventsHalf.module.css";
 import { IMatchEvent } from "@/types/IEvent";
 
 type EventType = {
     awayTeamId: string;
     events: IMatchEvent[];
-};
-
-const eventType = (type: string) => {
-    switch (type) {
-        case "Goal":
-            return <Volleyball width={20} />;
-        case "YellowCard":
-            return <YellowCard width={25} />;
-        case "RedCard":
-            return <RedCard width={25} />;
-    }
 };
 
 const shortName = (name: string | undefined) => {
@@ -49,7 +37,7 @@ export const EventsHalf = ({ awayTeamId, events }: EventType) => {
                         event.time.extra !== 0 ? ` +${event.time.extra}'` : ""
                     }`}</p>
                     <span className={eventLayout.iconBox}>
-                        {eventType(event.eventType)}
+                        {eventTypeIcon(event.eventType)}
                     </span>
                     <p>{shortName(event.player.name)}</p>
                     {event.eventType === "Goal" && event.assist_player ? (

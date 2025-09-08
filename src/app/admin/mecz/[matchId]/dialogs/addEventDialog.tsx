@@ -82,7 +82,7 @@ export const AddEventDialog = forwardRef<HTMLDialogElement, IDialog>(
                 awayTeamScore,
                 eventType
             );
-            //w przypadku brak asystującego coś sie psuje i nie dziala
+
             const newEvent: IMatchEventExt = {
                 eventType: eventType,
                 teamId: playerTeamId,
@@ -102,7 +102,7 @@ export const AddEventDialog = forwardRef<HTMLDialogElement, IDialog>(
                 },
                 result: result,
             };
-            console.log("newEvent", newEvent, "matchId", matchId);
+
             mutate({ newEvent: newEvent, matchId: matchId });
             setSelectedTeam(matchData.homeTeam?._id.toString() as string);
             e.currentTarget.reset();

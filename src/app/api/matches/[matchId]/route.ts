@@ -1,5 +1,5 @@
 import { connectDB } from "@/lib/mongodb";
-import Match from "@/models/match";
+import Match, { IMatch } from "@/models/match";
 import { IMatchEventExt } from "@/types/IEvent";
 import mongoose from "mongoose";
 import { NextRequest, NextResponse } from "next/server";
@@ -37,7 +37,7 @@ export async function POST(
         const newEvent = await request.json();
         const { matchId } = await params;
         const { result } = newEvent;
-        console.log("newEvent", matchId);
+
         const match = await Match.findById(matchId);
         if (!match) {
             return NextResponse.json({
@@ -45,8 +45,20 @@ export async function POST(
                 status: 404,
             });
         }
+        let newEventType = newEvent.eventType;
+        if (newEvent.eventType === "YellowCard") {
+            const yellowCardEvent = match.events.find(
+                (e) =>
+                    e.player.id.toString() === newEvent.player.id.toString() &&
+                    e.eventType === "YellowCard"
+            );
+            if (yellowCardEvent) {
+                newEventType = "RedYellowCard";
+            }
+        }
         const safeEvent = {
             ...newEvent,
+            eventType: newEventType,
             player: {
                 ...newEvent.player,
                 id: new mongoose.Types.ObjectId(newEvent.player.id),
