@@ -4,15 +4,16 @@ import { fetchTeamSquad } from "@/services/PlayersFetches/usePlayers";
 import { IPlayer } from "@/types/IPlayer";
 import { useQuery } from "@tanstack/react-query";
 import TeamSquadLayout from "./teamSquad.module.css";
-import { useMatch } from "@/contexts/matchContext";
+//import { useMatch } from "@/contexts/matchContext";
 import DisplayPlayersEvents from "./playersEvents/playersEvents";
-import { YellowCard } from "@/components/icons/matchIcons";
+import { IMatchEvent } from "@/types/IEvent";
 
 interface TeamDetailsProps {
     teamId: string;
     isAwayTeam: boolean;
+    events: IMatchEvent[];
 }
-export default function getTeamSquad({ teamId, isAwayTeam }: TeamDetailsProps) {
+export default function getTeamSquad({ teamId, isAwayTeam, events }: TeamDetailsProps) {
     const {
         data: playersData,
         isLoading,
@@ -24,7 +25,7 @@ export default function getTeamSquad({ teamId, isAwayTeam }: TeamDetailsProps) {
             return fetchTeamSquad(teamId);
         },
     });
-    const { playersEvents } = useMatch();
+    //const { playersEvents } = useMatch();
     return (
         <LoadProvider error={error} isLoading={isLoading}>
             <div>
@@ -41,9 +42,9 @@ export default function getTeamSquad({ teamId, isAwayTeam }: TeamDetailsProps) {
                                         : TeamSquadLayout.homePlayerInfo
                                 }`}
                             >
-                                <DisplayPlayersEvents
+                                <DisplayPlayersEvents 
                                     playerId={player._id}
-                                    playersEvents={playersEvents}
+                                    playersEvents={events}
                                 />
                                 <p>{player.name}</p>
                                 <p className={TeamSquadLayout.playerNumber}>

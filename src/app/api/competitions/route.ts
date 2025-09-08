@@ -18,7 +18,7 @@ export async function GET(req: NextRequest) {
                 const compObj = comp.toObject();
                 if (comp.label === "Match") {
                     const TeamDetails = await Match.findById(comp.competitionId)
-                        .select("_id result homeTeamId awayTeamId isOnGoing")
+                        .select("_id homeTeamId awayTeamId isOnGoing")
                         .populate("homeTeamId", "name logo")
                         .populate("awayTeamId", "name logo");
                     return { ...compObj, TeamDetails };

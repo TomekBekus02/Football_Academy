@@ -1,7 +1,7 @@
 import classes from './main-page.module.css'
-import MainPageContent from '../../components/mainPageContent/mainPageContent'
-import Standings from '../../components/standings/standings'
-import AboutUs from '@/components/aboutUs/aboutUs';
+import MainPageContent from "./mainPageContent/mainPageContent";
+import Standings from "./standings/standings";
+import AboutUs from "./aboutUs/aboutUs";
 
 export default function Home() {
   return (

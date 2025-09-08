@@ -76,11 +76,12 @@ export async function POST(req: Request) {
 
         const newMatch = new Match({
             homeTeamId,
+            homeTeamScore: 0,
             awayTeamId,
+            awayTeamScore: 0,
             matchDate,
             matchHour,
             place,
-            result: "-",
             events: [],
             tournamentId,
             isOnGoing: true,

@@ -5,14 +5,27 @@ export interface IMatch extends Document {
     matchHour: string;
     place: string;
     homeTeamId: mongoose.Types.ObjectId;
+    homeTeamScore: number;
     awayTeamId: mongoose.Types.ObjectId;
-    result: string;
+    awayTeamScore: number;
     events: [
         {
-            type: string;
-            minute: number;
-            extraMinute: number;
-            playerId: mongoose.Types.ObjectId;
+            eventType: string;
+            teamId: string;
+            player: {
+                id: mongoose.Types.ObjectId;
+                name: string;
+                isAvailable: boolean;
+            };
+            assist_player?: {
+                id: mongoose.Types.ObjectId;
+                name: string;
+                isAvailable: boolean;
+            };
+            time: {
+                base: number;
+                extra: number;
+            };
         }
     ];
     tournamentId: string | mongoose.Types.ObjectId;
@@ -24,14 +37,30 @@ const MatchSchema: Schema<IMatch> = new Schema({
     matchHour: String,
     place: String,
     homeTeamId: { type: mongoose.Schema.Types.ObjectId, ref: "Team" },
+    homeTeamScore: Number,
     awayTeamId: { type: mongoose.Schema.Types.ObjectId, ref: "Team" },
-    result: String,
+    awayTeamScore: Number,
     events: [
         {
-            type: String,
-            minute: Number,
-            extraMinute: Number,
-            playerId: { type: mongoose.Schema.Types.ObjectId, ref: "Player" },
+            eventType: String,
+            teamId: String,
+            player: {
+                id: { type: mongoose.Schema.Types.ObjectId, ref: "Player" },
+                name: String,
+                isAvailable: Boolean,
+            },
+            assist_player: {
+                type: {
+                    id: { type: mongoose.Schema.Types.ObjectId, ref: "Player" },
+                    name: String,
+                    isAvailable: Boolean,
+                },
+                required: false,
+            },
+            time: {
+                base: Number,
+                extra: Number,
+            },
         },
     ],
     tournamentId: String || {

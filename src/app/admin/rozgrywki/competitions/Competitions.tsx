@@ -25,6 +25,7 @@ export default function Competitions({ isOnGoing }: CompetitionParams) {
             return fetchCompetitions(isOnGoing as boolean);
         },
     });
+    console.log("competitions: ", competitions);
     return (
         <LoadProvider isLoading={isLoading} error={error}>
             <div>

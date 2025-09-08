@@ -1,4 +1,4 @@
-import InputTeamsOption from "@/components/inputTeamsOption/inputTeamsOption";
+import InputTeamsOption from "@/app/admin/rozgrywki/stworz-nowe-rozgrywki/createCompetition/createMatch/inputTeamsOption/inputTeamsOption";
 import { ITeam } from "@/types/ITeam";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { createMatch } from "@/services/MatchFetches/useMatch";

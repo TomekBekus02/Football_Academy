@@ -8,7 +8,8 @@ import { useQuery } from "@tanstack/react-query";
 import GetTeamDetails from "./teamDetails/teamDetails";
 import MatchLayout from "./matchProgress.module.css";
 import MatchEvents from "./matchEvents/matchEvents";
-import { useMatch } from "@/contexts/matchContext";
+import { IMatchEvent } from "@/types/IEvent";
+import { mapEventsToIMatchEvent } from "@/utils/utils";
 
 export default function MatchProgress({
     params,
@@ -27,7 +28,10 @@ export default function MatchProgress({
             return fetchMatchDetails(matchId as string);
         },
     });
-    const { resultObj } = useMatch();
+    const mappedEvents: IMatchEvent[] = matchData
+        ? mapEventsToIMatchEvent(matchData.events)
+        : [];
+
     return (
         <LoadProvider isLoading={isLoading} error={error}>
             <div>
@@ -47,7 +51,7 @@ export default function MatchProgress({
                                         {matchData.matchDate}{" "}
                                         {matchData.matchHour}
                                     </h3>
-                                    <h1>{`${resultObj.homeTeamScore}:${resultObj.awayTeamScore}`}</h1>
+                                    <h1>{`${matchData.homeTeamScore}:${matchData.awayTeamScore}`}</h1>
                                     <h2>
                                         {matchData.isOnGoing
                                             ? "TRWA"
@@ -65,12 +69,16 @@ export default function MatchProgress({
                                     <GetTeamSquad
                                         teamId={matchData.homeTeamId.toString()}
                                         isAwayTeam={false}
+                                        events={mappedEvents}
                                     />
                                 </div>
                                 <MatchEvents
                                     matchId={matchId}
                                     awayTeamId={matchData.awayTeamId.toString()}
                                     homeTeamId={matchData.homeTeamId.toString()}
+                                    homeTeamScore={matchData.homeTeamScore}
+                                    awayTeamScore={matchData.awayTeamScore}
+                                    events={mappedEvents}
                                 />
                                 <div
                                     className={`${MatchLayout.teamSquadBox} ${MatchLayout.awayteamSquadBox}`}
@@ -78,6 +86,7 @@ export default function MatchProgress({
                                     <GetTeamSquad
                                         teamId={matchData.awayTeamId.toString()}
                                         isAwayTeam={true}
+                                        events={mappedEvents}
                                     />
                                 </div>
                             </div>

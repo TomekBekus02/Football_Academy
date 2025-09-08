@@ -1,5 +1,5 @@
 import Link from "next/link";
-import Competitions from "@/components/competitions/Competitions";
+import Competitions from "@/app/admin/rozgrywki/competitions/Competitions";
 
 export default function tournaments() {
     return (

@@ -1,7 +1,7 @@
 "use client";
 import { useState } from "react";
-import CreateMatch from "@/components/createCompetition/createMatch/createMatch";
-import CreateTournament from "@/components/createCompetition/createTournament/createTournament";
+import CreateMatch from "@/app/admin/rozgrywki/stworz-nowe-rozgrywki/createCompetition/createMatch/createMatch";
+import CreateTournament from "@/app/admin/rozgrywki/stworz-nowe-rozgrywki/createCompetition/createTournament/createTournament";
 
 export default function createSportGames() {
     const [eventType, setEventType] = useState("tournament");

@@ -1,25 +1,35 @@
 "use client";
-import { useMatch } from "@/contexts/matchContext";
+import { createEvent } from "@/services/MatchFetches/useMatch";
 import { fetchAllPlayersForMatch } from "@/services/PlayersFetches/usePlayers";
-import { IEvent } from "@/types/IEvent";
-import { extractPlayerName } from "@/utils/utils";
-import { useQuery } from "@tanstack/react-query";
+import { IEvent, IMatchEvent, IMatchEventExt } from "@/types/IEvent";
+import { extractPlayerName, updateScore } from "@/utils/utils";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { useRouter } from "next/navigation";
 import { forwardRef, useEffect, useRef, useState } from "react";
 
 type IDialog = {
     matchId: string;
     awayTeamId: string;
     homeTeamId: string;
+    homeTeamScore: number;
+    awayTeamScore: number;
 };
+interface AddEventVars {
+    newEvent: IMatchEventExt;
+    matchId: string;
+}
 
 export const AddEventDialog = forwardRef<HTMLDialogElement, IDialog>(
-    ({ matchId, homeTeamId, awayTeamId }, ref) => {
-        const { matchTeams, setMatchTeams, addEvent, updateScore } = useMatch();
-
+    (
+        { matchId, homeTeamId, awayTeamId, homeTeamScore, awayTeamScore },
+        ref
+    ) => {
+        const queryClient = useQueryClient();
+        const router = useRouter();
         const {
             data: matchData,
             isLoading,
-            error,
+            error: fetchingError,
         } = useQuery({
             queryKey: ["teams", homeTeamId, awayTeamId, "players"],
             queryFn: ({ queryKey }) => {
@@ -31,18 +41,31 @@ export const AddEventDialog = forwardRef<HTMLDialogElement, IDialog>(
             },
         });
 
-        useEffect(() => {
-            if (matchData && !isLoading) {
-                setMatchTeams(matchData);
-            }
-        }, [matchData, setMatchTeams]);
+        const {
+            mutate,
+            isPending,
+            error: mutateError,
+        } = useMutation({
+            mutationFn: ({ newEvent, matchId }: AddEventVars) =>
+                createEvent({ newEvent, matchId }),
+            onSuccess: (_data, variables) => {
+                queryClient.invalidateQueries({
+                    queryKey: ["match", matchId] as const,
+                });
+            },
+        });
+
+        // useEffect(() => {
+        //     if (matchData && !isLoading) {
+        //         setMatchTeams(matchData);
+        //     }
+        // }, [matchData, setMatchTeams]);
 
         const dialogRef = ref as React.RefObject<HTMLDialogElement>;
 
         const handleEvents = (e: React.FormEvent<HTMLFormElement>) => {
             e.preventDefault();
             const formData = new FormData(e.currentTarget);
-
             const playerTeamId = formData.get("playerTeamId") as string;
             const eventType = formData.get("eventType") as string;
 
@@ -57,38 +80,52 @@ export const AddEventDialog = forwardRef<HTMLDialogElement, IDialog>(
                     "assist_playerId"
                 ) as HTMLSelectElement;
                 assist_playerName = extractPlayerName(selectEl2);
-                updateScore(playerTeamId);
             }
+            const result = updateScore(
+                playerTeamId,
+                homeTeamId,
+                homeTeamScore,
+                awayTeamScore,
+                eventType
+            );
 
-            const newEvent: IEvent = {
-                playerTeamId: playerTeamId,
+            const newEvent: IMatchEventExt = {
                 eventType: eventType,
+                teamId: playerTeamId,
                 player: {
                     id: formData.get("playerId") as string,
                     name: playerName,
+                    isAvailable: true,
                 },
                 assist_player: {
                     id: formData.get("assist_playerId") as string,
                     name: assist_playerName,
+                    isAvailable: true,
                 },
-                basicTime: Number(formData.get("basicTime")),
-                extraTime: Number(formData.get("extraTime")),
+                time: {
+                    base: Number(formData.get("basicTime")),
+                    extra: Number(formData.get("extraTime")),
+                },
+                result: result,
             };
-            addEvent(newEvent);
-            setSelectedTeam(matchTeams.homeTeam?._id.toString() as string);
+            console.log("newEvent", newEvent, "matchId", matchId);
+            mutate({ newEvent: newEvent, matchId: matchId });
+            setSelectedTeam(matchData.homeTeam?._id.toString() as string);
             e.currentTarget.reset();
             dialogRef?.current?.close();
         };
 
         const [selectedTeam, setSelectedTeam] = useState<string>("");
         const [eventType, setEventType] = useState<string>("");
-        let players = matchTeams.homeTeam?.players;
-
-        if (selectedTeam !== "") {
-            players =
-                selectedTeam === matchTeams.homeTeam?._id.toString()
-                    ? matchTeams.homeTeam?.players
-                    : matchTeams.awayTeam?.players;
+        let players = [];
+        if (!isLoading) {
+            players = matchData.homeTeam?.players;
+            if (selectedTeam !== "") {
+                players =
+                    selectedTeam === matchData.homeTeam._id.toString()
+                        ? matchData.homeTeam.players
+                        : matchData.awayTeam.players;
+            }
         }
         return (
             <dialog ref={ref}>
@@ -108,42 +145,54 @@ export const AddEventDialog = forwardRef<HTMLDialogElement, IDialog>(
                         <>
                             <select
                                 name="playerTeamId"
-                                defaultValue={matchTeams.homeTeam?._id.toString()}
+                                defaultValue={matchData.homeTeam?._id.toString()}
                                 onChange={(e) =>
                                     setSelectedTeam(e.target.value)
                                 }
                             >
                                 <option
-                                    value={matchTeams.homeTeam?._id.toString()}
+                                    value={matchData.homeTeam?._id.toString()}
                                 >
-                                    {matchTeams.homeTeam?.name}
+                                    {matchData.homeTeam?.name}
                                 </option>
                                 <option
-                                    value={matchTeams.awayTeam?._id.toString()}
+                                    value={matchData.awayTeam?._id.toString()}
                                 >
-                                    {matchTeams.awayTeam?.name}
+                                    {matchData.awayTeam?.name}
                                 </option>
                             </select>
                             <label>Zawodnik</label>
                             <select name="playerId">
-                                {players?.map((player) => (
-                                    <option
-                                        value={player._id}
-                                        key={player._id}
-                                    >{`${player.shirtNumber}. ${player.name}`}</option>
-                                ))}
+                                {players?.map(
+                                    (player: {
+                                        _id: string;
+                                        name: string;
+                                        shirtNumber: string;
+                                    }) => (
+                                        <option
+                                            value={player._id}
+                                            key={player._id}
+                                        >{`${player.shirtNumber}. ${player.name}`}</option>
+                                    )
+                                )}
                             </select>
                             {eventType === "Goal" ? (
                                 <div>
                                     <label>Asystujący</label>
                                     <select name="assist_playerId">
                                         <option value=""></option>
-                                        {players?.map((player) => (
-                                            <option
-                                                value={player._id}
-                                                key={player._id}
-                                            >{`${player.shirtNumber}. ${player.name}`}</option>
-                                        ))}
+                                        {players?.map(
+                                            (player: {
+                                                _id: string;
+                                                name: string;
+                                                shirtNumber: string;
+                                            }) => (
+                                                <option
+                                                    value={player._id}
+                                                    key={player._id}
+                                                >{`${player.shirtNumber}. ${player.name}`}</option>
+                                            )
+                                        )}
                                     </select>
                                 </div>
                             ) : null}
@@ -170,7 +219,7 @@ export const AddEventDialog = forwardRef<HTMLDialogElement, IDialog>(
                     Anuluj
                 </button>
                 <button type="submit" form="EventForm">
-                    Dodaj
+                    {isPending ? "Tworzenie..." : "Dodaj wydarzenie"}
                 </button>
             </dialog>
         );

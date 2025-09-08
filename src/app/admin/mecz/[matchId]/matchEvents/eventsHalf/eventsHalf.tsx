@@ -1,11 +1,12 @@
-import { useMatch } from "@/contexts/matchContext";
+//import { useMatch } from "@/contexts/matchContext";
 import { YellowCard, RedCard } from "@/components/icons/matchIcons";
 import { Volleyball } from "lucide-react";
 import eventLayout from "./eventsHalf.module.css";
+import { IMatchEvent } from "@/types/IEvent";
 
 type EventType = {
-    half: number;
     awayTeamId: string;
+    events: IMatchEvent[];
 };
 
 const eventType = (type: string) => {
@@ -24,38 +25,27 @@ const shortName = (name: string | undefined) => {
     return `${name[0].toUpperCase()}. ${name.substring(name.indexOf(" ") + 1)}`;
 };
 
-export const EventsHalf = ({ half, awayTeamId }: EventType) => {
-    const { events } = useMatch();
-    console.log("events: ", events);
+export const EventsHalf = ({ awayTeamId, events }: EventType) => {
     if (events.length == 0) return null;
-    let filterEvents = [];
-    if (half === 1) {
-        filterEvents = events.filter((event) => event.basicTime <= 45);
-    } else {
-        filterEvents = events.filter((event) => event.basicTime > 45);
-    }
-    filterEvents.sort((a, b) => {
-        if (a.basicTime === b.basicTime) {
-            return a.extraTime - b.extraTime;
+    events.sort((a, b) => {
+        if (a.time.base === b.time.base) {
+            return a.time.base - b.time.base;
         }
-        return a.basicTime - b.basicTime;
+        return a.time.base - b.time.base;
     });
 
-    return filterEvents.map((event, index) => {
+    return events.map((event, index) => {
         return (
             <div key={index}>
                 <div
                     className={`${eventLayout.eventBox} ${
-                        awayTeamId === event.playerTeamId
+                        awayTeamId === event.teamId
                             ? `${eventLayout.awayPlayerBox}`
                             : ""
                     }`}
                 >
-                    <p>{`${event.basicTime}' ${
-                        (event.extraTime !== 0 && event.basicTime == 45) ||
-                        (event.extraTime !== 0 && event.basicTime == 90)
-                            ? ` +${event.extraTime}'`
-                            : ""
+                    <p>{`${event.time.base}' ${
+                        event.time.extra !== 0 ? ` +${event.time.extra}'` : ""
                     }`}</p>
                     <span className={eventLayout.iconBox}>
                         {eventType(event.eventType)}

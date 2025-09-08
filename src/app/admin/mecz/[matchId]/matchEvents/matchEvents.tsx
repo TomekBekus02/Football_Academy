@@ -3,21 +3,28 @@
 import MatchEventsLayout from "./matchEvetns.module.css";
 import { AddEventDialog } from "../dialogs/addEventDialog";
 import { useRef } from "react";
-import { useMatch } from "@/contexts/matchContext";
 import { EventsHalf } from "./eventsHalf/eventsHalf";
+import { IMatchEvent } from "@/types/IEvent";
 
 type matchEventProps = {
     matchId: string;
     awayTeamId: string;
     homeTeamId: string;
+    homeTeamScore: number;
+    awayTeamScore: number;
+    events: IMatchEvent[];
 };
 export default function matchEvents({
     matchId,
     homeTeamId,
     awayTeamId,
+    events,
+    homeTeamScore,
+    awayTeamScore,
 }: matchEventProps) {
     const eventDialog = useRef<HTMLDialogElement>(null);
-    const { playersEvents } = useMatch();
+    const firstHalfEvents = events.filter((event) => event.time.base <= 45);
+    const secondHalfEvents = events.filter((event) => event.time.base > 45);
     return (
         <div className={MatchEventsLayout.matchEventsBox}>
             <AddEventDialog
@@ -25,6 +32,8 @@ export default function matchEvents({
                 matchId={matchId}
                 homeTeamId={homeTeamId}
                 awayTeamId={awayTeamId}
+                homeTeamScore={homeTeamScore}
+                awayTeamScore={awayTeamScore}
             />
             <button
                 onClick={() => {
@@ -36,17 +45,14 @@ export default function matchEvents({
             <div className={MatchEventsLayout.matchHalfBox}>
                 <div className={MatchEventsLayout.halfHeader}>
                     <h3>1. POŁOWA</h3>
-                    <p>0-0</p>
                 </div>
-
-                <EventsHalf half={1} awayTeamId={awayTeamId} />
+                <EventsHalf awayTeamId={awayTeamId} events={firstHalfEvents} />
             </div>
             <div className={MatchEventsLayout.matchHalfBox}>
                 <div className={MatchEventsLayout.halfHeader}>
                     <h3>2. POŁOWA</h3>
-                    <p>0-0</p>
                 </div>
-                <EventsHalf half={2} awayTeamId={awayTeamId} />
+                <EventsHalf awayTeamId={awayTeamId} events={secondHalfEvents} />
             </div>
         </div>
     );
