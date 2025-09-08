@@ -51,14 +51,15 @@ export async function POST(
                 ...newEvent.player,
                 id: new mongoose.Types.ObjectId(newEvent.player.id),
             },
-            assist_player: newEvent.assist_player
-                ? {
-                      ...newEvent.assist_player,
-                      id: new mongoose.Types.ObjectId(
-                          newEvent.assist_player.id
-                      ),
-                  }
-                : undefined,
+            assist_player:
+                newEvent.assist_player.id !== ""
+                    ? {
+                          ...newEvent.assist_player,
+                          id: new mongoose.Types.ObjectId(
+                              newEvent.assist_player.id
+                          ),
+                      }
+                    : undefined,
         };
         match.events.push(safeEvent);
         match.homeTeamScore = result.homeTeamResult;

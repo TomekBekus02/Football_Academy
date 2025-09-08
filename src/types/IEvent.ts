@@ -51,16 +51,16 @@ export interface IMatchEventExt {
         isAvailable: boolean;
     };
     assist_player?: {
-        id: string;
-        name: string;
-        isAvailable: boolean;
+        id?: string;
+        name?: string;
+        isAvailable?: boolean;
     };
     time: {
         base: number;
         extra: number;
     };
     result: {
-        homeTeamResult: number,
-        awayTeamResult: number
-    }
+        homeTeamResult: number;
+        awayTeamResult: number;
+    };
 }

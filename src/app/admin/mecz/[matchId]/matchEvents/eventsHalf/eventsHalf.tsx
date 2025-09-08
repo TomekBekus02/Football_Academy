@@ -21,6 +21,7 @@ const eventType = (type: string) => {
 };
 
 const shortName = (name: string | undefined) => {
+    console.log("Imie gracza: ", name);
     if (!name) return "";
     return `${name[0].toUpperCase()}. ${name.substring(name.indexOf(" ") + 1)}`;
 };
@@ -51,8 +52,7 @@ export const EventsHalf = ({ awayTeamId, events }: EventType) => {
                         {eventType(event.eventType)}
                     </span>
                     <p>{shortName(event.player.name)}</p>
-                    {event.eventType === "Goal" &&
-                    event.assist_player?.name !== "" ? (
+                    {event.eventType === "Goal" && event.assist_player ? (
                         <p>{`(${shortName(event.assist_player?.name)})`}</p>
                     ) : (
                         ""

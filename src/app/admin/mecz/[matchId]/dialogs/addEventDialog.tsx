@@ -25,7 +25,7 @@ export const AddEventDialog = forwardRef<HTMLDialogElement, IDialog>(
         ref
     ) => {
         const queryClient = useQueryClient();
-        const router = useRouter();
+
         const {
             data: matchData,
             isLoading,
@@ -55,12 +55,6 @@ export const AddEventDialog = forwardRef<HTMLDialogElement, IDialog>(
             },
         });
 
-        // useEffect(() => {
-        //     if (matchData && !isLoading) {
-        //         setMatchTeams(matchData);
-        //     }
-        // }, [matchData, setMatchTeams]);
-
         const dialogRef = ref as React.RefObject<HTMLDialogElement>;
 
         const handleEvents = (e: React.FormEvent<HTMLFormElement>) => {
@@ -88,7 +82,7 @@ export const AddEventDialog = forwardRef<HTMLDialogElement, IDialog>(
                 awayTeamScore,
                 eventType
             );
-
+            //w przypadku brak asystującego coś sie psuje i nie dziala
             const newEvent: IMatchEventExt = {
                 eventType: eventType,
                 teamId: playerTeamId,
