@@ -15,7 +15,7 @@ interface CompetitionParams {
 }
 
 export default function Competitions({ isOnGoing }: CompetitionParams) {
-    //const queryClient = useQueryClient();
+
     const {
         data: competitions,
         isLoading,
@@ -27,8 +27,6 @@ export default function Competitions({ isOnGoing }: CompetitionParams) {
             return fetchCompetitions(isOnGoing as boolean);
         },
     });
-
-
 
     return (
         <LoadProvider isLoading={isLoading} error={error}>

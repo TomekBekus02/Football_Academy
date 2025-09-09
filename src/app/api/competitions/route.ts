@@ -12,7 +12,9 @@ export async function GET(req: NextRequest) {
         const isOnGoing = isOnGoingParam === "true";
 
         await connectDB();
-        const competitions = await Competition.find({ isOngoing: isOnGoing });
+        const competitions = await Competition.find({
+            isOngoing: isOnGoing,
+        }).sort({ _id: -1 });
         const fullData = await Promise.all(
             competitions.map(async (comp) => {
                 const compObj = comp.toObject();
@@ -24,7 +26,7 @@ export async function GET(req: NextRequest) {
                         .populate("homeTeamId", "name logo")
                         .populate("awayTeamId", "name logo");
 
-                    return { ...compObj, TeamDetails };
+                    return { TeamDetails, ...compObj };
                 } else {
                     return compObj;
                 }
