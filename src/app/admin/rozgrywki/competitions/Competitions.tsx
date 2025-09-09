@@ -8,6 +8,7 @@ import { useQuery, useQueryClient } from "@tanstack/react-query";
 import Image from "next/image";
 import Link from "next/link";
 import { WinIcon, LoseIcon, DrawIcon } from "@/components/icons/matchIcons";
+import { resultIcon } from "@/components/eventTypeIcons";
 
 interface CompetitionParams {
     isOnGoing: boolean;
@@ -27,15 +28,7 @@ export default function Competitions({ isOnGoing }: CompetitionParams) {
         },
     });
 
-    const resultIcon = (homeTeamScore: number, awayTeamScore: number) => {
-        if (homeTeamScore > awayTeamScore) {
-            return <WinIcon />;
-        } else if (homeTeamScore < awayTeamScore) {
-            return <LoseIcon />;
-        } else {
-            return <DrawIcon />;
-        }
-    };
+
 
     return (
         <LoadProvider isLoading={isLoading} error={error}>

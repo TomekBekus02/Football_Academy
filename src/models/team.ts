@@ -9,8 +9,25 @@ export interface ITeam extends Document {
     draws: number;
     loses: number;
     goal_balance: number;
-    form: Array<string>;
-    achievements: Array<string>;
+    form: {
+        matchId: mongoose.Types.ObjectId;
+        matchDate: string;
+        homeTeam: {
+            id: string;
+            name: string;
+            score: number;
+        };
+        awayTeam: {
+            id: string;
+            name: string;
+            score: number;
+        };
+    }[];
+    achievements: {
+        competitionId: mongoose.Types.ObjectId;
+        competitonTitle: string;
+        place: string;
+    }[];
 }
 
 const TeamSchema: Schema<ITeam> = new Schema({
@@ -21,8 +38,32 @@ const TeamSchema: Schema<ITeam> = new Schema({
     draws: Number,
     loses: Number,
     goal_balance: Number,
-    form: Array<String>,
-    achievements: Array<String>,
+    form: [
+        {
+            matchId: { type: mongoose.Schema.Types.ObjectId, ref: "Match" },
+            matchDate: String,
+            homeTeam: {
+                id: String,
+                name: String,
+                score: Number,
+            },
+            awayTeam: {
+                id: String,
+                name: String,
+                score: Number,
+            },
+        },
+    ],
+    achievements: [
+        {
+            competitionId: {
+                type: mongoose.Schema.Types.ObjectId,
+                ref: "Competition",
+            },
+            competitonTitle: String,
+            place: String,
+        },
+    ],
 });
 
 const Team: Model<ITeam> =

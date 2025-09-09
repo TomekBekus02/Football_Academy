@@ -2,8 +2,9 @@ import { NextRequest, NextResponse } from "next/server";
 import { connectDB } from "@/lib/mongodb";
 import Player from "@/models/player";
 import Match from "@/models/match";
-import mongoose from "mongoose";
+import mongoose, { ObjectId } from "mongoose";
 import Competition from "@/models/competition";
+import Team from "@/models/team";
 
 interface IPlayerStats {
     player: { id: string };
@@ -43,14 +44,17 @@ const reduceForPlayer = (
     return acc;
 };
 
-async function updateCleanSheet(teamId: string, shouldUpdate: boolean) {
+async function updateCleanSheetAndAppearances(
+    teamId: string,
+    shouldUpdate: boolean
+) {
     if (!shouldUpdate) return;
 
     const teamPlayers = await Player.find({
         teamId: new mongoose.Types.ObjectId(teamId),
     }).select("_id position");
 
-    const bulkOps = teamPlayers
+    const cleanSheetOps = teamPlayers
         .filter((p) => p.position === "Obrońca" || p.position === "Bramkarz")
         .map((p) => ({
             updateOne: {
@@ -58,10 +62,77 @@ async function updateCleanSheet(teamId: string, shouldUpdate: boolean) {
                 update: { $inc: { cleanSheet: 1 } },
             },
         }));
-
+    const appearancesOps = teamPlayers.map((p) => ({
+        updateOne: {
+            filter: { _id: p._id },
+            update: { $inc: { appearances: 1 } },
+        },
+    }));
+    const bulkOps = [...cleanSheetOps, ...appearancesOps];
     if (bulkOps.length > 0) {
         await Player.bulkWrite(bulkOps);
     }
+}
+const matchResult = (homeTeamScore: number, awayTeamScore: number) => {
+    if (homeTeamScore > awayTeamScore) {
+        return "wins";
+    } else if (homeTeamScore < awayTeamScore) {
+        return "loses";
+    } else {
+        return "draws";
+    }
+};
+async function updateTeamStats(
+    matchId: string,
+    matchDate: string,
+    homeTeamId: mongoose.Types.ObjectId,
+    homeTeamScore: number,
+    awayTeamId: mongoose.Types.ObjectId,
+    awayTeamScore: number
+) {
+    const [homeTeam, awayTeam] = await Promise.all([
+        Team.findById(homeTeamId),
+        Team.findById(awayTeamId),
+    ]);
+    if (!homeTeam || !awayTeam) return;
+
+    const homeTeamResult = matchResult(homeTeamScore, awayTeamScore);
+    const awayTeamResult = matchResult(awayTeamScore, homeTeamScore);
+
+    const newMatch = {
+        matchId: new mongoose.Types.ObjectId(matchId),
+        matchDate,
+        homeTeam: {
+            id: homeTeamId,
+            name: homeTeam.name,
+            score: homeTeamScore,
+        },
+        awayTeam: {
+            id: awayTeamId,
+            name: awayTeam.name,
+            score: awayTeamScore,
+        },
+    };
+    const homeTeamForm = [...homeTeam.form, newMatch].slice(-5);
+    const awayTeamForm = [...awayTeam.form, newMatch].slice(-5);
+    await Promise.all([
+        Team.findByIdAndUpdate(homeTeamId, {
+            $inc: {
+                [homeTeamResult]: 1,
+                matches: 1,
+                goal_balance: homeTeamScore - awayTeamScore,
+            },
+            $set: { form: homeTeamForm },
+        }),
+        Team.findByIdAndUpdate(awayTeamId, {
+            $inc: {
+                [awayTeamResult]: 1,
+                matches: 1,
+                goal_balance: awayTeamScore - homeTeamScore,
+            },
+            $set: { form: awayTeamForm },
+        }),
+    ]);
 }
 
 export async function POST(request: NextRequest) {
@@ -112,13 +183,22 @@ export async function POST(request: NextRequest) {
                 $inc: update,
             });
         }
-        await updateCleanSheet(
+        await updateCleanSheetAndAppearances(
             match.homeTeamId.toString(),
             match.awayTeamScore === 0
         );
-        await updateCleanSheet(
+        await updateCleanSheetAndAppearances(
             match.awayTeamId.toString(),
             match.homeTeamScore === 0
+        );
+
+        await updateTeamStats(
+            matchId,
+            match.matchDate,
+            match.homeTeamId,
+            match.homeTeamScore,
+            match.awayTeamId,
+            match.awayTeamScore
         );
 
         await Match.findByIdAndUpdate(matchId, {
@@ -128,7 +208,7 @@ export async function POST(request: NextRequest) {
             { competitionId: new mongoose.Types.ObjectId(matchId) },
             { $set: { isOngoing: false } }
         );
-        //DODAJ AKTUALIZACJE STATYSTYK DRUŻYN
+
         return NextResponse.json(
             { message: "Statystyki zaktualizowane pomyślnie" },
             { status: 200 }
