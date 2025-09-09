@@ -50,6 +50,7 @@ export const RedYellowCard = (props: React.SVGProps<SVGSVGElement>) => (
         aria-label="Czerwono-żółta kartka"
         role="img"
         xmlns="http://www.w3.org/2000/svg"
+        {...props}
     >
         <defs>
             <linearGradient
@@ -74,5 +75,106 @@ export const RedYellowCard = (props: React.SVGProps<SVGSVGElement>) => (
             rx="2"
             fill="url(#redYellowDiagonal)"
         />
+    </svg>
+);
+
+export const WinIcon = (props: React.SVGProps<SVGSVGElement>) => (
+    <svg
+        width="64"
+        height="64"
+        viewBox="0 0 64 64"
+        xmlns="http://www.w3.org/2000/svg"
+        role="img"
+        aria-labelledby="winTitle"
+        {...props}
+    >
+        <rect
+            x="0"
+            y="0"
+            width="64"
+            height="64"
+            rx="10"
+            ry="10"
+            fill="#28a745"
+        />
+        <text
+            x="50%"
+            y="50%"
+            textAnchor="middle"
+            dominantBaseline="middle"
+            fontFamily="system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial"
+            fontWeight="700"
+            fontSize="36"
+            fill="#ffffff"
+        >
+            Z
+        </text>
+    </svg>
+);
+
+export const LoseIcon = (props: React.SVGProps<SVGSVGElement>) => (
+    <svg
+        width="64"
+        height="64"
+        viewBox="0 0 64 64"
+        xmlns="http://www.w3.org/2000/svg"
+        role="img"
+        aria-labelledby="loseTitle"
+        {...props}
+    >
+        <rect
+            x="0"
+            y="0"
+            width="64"
+            height="64"
+            rx="10"
+            ry="10"
+            fill="#dc3545"
+        />
+        <text
+            x="50%"
+            y="50%"
+            textAnchor="middle"
+            dominantBaseline="middle"
+            fontFamily="system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial"
+            fontWeight="700"
+            fontSize="36"
+            fill="#ffffff"
+        >
+            P
+        </text>
+    </svg>
+);
+export const DrawIcon = (props: React.SVGProps<SVGSVGElement>) => (
+    <svg
+        width="64"
+        height="64"
+        viewBox="0 0 64 64"
+        xmlns="http://www.w3.org/2000/svg"
+        role="img"
+        aria-labelledby="drawTitle"
+        {...props}
+    >
+        <rect
+            x="0"
+            y="0"
+            width="64"
+            height="64"
+            rx="10"
+            ry="10"
+            fill="#6c757d"
+        />
+        <text
+            x="50%"
+            y="50%"
+            textAnchor="middle"
+            dominantBaseline="middle"
+            fontFamily="system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial"
+            fontWeight="700"
+            fontSize="36"
+            fill="#ffffff"
+        >
+            R
+        </text>
     </svg>
 );

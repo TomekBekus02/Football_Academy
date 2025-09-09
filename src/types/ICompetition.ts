@@ -4,7 +4,8 @@ export interface IMatchCompetition {
     label: string;
     competitionId: string;
     TeamDetails: {
-        result: string;
+        homeTeamScore: number;
+        awayTeamScore: number;
         homeTeamId: {
             name: string;
             logo: string;

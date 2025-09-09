@@ -7,6 +7,7 @@ import { IMatchCompetition } from "@/types/ICompetition";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import Image from "next/image";
 import Link from "next/link";
+import { WinIcon, LoseIcon, DrawIcon } from "@/components/icons/matchIcons";
 
 interface CompetitionParams {
     isOnGoing: boolean;
@@ -25,7 +26,17 @@ export default function Competitions({ isOnGoing }: CompetitionParams) {
             return fetchCompetitions(isOnGoing as boolean);
         },
     });
-    console.log("competitions: ", competitions);
+
+    const resultIcon = (homeTeamScore: number, awayTeamScore: number) => {
+        if (homeTeamScore > awayTeamScore) {
+            return <WinIcon />;
+        } else if (homeTeamScore < awayTeamScore) {
+            return <LoseIcon />;
+        } else {
+            return <DrawIcon />;
+        }
+    };
+
     return (
         <LoadProvider isLoading={isLoading} error={error}>
             <div>
@@ -34,36 +45,67 @@ export default function Competitions({ isOnGoing }: CompetitionParams) {
                         <div key={comp._id}>
                             {comp.label === "Match" ? (
                                 <div style={{ display: "flex" }}>
-                                    <div>
-                                        <Image
-                                            src={
-                                                comp.TeamDetails.homeTeamId.logo
-                                            }
-                                            alt={
-                                                comp.TeamDetails.homeTeamId.name
-                                            }
-                                            width={150}
-                                            height={120}
-                                        ></Image>
-                                        <p>
-                                            {comp.TeamDetails.homeTeamId.name}
-                                        </p>
+                                    <div style={{ display: "flex" }}>
+                                        {!comp.isOngoing
+                                            ? resultIcon(
+                                                  comp.TeamDetails
+                                                      .homeTeamScore,
+                                                  comp.TeamDetails.awayTeamScore
+                                              )
+                                            : null}
+                                        <div>
+                                            <Image
+                                                src={
+                                                    comp.TeamDetails.homeTeamId
+                                                        .logo
+                                                }
+                                                alt={
+                                                    comp.TeamDetails.homeTeamId
+                                                        .name
+                                                }
+                                                width={150}
+                                                height={120}
+                                            ></Image>
+                                            <p>
+                                                {
+                                                    comp.TeamDetails.homeTeamId
+                                                        .name
+                                                }
+                                            </p>
+                                        </div>
                                     </div>
-                                    <h1>{comp.TeamDetails.result}</h1>
-                                    <div>
-                                        <Image
-                                            src={
-                                                comp.TeamDetails.awayTeamId.logo
-                                            }
-                                            alt={
-                                                comp.TeamDetails.awayTeamId.name
-                                            }
-                                            width={150}
-                                            height={120}
-                                        ></Image>
-                                        <p>
-                                            {comp.TeamDetails.awayTeamId.name}
-                                        </p>
+                                    <h1>
+                                        {comp.TeamDetails.homeTeamScore}:
+                                        {comp.TeamDetails.awayTeamScore}
+                                    </h1>
+                                    <div style={{ display: "flex" }}>
+                                        <div>
+                                            <Image
+                                                src={
+                                                    comp.TeamDetails.awayTeamId
+                                                        .logo
+                                                }
+                                                alt={
+                                                    comp.TeamDetails.awayTeamId
+                                                        .name
+                                                }
+                                                width={150}
+                                                height={120}
+                                            ></Image>
+                                            <p>
+                                                {
+                                                    comp.TeamDetails.awayTeamId
+                                                        .name
+                                                }
+                                            </p>
+                                        </div>
+                                        {!comp.isOngoing
+                                            ? resultIcon(
+                                                  comp.TeamDetails
+                                                      .awayTeamScore,
+                                                  comp.TeamDetails.homeTeamScore
+                                              )
+                                            : null}
                                     </div>
                                     <div>
                                         <button>

@@ -17,9 +17,9 @@ export default function displayPlayersEvents({
         return acc;
     }, {});
 
-    return Object.keys(playersEvent).map((type) => {
+    return Object.keys(playersEvent).map((type, index) => {
         return (
-            <div style={{ display: "flex" }}>
+            <div style={{ display: "flex" }} key={index}>
                 {eventTypeIcon(type)}
                 {type == "Goal" && playersEvent.Goal !== 1 ? (
                     <p>{playersEvent.Goal}</p>

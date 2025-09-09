@@ -17,7 +17,7 @@ export const EventsHalf = ({ awayTeamId, events }: EventType) => {
     if (events.length == 0) return null;
     events.sort((a, b) => {
         if (a.time.base === b.time.base) {
-            return a.time.base - b.time.base;
+            return (a.time.extra ?? 0) - (b.time.extra ?? 0);
         }
         return a.time.base - b.time.base;
     });

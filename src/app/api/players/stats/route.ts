@@ -128,7 +128,7 @@ export async function POST(request: NextRequest) {
             { competitionId: new mongoose.Types.ObjectId(matchId) },
             { $set: { isOngoing: false } }
         );
-
+        //DODAJ AKTUALIZACJE STATYSTYK DRUŻYN
         return NextResponse.json(
             { message: "Statystyki zaktualizowane pomyślnie" },
             { status: 200 }
