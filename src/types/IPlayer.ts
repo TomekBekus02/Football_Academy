@@ -1,7 +1,7 @@
 export interface IPlayer {
     _id?: string;
     name: string;
-    shirtNumber: string;
+    shirtNumber: number;
     dateBirth: string;
     photo: string;
     position: string;

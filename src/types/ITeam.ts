@@ -10,3 +10,9 @@ export interface ITeam {
     form: Array<string>;
     achievements: Array<string>;
 }
+
+export interface ITournamentTeam {
+    _id: string;
+    name: string;
+    logo: string;
+}

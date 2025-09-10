@@ -9,13 +9,14 @@ import Image from "next/image";
 import Link from "next/link";
 import { WinIcon, LoseIcon, DrawIcon } from "@/components/icons/matchIcons";
 import { resultIcon } from "@/components/eventTypeIcons";
+import MatchLabel from "./MatchLabel/matchLabel";
+import TournamentLabel from "./TournamentLabel/tournamentLabel";
 
 interface CompetitionParams {
     isOnGoing: boolean;
 }
 
 export default function Competitions({ isOnGoing }: CompetitionParams) {
-
     const {
         data: competitions,
         isLoading,
@@ -32,87 +33,12 @@ export default function Competitions({ isOnGoing }: CompetitionParams) {
         <LoadProvider isLoading={isLoading} error={error}>
             <div>
                 {competitions && competitions.length > 0 ? (
-                    competitions.map((comp) => (
+                    competitions.map((comp: IMatchCompetition) => (
                         <div key={comp._id}>
                             {comp.label === "Match" ? (
-                                <div style={{ display: "flex" }}>
-                                    <div style={{ display: "flex" }}>
-                                        {!comp.isOngoing
-                                            ? resultIcon(
-                                                  comp.TeamDetails
-                                                      .homeTeamScore,
-                                                  comp.TeamDetails.awayTeamScore
-                                              )
-                                            : null}
-                                        <div>
-                                            <Image
-                                                src={
-                                                    comp.TeamDetails.homeTeamId
-                                                        .logo
-                                                }
-                                                alt={
-                                                    comp.TeamDetails.homeTeamId
-                                                        .name
-                                                }
-                                                width={150}
-                                                height={120}
-                                            ></Image>
-                                            <p>
-                                                {
-                                                    comp.TeamDetails.homeTeamId
-                                                        .name
-                                                }
-                                            </p>
-                                        </div>
-                                    </div>
-                                    <h1>
-                                        {comp.TeamDetails.homeTeamScore}:
-                                        {comp.TeamDetails.awayTeamScore}
-                                    </h1>
-                                    <div style={{ display: "flex" }}>
-                                        <div>
-                                            <Image
-                                                src={
-                                                    comp.TeamDetails.awayTeamId
-                                                        .logo
-                                                }
-                                                alt={
-                                                    comp.TeamDetails.awayTeamId
-                                                        .name
-                                                }
-                                                width={150}
-                                                height={120}
-                                            ></Image>
-                                            <p>
-                                                {
-                                                    comp.TeamDetails.awayTeamId
-                                                        .name
-                                                }
-                                            </p>
-                                        </div>
-                                        {!comp.isOngoing
-                                            ? resultIcon(
-                                                  comp.TeamDetails
-                                                      .awayTeamScore,
-                                                  comp.TeamDetails.homeTeamScore
-                                              )
-                                            : null}
-                                    </div>
-                                    <div>
-                                        <button>
-                                            <Link
-                                                href={`/admin/mecz/${comp.competitionId}`}
-                                            >
-                                                <Hammer /> Zarządzaj
-                                            </Link>
-                                        </button>
-                                        <button>
-                                            <Trash /> Usuń
-                                        </button>
-                                    </div>
-                                </div>
+                                <MatchLabel comp={comp} />
                             ) : (
-                                <div></div>
+                                <TournamentLabel />
                             )}
                         </div>
                     ))

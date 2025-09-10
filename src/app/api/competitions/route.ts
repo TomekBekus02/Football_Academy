@@ -3,7 +3,6 @@ import Match from "@/models/match";
 import "@/models/team";
 import Competition from "@/models/competition";
 import { NextRequest, NextResponse } from "next/server";
-import { console } from "inspector";
 
 export async function GET(req: NextRequest) {
     try {

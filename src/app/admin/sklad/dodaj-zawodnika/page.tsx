@@ -46,7 +46,7 @@ export default function addPlayerFunc() {
                 </div>
                 <div>
                     <label>Numer na koszulce</label>
-                    <input type="text" name="number" required />
+                    <input type="number" name="number" required />
                 </div>
                 <div>
                     <label>Obraz</label>

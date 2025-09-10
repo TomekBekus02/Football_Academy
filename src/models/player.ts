@@ -2,7 +2,7 @@ import mongoose, { Document, Model, Schema } from "mongoose";
 
 export interface IPlayer extends Document {
     name: string;
-    shirtNumber: string;
+    shirtNumber: number;
     dateOfBirth: string;
     photo: string;
     position: string;
@@ -18,7 +18,7 @@ export interface IPlayer extends Document {
 
 const PlayerSchema: Schema<IPlayer> = new Schema({
     name: String,
-    shirtNumber: String,
+    shirtNumber: Number,
     dateOfBirth: String,
     photo: { type: String, default: "/players/default_player.png" },
     position: String,
