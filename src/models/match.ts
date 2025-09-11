@@ -8,6 +8,8 @@ export interface IMatch extends Document {
     homeTeamScore: number;
     awayTeamId: mongoose.Types.ObjectId;
     awayTeamScore: number;
+    round: number;
+    matchNumber: number;
     events: {
         _id: mongoose.Types.ObjectId;
         eventType: string;
@@ -39,6 +41,8 @@ const MatchSchema: Schema<IMatch> = new Schema({
     homeTeamScore: Number,
     awayTeamId: { type: mongoose.Schema.Types.ObjectId, ref: "Team" },
     awayTeamScore: Number,
+    round: Number,
+    matchNumber: Number,
     events: [
         {
             eventType: String,

@@ -1,3 +1,7 @@
+"use client";
+import LoadProvider from "@/components/LoadProvider/LoadProvider";
+import { fetchTournament } from "@/services/TournamentFetches/useTournament";
+import { useQuery } from "@tanstack/react-query";
 import React from "react";
 
 export default function TournamentProgress({
@@ -6,10 +10,19 @@ export default function TournamentProgress({
     params: Promise<{ tournamentId: string }>;
 }) {
     const { tournamentId } = React.use(params);
+    const { data, isLoading, error } = useQuery({
+        queryKey: ["tournaments", tournamentId],
+        queryFn: ({ queryKey }) => {
+            const [, tournamentId] = queryKey;
+            return fetchTournament(tournamentId);
+        },
+    });
 
     return (
-        <div>
-            <h1>Tournament: {tournamentId}</h1>
-        </div>
+        <LoadProvider error={error} isLoading={isLoading}>
+            <div>
+                <h1>Tournament: {tournamentId}</h1>
+            </div>
+        </LoadProvider>
     );
 }
