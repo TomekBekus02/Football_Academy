@@ -13,7 +13,7 @@ export async function addCompetition(
             isOngoing: true,
             label,
             competitionId,
-            competitionType: label === "Match" ? "Match" : "Player", //Player na Tournament
+            competitionType: label === "Match" ? "Match" : "Tournament",
         });
 
         await newCompetition.save();

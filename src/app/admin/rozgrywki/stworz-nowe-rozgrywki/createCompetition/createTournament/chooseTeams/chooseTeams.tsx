@@ -15,12 +15,16 @@ type chooseTeamsParams = {
     setAvailableTeams: Dispatch<SetStateAction<ITournamentTeam[]>>;
     selectedTeams: ITournamentTeam[];
     setSelectedTeams: Dispatch<SetStateAction<ITournamentTeam[]>>;
+    teamLimits: number;
+    currentTeamsSize: number;
 };
 export default function ChooseTeams({
     availableTeams,
     setAvailableTeams,
     selectedTeams,
     setSelectedTeams,
+    teamLimits,
+    currentTeamsSize,
 }: chooseTeamsParams) {
     const handleDragEnd = (result: DropResult) => {
         const { source, destination } = result;
@@ -69,14 +73,10 @@ export default function ChooseTeams({
     return (
         <DragDropContext onDragEnd={handleDragEnd}>
             {/* Dostępne drużyny */}
+            <h2 className="mb-4 font-bold">Dostępne drużyny</h2>
             <Droppable droppableId="available">
                 {(provided) => (
-                    <div
-                        ref={provided.innerRef}
-                        {...provided.droppableProps}
-                        className="w-1/2 border p-4 min-h-[200px]"
-                    >
-                        <h2 className="mb-4 font-bold">Dostępne drużyny</h2>
+                    <div ref={provided.innerRef} {...provided.droppableProps}>
                         {availableTeams.map((team, index) => (
                             <Draggable
                                 key={team._id}
@@ -88,13 +88,12 @@ export default function ChooseTeams({
                                         ref={provided.innerRef}
                                         {...provided.draggableProps}
                                         {...provided.dragHandleProps}
-                                        className="border rounded p-2 mb-2 bg-white shadow cursor-grab"
                                     >
                                         <Image
                                             src={team.logo}
                                             alt={team.name}
-                                            width={100}
-                                            height={90}
+                                            width={50}
+                                            height={45}
                                         />
                                         <p>{team.name}</p>
                                     </div>
@@ -107,14 +106,13 @@ export default function ChooseTeams({
             </Droppable>
 
             {/* Wybrane drużyny */}
+            <h1>
+                {currentTeamsSize}/{teamLimits}
+            </h1>
+            <h2 className="mb-4 font-bold">Wybrane drużyny</h2>
             <Droppable droppableId="selected">
                 {(provided) => (
-                    <div
-                        ref={provided.innerRef}
-                        {...provided.droppableProps}
-                        className="w-1/2 border p-4 min-h-[200px]"
-                    >
-                        <h2 className="mb-4 font-bold">Wybrane drużyny</h2>
+                    <div ref={provided.innerRef} {...provided.droppableProps}>
                         {selectedTeams.map((team, index) => (
                             <Draggable
                                 key={team._id}
@@ -126,13 +124,12 @@ export default function ChooseTeams({
                                         ref={provided.innerRef}
                                         {...provided.draggableProps}
                                         {...provided.dragHandleProps}
-                                        className="border rounded p-2 mb-2 bg-white shadow cursor-grab"
                                     >
                                         <Image
                                             src={team.logo}
                                             alt={team.name}
-                                            width={100}
-                                            height={90}
+                                            width={50}
+                                            height={45}
                                         />
                                         <p>{team.name}</p>
                                     </div>

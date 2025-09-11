@@ -63,7 +63,6 @@ export async function POST(req: Request) {
     try {
         await connectDB();
         const formData = await req.formData();
-        const label = formData.get("label") as string;
         const homeTeamId = formData.get("homeTeamId") as string;
         const awayTeamId = formData.get("awayTeamId") as string;
         const matchDate = formData.get("matchDate") as string;
@@ -88,7 +87,7 @@ export async function POST(req: Request) {
         });
         await newMatch.save();
 
-        await addCompetition(label, newMatch._id as mongoose.Types.ObjectId);
+        await addCompetition("Match", newMatch._id as mongoose.Types.ObjectId);
 
         return NextResponse.json(
             { message: "Stworzono mecz" },
