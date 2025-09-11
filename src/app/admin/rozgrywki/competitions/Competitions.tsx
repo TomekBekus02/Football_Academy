@@ -1,14 +1,12 @@
 "use client";
 
-import { Hammer, Trash } from "lucide-react";
 import LoadProvider from "@/components/LoadProvider/LoadProvider";
 import { fetchCompetitions } from "@/services/competitionFetches/useCompetition";
-import { IMatchCompetition } from "@/types/ICompetition";
+import {
+    IMatchCompetition,
+    ITournamentCompetition,
+} from "@/types/ICompetition";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
-import Image from "next/image";
-import Link from "next/link";
-import { WinIcon, LoseIcon, DrawIcon } from "@/components/icons/matchIcons";
-import { resultIcon } from "@/components/eventTypeIcons";
 import MatchLabel from "./MatchLabel/matchLabel";
 import TournamentLabel from "./TournamentLabel/tournamentLabel";
 
@@ -17,11 +15,12 @@ interface CompetitionParams {
 }
 
 export default function Competitions({ isOnGoing }: CompetitionParams) {
+    type Competition = IMatchCompetition | ITournamentCompetition;
     const {
         data: competitions,
         isLoading,
         error,
-    } = useQuery<IMatchCompetition[], Error>({
+    } = useQuery<Competition[], Error>({
         queryKey: ["competitions", isOnGoing],
         queryFn: ({ queryKey }) => {
             const [, isOnGoing] = queryKey;
@@ -33,12 +32,14 @@ export default function Competitions({ isOnGoing }: CompetitionParams) {
         <LoadProvider isLoading={isLoading} error={error}>
             <div>
                 {competitions && competitions.length > 0 ? (
-                    competitions.map((comp: IMatchCompetition) => (
+                    competitions.map((comp) => (
                         <div key={comp._id}>
                             {comp.label === "Match" ? (
-                                <MatchLabel comp={comp} />
+                                <MatchLabel comp={comp as IMatchCompetition} />
                             ) : (
-                                <TournamentLabel />
+                                <TournamentLabel
+                                    comp={comp as ITournamentCompetition}
+                                />
                             )}
                         </div>
                     ))

@@ -3,6 +3,7 @@ import Match from "@/models/match";
 import "@/models/team";
 import Competition from "@/models/competition";
 import { NextRequest, NextResponse } from "next/server";
+import Tournament from "@/models/tournament";
 
 export async function GET(req: NextRequest) {
     try {
@@ -27,10 +28,16 @@ export async function GET(req: NextRequest) {
 
                     return { TeamDetails, ...compObj };
                 } else {
-                    return compObj;
+                    const TournamentDetails = await Tournament.findById(
+                        comp.competitionId
+                    )
+                        .select("_id title date hour isOnGoing topTeams")
+                        .populate("topTeams", "_id name logo");
+                    return { TournamentDetails, ...compObj };
                 }
             })
         );
+
         return NextResponse.json(fullData, { status: 200 });
     } catch (error) {
         return NextResponse.json(
