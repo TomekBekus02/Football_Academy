@@ -12,7 +12,7 @@ export async function GET(
         const { tournamentId } = await params;
         const tournament = await Tournament.findById(tournamentId).populate({
             path: "matches",
-            select: "_id homeTeamId awayTeamId homeTeamScore awayTeamScore",
+            select: "_id homeTeamId awayTeamId homeTeamScore awayTeamScore round matchNumber",
             populate: [
                 { path: "homeTeamId", select: "_id name logo" },
                 { path: "awayTeamId", select: "_id name logo" },
@@ -25,7 +25,29 @@ export async function GET(
             });
         }
 
-        return NextResponse.json(tournament, { status: 200 });
+        const bracketData = tournament.matches.map((m: any) => ({
+            id: m._id.toString(),
+            round: m.round,
+            matchNumber: m.matchNumber,
+
+            home: {
+                team: m.homeTeamId
+                    ? { name: m.homeTeamId.name, logo: m.homeTeamId.logo }
+                    : null,
+                score: m.homeTeamScore,
+            },
+            away: {
+                team: m.awayTeamId
+                    ? { name: m.awayTeamId.name, logo: m.awayTeamId.logo }
+                    : null,
+                score: m.awayTeamScore,
+            },
+        }));
+
+        return NextResponse.json(
+            { ...tournament.toObject(), matches: bracketData },
+            { status: 200 }
+        );
     } catch (error) {
         console.log(error);
         return NextResponse.json({
