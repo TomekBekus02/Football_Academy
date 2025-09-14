@@ -1,10 +1,11 @@
 import { NextRequest, NextResponse } from "next/server";
 import { connectDB } from "@/lib/mongodb";
 import Player from "@/models/player";
-import Match from "@/models/match";
+import Match, { IMatch } from "@/models/match";
 import mongoose, { ObjectId } from "mongoose";
 import Competition from "@/models/competition";
 import Team from "@/models/team";
+import Tournament from "@/models/tournament";
 
 interface IPlayerStats {
     player: { id: string };
@@ -135,6 +136,69 @@ async function updateTeamStats(
     ]);
 }
 
+async function updatedStatsAfterMatch(match: IMatch, matchId: string) {
+    const playersStats = Object.values(
+        match.events.reduce((acc, event) => {
+            let playerId = event.player.id.toString();
+            reduceForPlayer(acc, playerId, event.eventType);
+            if (event.eventType === "Goal" && event.assist_player) {
+                playerId = event.assist_player.id.toString();
+                reduceForPlayer(acc, playerId, "Assist");
+            }
+            return acc;
+        }, {} as Accumulator)
+    );
+
+    for (const p of playersStats) {
+        const update: Record<string, number> = {};
+        for (const e of p.events) {
+            switch (e.type) {
+                case "Goal":
+                    update.goals = e.quantity;
+                    break;
+                case "Assist":
+                    update.assists = e.quantity;
+                    break;
+                case "YellowCard":
+                    update.yellowCards = e.quantity;
+                    break;
+                case "RedCard":
+                case "RedYellowCard":
+                    update.redCards = e.quantity;
+                    break;
+            }
+        }
+        await Player.findByIdAndUpdate(p.player.id, {
+            $inc: update,
+        });
+    }
+    await updateCleanSheetAndAppearances(
+        match.homeTeamId.toString(),
+        match.awayTeamScore === 0
+    );
+    await updateCleanSheetAndAppearances(
+        match.awayTeamId.toString(),
+        match.homeTeamScore === 0
+    );
+
+    await updateTeamStats(
+        matchId,
+        match.matchDate,
+        match.homeTeamId,
+        match.homeTeamScore,
+        match.awayTeamId,
+        match.awayTeamScore
+    );
+
+    await Match.findByIdAndUpdate(matchId, {
+        $set: { isOnGoing: false },
+    });
+    await Competition.findOneAndUpdate(
+        { competitionId: new mongoose.Types.ObjectId(matchId) },
+        { $set: { isOngoing: false } }
+    );
+}
+
 export async function POST(request: NextRequest) {
     try {
         await connectDB();
@@ -147,67 +211,41 @@ export async function POST(request: NextRequest) {
                 status: 404,
             });
         }
-
-        const playersStats = Object.values(
-            match.events.reduce((acc, event) => {
-                let playerId = event.player.id.toString();
-                reduceForPlayer(acc, playerId, event.eventType);
-                if (event.eventType === "Goal" && event.assist_player) {
-                    playerId = event.assist_player.id.toString();
-                    reduceForPlayer(acc, playerId, "Assist");
-                }
-                return acc;
-            }, {} as Accumulator)
-        );
-
-        for (const p of playersStats) {
-            const update: Record<string, number> = {};
-            for (const e of p.events) {
-                switch (e.type) {
-                    case "Goal":
-                        update.goals = e.quantity;
-                        break;
-                    case "Assist":
-                        update.assists = e.quantity;
-                        break;
-                    case "YellowCard":
-                        update.yellowCards = e.quantity;
-                        break;
-                    case "RedCard":
-                    case "RedYellowCard":
-                        update.redCards = e.quantity;
-                        break;
+        await updatedStatsAfterMatch(match, matchId);
+        if (match.tournamentId !== "") {
+            const teamsInTournament = await Tournament.findById(
+                match.tournamentId
+            ).select("_id participants");
+            if (teamsInTournament) {
+                const maxRounds = Math.log2(
+                    teamsInTournament?.toObject().participants.length
+                );
+                const winnerId =
+                    match.homeTeamScore > match.awayTeamScore
+                        ? match.homeTeamId
+                        : match.awayTeamId;
+                if (match.round === maxRounds) {
+                    await Tournament.findByIdAndUpdate(match.tournamentId, {
+                        $set: { isOnGoing: false, winnerId: winnerId },
+                    });
+                } else {
+                    const nextMatch = await Match.findOne({
+                        tournamentId: match.tournamentId,
+                        round: match.round + 1,
+                        matchNumber: Math.ceil(match.matchNumber / 2),
+                    });
+                    if (nextMatch) {
+                        const homeOrAway =
+                            match.matchNumber % 2 !== 0
+                                ? "homeTeamId"
+                                : "awayTeamId";
+                        await Match.findByIdAndUpdate(nextMatch?._id, {
+                            $set: { [homeOrAway]: winnerId },
+                        });
+                    }
                 }
             }
-            await Player.findByIdAndUpdate(p.player.id, {
-                $inc: update,
-            });
         }
-        await updateCleanSheetAndAppearances(
-            match.homeTeamId.toString(),
-            match.awayTeamScore === 0
-        );
-        await updateCleanSheetAndAppearances(
-            match.awayTeamId.toString(),
-            match.homeTeamScore === 0
-        );
-
-        await updateTeamStats(
-            matchId,
-            match.matchDate,
-            match.homeTeamId,
-            match.homeTeamScore,
-            match.awayTeamId,
-            match.awayTeamScore
-        );
-
-        await Match.findByIdAndUpdate(matchId, {
-            $set: { isOnGoing: false },
-        });
-        await Competition.findOneAndUpdate(
-            { competitionId: new mongoose.Types.ObjectId(matchId) },
-            { $set: { isOngoing: false } }
-        );
 
         return NextResponse.json(
             { message: "Statystyki zaktualizowane pomyślnie" },

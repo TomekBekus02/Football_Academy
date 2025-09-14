@@ -7,7 +7,7 @@ export interface ITournament extends Document {
     place: string;
     participants: mongoose.Types.ObjectId[];
     matches: mongoose.Types.ObjectId[];
-    topTeams: mongoose.Types.ObjectId[];
+    winnerId: mongoose.Types.ObjectId;
     isOnGoing: boolean;
 }
 const TournamentSchema: Schema<ITournament> = new Schema({
@@ -17,7 +17,7 @@ const TournamentSchema: Schema<ITournament> = new Schema({
     place: String,
     participants: [{ type: mongoose.Schema.Types.ObjectId, ref: "Team" }],
     matches: [{ type: mongoose.Schema.Types.ObjectId, ref: "Match" }],
-    topTeams: [{ type: mongoose.Schema.Types.ObjectId, ref: "Team" }],
+    winnerId: { type: mongoose.Schema.Types.ObjectId, ref: "Team" },
     isOnGoing: Boolean,
 });
 

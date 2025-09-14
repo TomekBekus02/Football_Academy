@@ -17,6 +17,7 @@ type matchEventProps = {
     awayTeamScore: number;
     isOnGoing: boolean;
     events: IMatchEvent[];
+    tournamentId: string;
 };
 export default function matchEvents({
     matchId,
@@ -26,6 +27,7 @@ export default function matchEvents({
     homeTeamScore,
     awayTeamScore,
     isOnGoing,
+    tournamentId,
 }: matchEventProps) {
     const router = useRouter();
     const queryClient = useQueryClient();
@@ -37,7 +39,11 @@ export default function matchEvents({
         mutationFn: (matchId: string) => updatePlayerStats(matchId),
         onSuccess: () => {
             queryClient.invalidateQueries({ queryKey: ["players"] });
-            router.push("/admin/rozgrywki");
+            const transferPath =
+                tournamentId !== ""
+                    ? `/admin/tournament/${tournamentId}`
+                    : "/admin/rozgrywki";
+            router.push(transferPath);
             router.refresh();
         },
     });

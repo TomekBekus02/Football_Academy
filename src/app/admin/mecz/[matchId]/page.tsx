@@ -81,6 +81,7 @@ export default function MatchProgress({
                                     awayTeamScore={matchData.awayTeamScore}
                                     isOnGoing={matchData.isOnGoing}
                                     events={mappedEvents}
+                                    tournamentId={matchData.tournamentId.toString()}
                                 />
                                 <div
                                     className={`${MatchLayout.teamSquadBox} ${MatchLayout.awayteamSquadBox}`}

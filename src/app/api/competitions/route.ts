@@ -31,8 +31,8 @@ export async function GET(req: NextRequest) {
                     const TournamentDetails = await Tournament.findById(
                         comp.competitionId
                     )
-                        .select("_id title date hour isOnGoing topTeams")
-                        .populate("topTeams", "_id name logo");
+                        .select("_id title date hour isOnGoing winnerId")
+                        .populate("winnerId", "_id name logo");
                     return { TournamentDetails, ...compObj };
                 }
             })
