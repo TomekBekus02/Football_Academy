@@ -3,5 +3,12 @@
     font-size: 40px;
     font-weight: 900;
     text-shadow: 4px -4px 5px rgba(72, 88, 68, 0.435);
-    margin-bottom: 15px;
+}
+.aboutUsBox {
+    width: 100%;
+}
+.labelsBox {
+    margin-top: 20px;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
 }
