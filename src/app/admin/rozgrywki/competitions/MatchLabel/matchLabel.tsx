@@ -3,20 +3,16 @@ import Image from "next/image";
 import Link from "next/link";
 import { IMatchCompetition } from "@/types/ICompetition";
 import { resultIcon } from "@/components/eventTypeIcons";
+import { MatchStatus } from "@/types/IMatch";
 
 type competitionProps = {
     comp: IMatchCompetition;
 };
 export default function MatchLabel({ comp }: competitionProps) {
+    console.log("comp.matchStatus", comp);
     return (
         <div style={{ display: "flex" }}>
             <div style={{ display: "flex" }}>
-                {!comp.isOngoing
-                    ? resultIcon(
-                          comp.TeamDetails.homeTeamScore,
-                          comp.TeamDetails.awayTeamScore
-                      )
-                    : null}
                 <div>
                     <Image
                         src={comp.TeamDetails.homeTeamId.logo}
@@ -27,10 +23,15 @@ export default function MatchLabel({ comp }: competitionProps) {
                     <p>{comp.TeamDetails.homeTeamId.name}</p>
                 </div>
             </div>
-            <h1>
-                {comp.TeamDetails.homeTeamScore}:
-                {comp.TeamDetails.awayTeamScore}
-            </h1>
+            {comp.TeamDetails.matchStatus !== MatchStatus.CREATED ? (
+                <h1>
+                    {comp.TeamDetails.homeTeamScore}:
+                    {comp.TeamDetails.awayTeamScore}
+                </h1>
+            ) : (
+                <h1>-</h1>
+            )}
+
             <div style={{ display: "flex" }}>
                 <div>
                     <Image
@@ -41,12 +42,6 @@ export default function MatchLabel({ comp }: competitionProps) {
                     ></Image>
                     <p>{comp.TeamDetails.awayTeamId.name}</p>
                 </div>
-                {!comp.isOngoing
-                    ? resultIcon(
-                          comp.TeamDetails.awayTeamScore,
-                          comp.TeamDetails.homeTeamScore
-                      )
-                    : null}
             </div>
             <div>
                 <button>

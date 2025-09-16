@@ -1,6 +1,7 @@
+import { MatchStatus } from "@/types/IMatch";
 import { IBracketMatch } from "@/types/ITournament";
 import Image from "next/image";
-import Link from "next/link";
+
 type tournamentMatchProps = {
     match: IBracketMatch;
 };
@@ -31,7 +32,13 @@ export default function tournamentMatch({ match }: tournamentMatchProps) {
                 <p>{match.away.team == null ? "TBD" : match.away.team.name}</p>
             </span>
             <span>
-                Wynik: {match.home.score} - {match.away.score}
+                {match.matchStatus !== MatchStatus.CREATED ? (
+                    <div>
+                        {match.home.score} - {match.away.score}
+                    </div>
+                ) : (
+                    " - "
+                )}
             </span>
         </div>
     );

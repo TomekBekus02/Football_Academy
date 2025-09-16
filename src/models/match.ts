@@ -1,13 +1,21 @@
 import mongoose, { Document, Model, Schema } from "mongoose";
 
+export enum MatchStatus {
+    CREATED = "CREATED",
+    IN_PROGRESS = "IN_PROGRESS",
+    FINISHED = "FINISHED",
+}
+
 export interface IMatch extends Document {
     matchDate: string;
     matchHour: string;
     place: string;
     homeTeamId: mongoose.Types.ObjectId;
     homeTeamScore: number;
+    homeTeamPenaltiesScore: number;
     awayTeamId: mongoose.Types.ObjectId;
     awayTeamScore: number;
+    awayTeamPenaltiesScore: number;
     round: number;
     matchNumber: number;
     events: {
@@ -30,7 +38,8 @@ export interface IMatch extends Document {
         };
     }[];
     tournamentId: string | mongoose.Types.ObjectId;
-    isOnGoing: boolean;
+    matchStatus: MatchStatus;
+    isOverTime: boolean;
 }
 
 const MatchSchema: Schema<IMatch> = new Schema({
@@ -39,8 +48,10 @@ const MatchSchema: Schema<IMatch> = new Schema({
     place: String,
     homeTeamId: { type: mongoose.Schema.Types.ObjectId, ref: "Team" },
     homeTeamScore: Number,
+    homeTeamPenaltiesScore: Number,
     awayTeamId: { type: mongoose.Schema.Types.ObjectId, ref: "Team" },
     awayTeamScore: Number,
+    awayTeamPenaltiesScore: Number,
     round: Number,
     matchNumber: Number,
     events: [
@@ -70,7 +81,15 @@ const MatchSchema: Schema<IMatch> = new Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: "Tournament",
     },
-    isOnGoing: Boolean,
+    matchStatus: {
+        type: String,
+        enum: Object.values(MatchStatus),
+        default: MatchStatus.CREATED,
+    },
+    isOverTime: {
+        type: Boolean,
+        default: false,
+    },
 });
 
 const Match: Model<IMatch> =

@@ -1,9 +1,11 @@
+import { MatchStatus } from "./IMatch";
+
 export interface IMatchCompetition {
     _id: string;
-    isOngoing: boolean;
     label: string;
     competitionId: string;
     TeamDetails: {
+        matchStatus: MatchStatus;
         homeTeamScore: number;
         awayTeamScore: number;
         homeTeamId: {

@@ -6,28 +6,27 @@ import {
     IMatchCompetition,
     ITournamentCompetition,
 } from "@/types/ICompetition";
-import { useQuery, useQueryClient } from "@tanstack/react-query";
+import { useQuery } from "@tanstack/react-query";
 import MatchLabel from "./MatchLabel/matchLabel";
 import TournamentLabel from "./TournamentLabel/tournamentLabel";
 
 interface CompetitionParams {
-    isOnGoing: boolean;
+    isFinished: boolean;
 }
 
-export default function Competitions({ isOnGoing }: CompetitionParams) {
+export default function Competitions({ isFinished }: CompetitionParams) {
     type Competition = IMatchCompetition | ITournamentCompetition;
     const {
         data: competitions,
         isLoading,
         error,
     } = useQuery<Competition[], Error>({
-        queryKey: ["competitions", isOnGoing],
+        queryKey: ["competitions", isFinished],
         queryFn: ({ queryKey }) => {
-            const [, isOnGoing] = queryKey;
-            return fetchCompetitions(isOnGoing as boolean);
+            const [, isFinished] = queryKey;
+            return fetchCompetitions(isFinished as boolean);
         },
     });
-
     return (
         <LoadProvider isLoading={isLoading} error={error}>
             <div>

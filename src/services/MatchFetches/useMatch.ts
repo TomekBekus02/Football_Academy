@@ -20,3 +20,15 @@ export async function createEvent({ newEvent, matchId }: AddEventVars) {
 
     return res.status;
 }
+interface MatchProgressVars {
+    matchId: string;
+    matchStatusType: string;
+}
+export async function updateMatchProgress({
+    matchStatusType,
+    matchId,
+}: MatchProgressVars) {
+    const res = await axios.put(`/api/matches/${matchId}`, { matchStatusType });
+
+    return res.status;
+}

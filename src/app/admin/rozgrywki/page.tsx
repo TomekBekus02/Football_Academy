@@ -10,12 +10,12 @@ export default function tournaments() {
                 </Link>
             </button>
             <div>
-                <h1>Trwające Rozgrywki</h1>
-                <Competitions isOnGoing={true} />
+                <h1>Zaplanowane Rozgrywki</h1>
+                <Competitions isFinished={true} />
             </div>
             <div>
                 <h1>Zakończone Rozgrywki</h1>
-                <Competitions isOnGoing={false} />
+                <Competitions isFinished={false} />
             </div>
         </div>
     );

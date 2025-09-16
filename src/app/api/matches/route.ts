@@ -1,6 +1,6 @@
 import { connectDB } from "@/lib/mongodb";
 import { addCompetition } from "@/lib/updateCompetitions";
-import Match from "@/models/match";
+import Match, { MatchStatus } from "@/models/match";
 import Player from "@/models/player";
 import Team from "@/models/team";
 import mongoose from "mongoose";
@@ -76,14 +76,17 @@ export async function POST(req: Request) {
         const newMatch = new Match({
             homeTeamId,
             homeTeamScore: 0,
+            homeTeamPenaltiesScore: 0,
             awayTeamId,
             awayTeamScore: 0,
+            awayTeamPenaltiesScore: 0,
             matchDate,
             matchHour,
             place,
             events: [],
             tournamentId,
-            isOnGoing: true,
+            matchStatus: MatchStatus.CREATED,
+            isOverTime: false,
         });
         await newMatch.save();
 

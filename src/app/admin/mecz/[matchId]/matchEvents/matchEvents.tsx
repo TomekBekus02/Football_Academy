@@ -8,6 +8,8 @@ import { IMatchEvent } from "@/types/IEvent";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
 import { updatePlayerStats } from "@/services/PlayersFetches/usePlayers";
+import { MatchStatus } from "@/types/IMatch";
+import { updateMatchProgress } from "@/services/MatchFetches/useMatch";
 
 type matchEventProps = {
     matchId: string;
@@ -15,9 +17,10 @@ type matchEventProps = {
     homeTeamId: string;
     homeTeamScore: number;
     awayTeamScore: number;
-    isOnGoing: boolean;
+    matchStatus: MatchStatus;
     events: IMatchEvent[];
     tournamentId: string;
+    isOverTime: boolean;
 };
 export default function matchEvents({
     matchId,
@@ -26,16 +29,20 @@ export default function matchEvents({
     events,
     homeTeamScore,
     awayTeamScore,
-    isOnGoing,
+    matchStatus,
     tournamentId,
+    isOverTime,
 }: matchEventProps) {
     const router = useRouter();
     const queryClient = useQueryClient();
     const eventDialog = useRef<HTMLDialogElement>(null);
     const firstHalfEvents = events.filter((event) => event.time.base <= 45);
-    const secondHalfEvents = events.filter((event) => event.time.base > 45);
+    const secondHalfEvents = events.filter(
+        (event) => event.time.base > 45 && event.time.base <= 90
+    );
+    const overTimeEvents = events.filter((event) => event.time.base > 90);
 
-    const mutation = useMutation({
+    const endMatch = useMutation({
         mutationFn: (matchId: string) => updatePlayerStats(matchId),
         onSuccess: () => {
             queryClient.invalidateQueries({ queryKey: ["players"] });
@@ -45,6 +52,20 @@ export default function matchEvents({
                     : "/admin/rozgrywki";
             router.push(transferPath);
             router.refresh();
+        },
+    });
+    const startMatch = useMutation({
+        mutationFn: (matchId: string) =>
+            updateMatchProgress({ matchStatusType: "matchStatus", matchId }),
+        onSuccess: () => {
+            queryClient.invalidateQueries({ queryKey: ["match"] });
+        },
+    });
+    const startOverTime = useMutation({
+        mutationFn: (matchId: string) =>
+            updateMatchProgress({ matchStatusType: "isOverTime", matchId }),
+        onSuccess: () => {
+            queryClient.invalidateQueries({ queryKey: ["match"] });
         },
     });
     return (
@@ -57,32 +78,65 @@ export default function matchEvents({
                 homeTeamScore={homeTeamScore}
                 awayTeamScore={awayTeamScore}
             />
-            {isOnGoing ? (
-                <>
-                    <button
-                        onClick={() => {
-                            eventDialog.current?.showModal();
-                        }}
-                    >
-                        Dodaj event
+            {matchStatus !== MatchStatus.FINISHED ? (
+                matchStatus === MatchStatus.IN_PROGRESS ? (
+                    <>
+                        <button
+                            onClick={() => {
+                                eventDialog.current?.showModal();
+                            }}
+                        >
+                            Dodaj event
+                        </button>
+                        {!isOverTime && homeTeamScore === awayTeamScore ? (
+                            <button
+                                onClick={() => startOverTime.mutate(matchId)}
+                            >
+                                Rozpocznij Dogrywke
+                            </button>
+                        ) : (
+                            <button onClick={() => endMatch.mutate(matchId)}>
+                                Zakończ mecz
+                            </button>
+                        )}
+                    </>
+                ) : (
+                    <button onClick={() => startMatch.mutate(matchId)}>
+                        Rozpocznij mecz
                     </button>
-                    <button onClick={() => mutation.mutate(matchId)}>
-                        Zakończ mecz
-                    </button>
-                </>
+                )
             ) : null}
 
-            <div className={MatchEventsLayout.matchHalfBox}>
-                <div className={MatchEventsLayout.halfHeader}>
-                    <h3>1. POŁOWA</h3>
+            <div>
+                <div className={MatchEventsLayout.matchHalfBox}>
+                    <div className={MatchEventsLayout.halfHeader}>
+                        <h3>1. POŁOWA</h3>
+                    </div>
+                    <EventsHalf
+                        awayTeamId={awayTeamId}
+                        events={firstHalfEvents}
+                    />
                 </div>
-                <EventsHalf awayTeamId={awayTeamId} events={firstHalfEvents} />
-            </div>
-            <div className={MatchEventsLayout.matchHalfBox}>
-                <div className={MatchEventsLayout.halfHeader}>
-                    <h3>2. POŁOWA</h3>
+                <div className={MatchEventsLayout.matchHalfBox}>
+                    <div className={MatchEventsLayout.halfHeader}>
+                        <h3>2. POŁOWA</h3>
+                    </div>
+                    <EventsHalf
+                        awayTeamId={awayTeamId}
+                        events={secondHalfEvents}
+                    />
                 </div>
-                <EventsHalf awayTeamId={awayTeamId} events={secondHalfEvents} />
+                {isOverTime ? (
+                    <div className={MatchEventsLayout.matchHalfBox}>
+                        <div className={MatchEventsLayout.halfHeader}>
+                            <h3>Dogrywka</h3>
+                        </div>
+                        <EventsHalf
+                            awayTeamId={awayTeamId}
+                            events={overTimeEvents}
+                        />
+                    </div>
+                ) : null}
             </div>
         </div>
     );

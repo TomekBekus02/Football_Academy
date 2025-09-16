@@ -87,3 +87,31 @@ export async function POST(
         });
     }
 }
+
+export async function PUT(
+    request: NextRequest,
+    { params }: { params: { matchId: string } }
+) {
+    try {
+        await connectDB();
+        const { matchStatusType } = await request.json();
+        const { matchId } = await params;
+
+        if (matchStatusType === "matchStatus") {
+            await Match.findByIdAndUpdate(matchId, {
+                $set: { matchStatus: "IN_PROGRESS" },
+            });
+        } else {
+            await Match.findByIdAndUpdate(matchId, {
+                $set: { isOverTime: true },
+            });
+        }
+        return NextResponse.json({ status: 200 });
+    } catch (error) {
+        console.log(error);
+        return NextResponse.json({
+            message: "Nie udało się pobrać danych",
+            status: 500,
+        });
+    }
+}

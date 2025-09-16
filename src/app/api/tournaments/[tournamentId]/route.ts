@@ -12,7 +12,7 @@ export async function GET(
         const { tournamentId } = await params;
         const tournament = await Tournament.findById(tournamentId).populate({
             path: "matches",
-            select: "_id homeTeamId awayTeamId homeTeamScore awayTeamScore round matchNumber",
+            select: "_id homeTeamId awayTeamId homeTeamScore homeTeamPenaltiesScore awayTeamScore awayTeamPenaltiesScore round matchNumber isOverTime",
             populate: [
                 { path: "homeTeamId", select: "_id name logo" },
                 { path: "awayTeamId", select: "_id name logo" },
@@ -29,18 +29,21 @@ export async function GET(
             id: m._id.toString(),
             round: m.round,
             matchNumber: m.matchNumber,
-
+            matchStatus: m.matchStatus,
+            isOverTime: m.isOverTime,
             home: {
                 team: m.homeTeamId
                     ? { name: m.homeTeamId.name, logo: m.homeTeamId.logo }
                     : null,
                 score: m.homeTeamScore,
+                penaltiesScore: m.homeTeamPenaltiesScore,
             },
             away: {
                 team: m.awayTeamId
                     ? { name: m.awayTeamId.name, logo: m.awayTeamId.logo }
                     : null,
                 score: m.awayTeamScore,
+                penaltiesScore: m.awayTeamPenaltiesScore,
             },
         }));
 

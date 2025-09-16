@@ -11,6 +11,7 @@ import MatchEvents from "./matchEvents/matchEvents";
 import { IMatchEvent } from "@/types/IEvent";
 import { mapEventsToIMatchEvent } from "@/utils/utils";
 import React from "react";
+import { MatchStatus } from "@/types/IMatch";
 
 export default function MatchProgress({
     params,
@@ -52,11 +53,21 @@ export default function MatchProgress({
                                         {matchData.matchDate}{" "}
                                         {matchData.matchHour}
                                     </h3>
-                                    <h1>{`${matchData.homeTeamScore}:${matchData.awayTeamScore}`}</h1>
+                                    {matchData.matchStatus !==
+                                    MatchStatus.CREATED ? (
+                                        <h1>{`${matchData.homeTeamScore}:${matchData.awayTeamScore}`}</h1>
+                                    ) : (
+                                        <h1>-</h1>
+                                    )}
+
                                     <h2>
-                                        {matchData.isOnGoing
-                                            ? "TRWA"
-                                            : "KONIEC"}
+                                        {matchData.matchStatus !==
+                                        MatchStatus.CREATED
+                                            ? matchData.matchStatus ===
+                                              MatchStatus.IN_PROGRESS
+                                                ? "TRWA"
+                                                : "KONIEC"
+                                            : null}
                                     </h2>
                                 </div>
                                 <div className={`${MatchLayout.teamBox} `}>
@@ -79,9 +90,10 @@ export default function MatchProgress({
                                     homeTeamId={matchData.homeTeamId.toString()}
                                     homeTeamScore={matchData.homeTeamScore}
                                     awayTeamScore={matchData.awayTeamScore}
-                                    isOnGoing={matchData.isOnGoing}
+                                    matchStatus={matchData.matchStatus}
                                     events={mappedEvents}
                                     tournamentId={matchData.tournamentId.toString()}
+                                    isOverTime={matchData.isOverTime}
                                 />
                                 <div
                                     className={`${MatchLayout.teamSquadBox} ${MatchLayout.awayteamSquadBox}`}

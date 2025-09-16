@@ -21,11 +21,10 @@ export async function GET(req: NextRequest) {
                 if (comp.label === "Match") {
                     const TeamDetails = await Match.findById(comp.competitionId)
                         .select(
-                            "_id homeTeamId awayTeamId isOnGoing homeTeamScore awayTeamScore"
+                            "_id homeTeamId awayTeamId matchStatus homeTeamScore awayTeamScore"
                         )
                         .populate("homeTeamId", "name logo")
                         .populate("awayTeamId", "name logo");
-
                     return { TeamDetails, ...compObj };
                 } else {
                     const TournamentDetails = await Tournament.findById(
