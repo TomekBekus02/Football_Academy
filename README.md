@@ -1,3 +1,5 @@
+Application is still in development 
+
 TO DO
 - [ ] Login page for admin which is available only under '/admin' url (no other buttons)
 - [ ] Whole backend and improved frontend for Admin side to manage players and staff in club:
@@ -13,21 +15,21 @@ TO DO
         - [x] backend
   - for staff:
       - adding
-        - [ ] frontend
+        - [x] frontend
         - [x] backend 
       - editing
-        - [ ] frontend
+        - [x] frontend
         - [x] backend 
       - deleting
-        - [ ] frontend
+        - [x] frontend
         - [x] backend
 - [ ] display details about player ( vizualization by graphs and diagrams )
-- [ ] change layout 'about us'
-- [ ] connect club stats with database instead of hardcode way
-- [ ] side for admin create new tournaments
-- [ ] side for admin create new matches (single or in tournament)
-- [ ] side to manage the tournament (each tournament will have the DB with player stats from this tournaments)
-- [ ] side to manage the matches (adding new events, by this modify player stats) (after the end of the game, 'finish match' button should aplied all stats to players)
+- [x] change layout 'about us'
+- [x] connect club stats with database instead of hardcode way
+- [x] side for admin create new tournaments
+- [x] side for admin create new matches (single or in tournament)
+- [x] side to manage the tournament (each tournament will have the DB with player stats from this tournaments)
+- [x] side to manage the matches (adding new events, by this modify player stats) (after the end of the game, 'finish match' button should aplied all stats to players)
 - [ ] display the details about each match or each tournament (top scorrers, winner, ect.)
 
 
