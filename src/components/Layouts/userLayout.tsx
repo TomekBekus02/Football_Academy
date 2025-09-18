@@ -1,10 +1,6 @@
 import { Slack } from "lucide-react";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
-
-import AdminLayout from "@/components/adminLayout";
-import classes from "@/app/dashboard.module.css";
-import "@/app/globals.css";
+import classes from "@/styles/dashboard.module.css";
 
 export default function UserLayout({
     children,

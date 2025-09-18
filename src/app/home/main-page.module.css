@@ -1,5 +1,5 @@
 .mainPage{
-  background-color: beige;
+  background-color: var(--primary-color);
 }
 .mainBG{
     position: relative;
@@ -14,9 +14,9 @@
 .mainBG::before {
   content: "";
   position: absolute;
-  inset: 0; /* top:0; right:0; bottom:0; left:0; */
-  background-color: rgba(69, 65, 65, 0.7); /* biały z 20% kryciem */
-  pointer-events: none; /* nie blokuje kliknięć */
+  inset: 0; 
+  background-color: rgba(69, 65, 65, 0.7); 
+  pointer-events: none; 
 }
 .contentBox{
   display: flex;

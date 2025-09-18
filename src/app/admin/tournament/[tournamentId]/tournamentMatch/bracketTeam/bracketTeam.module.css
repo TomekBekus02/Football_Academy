@@ -1,0 +1,13 @@
+.matchContent {
+    display: grid;
+    grid-template-columns: 85% 15%;
+}
+.teamContent {
+    display: flex;
+    align-items: center;
+}
+.scoreContent {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+}

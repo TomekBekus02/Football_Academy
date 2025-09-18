@@ -1,5 +1,6 @@
 import { ReactNode } from "react";
 
+
 interface LoadProviderProps {
     children: ReactNode;
     isLoading: boolean;

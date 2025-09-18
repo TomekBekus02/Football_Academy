@@ -1,0 +1,42 @@
+.pageBox {
+    background-color: var(--primary-color);
+    min-height: 100%;
+    color: aliceblue;
+    padding-bottom: 22px;
+}
+.titleBox {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-transform: uppercase;
+    font-size: 30px;
+}
+
+.BracketsMatchesContent {
+    margin-bottom: 25px;
+    max-height: 670px;
+    overflow: auto;
+}
+.BracketsContent {
+    text-align: center;
+    margin: 0 30px;
+}
+.RoundMatchesBox {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-around;
+    overflow: auto;
+}
+.MatchBox {
+    width: 400px;
+    border-radius: 20px;
+    margin: 10px;
+    background-color: var(--secondary-color);
+}
+.RoundName {
+    background-color: var(--secondary-color);
+    border-radius: 15px;
+    margin-bottom: 40px;
+    padding: 10px;
+}

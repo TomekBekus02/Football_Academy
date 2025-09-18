@@ -1,8 +1,9 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import { Slack } from "lucide-react";
-import classes from "@/app/dashboard.module.css";
+import classes from "@/styles/dashboard.module.css";
 import Link from "next/link";
+import globalLayout from "@/styles/globalLayout.module.css";
 
 export default function AdminLayout({
     children,
@@ -10,7 +11,7 @@ export default function AdminLayout({
     children: React.ReactNode;
 }>) {
     return (
-        <>
+        <div className={globalLayout.wrapper}>
             <nav className={classes.navBox}>
                 <div className={classes.logoBox}>
                     <Link href="/home">
@@ -44,6 +45,6 @@ export default function AdminLayout({
                 </ul>
             </nav>
             {children}
-        </>
+        </div>
     );
 }
