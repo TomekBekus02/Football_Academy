@@ -1,6 +1,5 @@
 import { connectDB } from "@/lib/mongodb";
 import Tournament from "@/models/tournament";
-import mongoose from "mongoose";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function GET(
@@ -12,7 +11,7 @@ export async function GET(
         const { tournamentId } = await params;
         const tournament = await Tournament.findById(tournamentId).populate({
             path: "matches",
-            select: "_id homeTeamId awayTeamId homeTeamScore homeTeamPenaltiesScore awayTeamScore awayTeamPenaltiesScore round matchNumber isOverTime",
+            select: "_id homeTeamId awayTeamId homeTeamScore homeTeamPenaltiesScore awayTeamScore awayTeamPenaltiesScore round matchNumber isOverTime matchStatus",
             populate: [
                 { path: "homeTeamId", select: "_id name logo" },
                 { path: "awayTeamId", select: "_id name logo" },

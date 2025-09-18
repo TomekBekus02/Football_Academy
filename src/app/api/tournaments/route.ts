@@ -1,6 +1,7 @@
 import { connectDB } from "@/lib/mongodb";
+import { createNewMatch } from "@/lib/services/matchService";
 import { addCompetition } from "@/lib/updateCompetitions";
-import Match from "@/models/match";
+import Match, { MatchStatus } from "@/models/match";
 import Tournament from "@/models/tournament";
 import mongoose from "mongoose";
 import { NextRequest, NextResponse } from "next/server";
@@ -13,33 +14,7 @@ function shuffleArray<T>(array: T[]): T[] {
     }
     return result;
 }
-async function createNewMatch(
-    homeTeamId: string | null,
-    awayTeamId: string | null,
-    date: string,
-    hour: string,
-    place: string,
-    round: number,
-    matchNumber: number,
-    tournamentId: mongoose.Types.ObjectId
-) {
-    const newMatch = new Match({
-        homeTeamId,
-        homeTeamScore: 0,
-        awayTeamId,
-        awayTeamScore: 0,
-        matchDate: date,
-        matchHour: hour,
-        place,
-        round,
-        matchNumber,
-        events: [],
-        tournamentId,
-        isOnGoing: true,
-    });
-    await newMatch.save();
-    return newMatch;
-}
+
 
 export async function POST(request: NextRequest) {
     try {

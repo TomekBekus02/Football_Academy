@@ -1,4 +1,5 @@
 import { connectDB } from "@/lib/mongodb";
+import { createNewMatch } from "@/lib/services/matchService";
 import { addCompetition } from "@/lib/updateCompetitions";
 import Match, { MatchStatus } from "@/models/match";
 import Player from "@/models/player";
@@ -68,28 +69,17 @@ export async function POST(req: Request) {
         const matchDate = formData.get("matchDate") as string;
         const matchHour = formData.get("matchHour") as string;
         const place = formData.get("place") as string;
-        let tournamentId = formData.get("tournamentId") as string;
-        if (!tournamentId) {
-            tournamentId = "";
-        }
 
-        const newMatch = new Match({
+        const newMatch = await createNewMatch(
             homeTeamId,
-            homeTeamScore: 0,
-            homeTeamPenaltiesScore: 0,
             awayTeamId,
-            awayTeamScore: 0,
-            awayTeamPenaltiesScore: 0,
             matchDate,
             matchHour,
             place,
-            events: [],
-            tournamentId,
-            matchStatus: MatchStatus.CREATED,
-            isOverTime: false,
-        });
-        await newMatch.save();
-
+            1,
+            1,
+            ""
+        );
         await addCompetition("Match", newMatch._id as mongoose.Types.ObjectId);
 
         return NextResponse.json(
