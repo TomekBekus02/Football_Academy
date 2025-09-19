@@ -9,6 +9,7 @@ import {
     fetchTeamSquad,
 } from "@/services/PlayersFetches/usePlayers";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import rowStyles from "./playerRow.module.css";
 
 export default function playerRow() {
     const teamId = "";
@@ -60,7 +61,7 @@ export default function playerRow() {
                             }
                         </th>
                         <td>{player.shirtNumber}</td>
-                        <td>
+                        <td className={rowStyles.nameStyle}>
                             <Link href={`/players/${player._id}`}>
                                 {player.name}
                             </Link>
@@ -73,21 +74,19 @@ export default function playerRow() {
                         <td>{player.yellowCards}</td>
                         <td>{player.MVPs}</td>
                         <td>{player.position}</td>
-                        <td>
-                            <button>
-                                <Link href={`/admin/sklad/${player._id}`}>
-                                    <Pencil />
-                                </Link>
-                            </button>
-                        </td>
-                        <td>
+                        <td className={rowStyles.buttonBox}>
+                            <Link href={`/admin/sklad/${player._id}`}>
+                                <button className="editBtn">
+                                    <Pencil className={rowStyles.icon} />
+                                </button>
+                            </Link>
                             <button
                                 onClick={() =>
                                     player._id && mutation.mutate(player._id)
                                 }
-                                style={{ cursor: "pointer" }}
+                                className="deleteBtn"
                             >
-                                <Trash />
+                                <Trash className={rowStyles.icon} />
                             </button>
                         </td>
                     </tr>
