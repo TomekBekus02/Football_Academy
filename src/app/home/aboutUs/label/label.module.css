@@ -6,8 +6,8 @@
 
 .labelInner {
   position: relative;
-  width: 420px;
-  height: 300px;
+  width: 380px;
+  height: 280px;
   transform-style: preserve-3d;
   transition: transform 0.6s; 
 }
@@ -36,12 +36,12 @@
   gap: 15px;
 }
 .labelFront h1{
-    font-size: 50px;
+  font-size: 50px;
 }
 .labelBack {
   background: #0b6b33;
   transform: rotateY(180deg); 
-  font-size: 24px;
+  font-size: 22px;
   text-align: center;
   padding: 8px;
 }
