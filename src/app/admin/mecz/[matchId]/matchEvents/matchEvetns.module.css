@@ -1,5 +1,63 @@
 .halfHeader {
     display: flex;
     justify-content: space-between;
+    background-color: var(--secondary-color);
+    border-radius: 20px;
+    margin: 17px 0px;
     padding: 10px;
+}
+
+.matchEventsContent{
+    position: relative;
+    max-height: 440px;
+    overflow: auto;
+    padding: 15px;
+    background-color: var(--third-color);
+    border-radius: 0px 0px 8px 8px;
+}
+
+.buttonsBox{
+    position: relative;
+    background-color: var(--third-color);
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    padding-top: 22px;
+    border-radius: 8px 8px 0px 0px;
+    transform: translateY(42px);
+    transition: transform 0.5s ease;
+}
+.buttonsBox:hover{
+    transform: translateY(0px);
+}
+.buttonsBox button{
+    font-size: 18px;
+    font-weight: 600;
+    transition: background-color 0.3s ease, box-shadow 0.3s ease;
+    color: antiquewhite;
+}
+.endGameBtn{
+    background-color: #881b1b;
+}
+.endGameBtn:hover{
+    background-color: #a20d0d;
+}
+.addEventBtn{
+    background-color: #790aac;
+
+}
+.addEventBtn:hover{
+    background-color: #8525b2;
+}
+.overTimeBtn{
+    background-color: #b97c03;
+}
+.overTimeBtn:hover{
+    background-color: #cc942c;
+}
+.startGame{
+    background-color: #026502;
+}
+.startGame:hover{
+    background-color: #128f12;
 }

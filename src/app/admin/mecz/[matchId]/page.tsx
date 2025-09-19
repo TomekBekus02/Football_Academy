@@ -40,7 +40,7 @@ export default function MatchProgress({
                 {matchData ? (
                     <div className={MatchLayout.pageBox}>
                         <div className={MatchLayout.contentBox}>
-                            <div className={MatchLayout.content}>
+                            <div className={MatchLayout.matchHeader}>
                                 <div
                                     className={`${MatchLayout.teamBox} ${MatchLayout.homeTeamBox}`}
                                 >
@@ -76,7 +76,7 @@ export default function MatchProgress({
                                     />
                                 </div>
                             </div>
-                            <div className={MatchLayout.content}>
+                            <div className={MatchLayout.EventsBox}>
                                 <div className={`${MatchLayout.teamSquadBox}`}>
                                     <GetTeamSquad
                                         teamId={matchData.homeTeamId.toString()}

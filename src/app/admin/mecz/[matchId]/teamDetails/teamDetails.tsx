@@ -29,15 +29,15 @@ export default function GetTeamDetails({ teamId }: TeamDetailsProps) {
                         <Image
                             src={teamData.logo}
                             alt={teamData.name}
-                            height={100}
-                            width={100}
+                            height={140}
+                            width={140}
                             className={TeamDetailsLayout.teamImage}
                         ></Image>
-                        {teamData.name}
+                        <h3>{teamData.name}</h3>
                     </div>
                 ) : (
                     <div>
-                        <h1>Brak teamu</h1>
+                        <h1>Brak drużyny</h1>
                     </div>
                 )}
             </div>

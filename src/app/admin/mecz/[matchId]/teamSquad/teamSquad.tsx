@@ -4,7 +4,6 @@ import { fetchTeamSquad } from "@/services/PlayersFetches/usePlayers";
 import { IPlayer } from "@/types/IPlayer";
 import { useQuery } from "@tanstack/react-query";
 import TeamSquadLayout from "./teamSquad.module.css";
-//import { useMatch } from "@/contexts/matchContext";
 import DisplayPlayersEvents from "./playersEvents/playersEvents";
 import { IMatchEvent } from "@/types/IEvent";
 
@@ -13,7 +12,11 @@ interface TeamDetailsProps {
     isAwayTeam: boolean;
     events: IMatchEvent[];
 }
-export default function getTeamSquad({ teamId, isAwayTeam, events }: TeamDetailsProps) {
+export default function getTeamSquad({
+    teamId,
+    isAwayTeam,
+    events,
+}: TeamDetailsProps) {
     const {
         data: playersData,
         isLoading,
@@ -25,10 +28,18 @@ export default function getTeamSquad({ teamId, isAwayTeam, events }: TeamDetails
             return fetchTeamSquad(teamId);
         },
     });
-    //const { playersEvents } = useMatch();
     return (
         <LoadProvider error={error} isLoading={isLoading}>
-            <div>
+            <div className={TeamSquadLayout.squadBox}>
+                <h1
+                    className={`${TeamSquadLayout.playerInfo} ${
+                        isAwayTeam
+                            ? TeamSquadLayout.awayPlayerInfo
+                            : TeamSquadLayout.homePlayerInfo
+                    }`}
+                >
+                    Skład
+                </h1>
                 {playersData && playersData!.length > 0 ? (
                     playersData.map((player: IPlayer) => (
                         <div
@@ -42,7 +53,7 @@ export default function getTeamSquad({ teamId, isAwayTeam, events }: TeamDetails
                                         : TeamSquadLayout.homePlayerInfo
                                 }`}
                             >
-                                <DisplayPlayersEvents 
+                                <DisplayPlayersEvents
                                     playerId={player._id}
                                     playersEvents={events}
                                 />

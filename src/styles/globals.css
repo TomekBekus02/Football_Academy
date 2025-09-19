@@ -7,8 +7,18 @@
     font-weight: 400;
     font-style: normal;
 }
-
+.buttonStyle {
+    padding: 8px;
+    margin: 5px;
+    border-radius: 12px;
+    border:  none;
+    cursor: pointer;
+}
+.buttonStyle:hover {
+    box-shadow: 1px 4px 10px #706f6fa9;
+}
 :root {
     --primary-color: #4a4b4c;
     --secondary-color: #626363;
+    --third-color: rgb(69, 67, 93);
 }

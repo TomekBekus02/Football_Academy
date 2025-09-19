@@ -3,20 +3,23 @@
     justify-content: center;
 }
 .contentBox {
-    border: 1px solid black;
-    width: 80%;
+    margin-top: 20px;
+    width: 1600px;
 }
-.content {
+.matchHeader {
     display: grid;
-    grid-template-columns: 27% 46% 27%;
+    grid-template-columns: 44% 12% 44%;
+    padding: 20px;
+}
+.EventsBox {
+    display: grid;
+    grid-template-columns: 21% 58% 21%;
     padding: 20px;
 }
 .teamBox {
     margin: 0 40px;
-}
-.homeTeamBox {
     display: flex;
-    justify-content: end;
+    justify-content: center;
 }
 .gameInfo {
     display: flex;

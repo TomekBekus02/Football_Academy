@@ -78,36 +78,48 @@ export default function matchEvents({
                 homeTeamScore={homeTeamScore}
                 awayTeamScore={awayTeamScore}
             />
-            {matchStatus !== MatchStatus.FINISHED ? (
-                matchStatus === MatchStatus.IN_PROGRESS ? (
-                    <>
-                        <button
-                            onClick={() => {
-                                eventDialog.current?.showModal();
-                            }}
-                        >
-                            Dodaj event
-                        </button>
-                        {!isOverTime && homeTeamScore === awayTeamScore ? (
+            <div className={MatchEventsLayout.buttonsBox}>
+                {matchStatus !== MatchStatus.FINISHED ? (
+                    matchStatus === MatchStatus.IN_PROGRESS ? (
+                        <>
                             <button
-                                onClick={() => startOverTime.mutate(matchId)}
+                                onClick={() => {
+                                    eventDialog.current?.showModal();
+                                }}
+                                className={`buttonStyle ${MatchEventsLayout.addEventBtn}`}
                             >
-                                Rozpocznij Dogrywke
+                                Dodaj event
                             </button>
-                        ) : (
-                            <button onClick={() => endMatch.mutate(matchId)}>
-                                Zakończ mecz
-                            </button>
-                        )}
-                    </>
-                ) : (
-                    <button onClick={() => startMatch.mutate(matchId)}>
-                        Rozpocznij mecz
-                    </button>
-                )
-            ) : null}
+                            {!isOverTime && homeTeamScore === awayTeamScore ? (
+                                <button
+                                    onClick={() =>
+                                        startOverTime.mutate(matchId)
+                                    }
+                                    className={`buttonStyle ${MatchEventsLayout.overTimeBtn}`}
+                                >
+                                    Rozpocznij Dogrywke
+                                </button>
+                            ) : (
+                                <button
+                                    onClick={() => endMatch.mutate(matchId)}
+                                    className={`buttonStyle ${MatchEventsLayout.endGameBtn}`}
+                                >
+                                    Zakończ mecz
+                                </button>
+                            )}
+                        </>
+                    ) : (
+                        <button
+                            onClick={() => startMatch.mutate(matchId)}
+                            className={`buttonStyle ${MatchEventsLayout.startGame}`}
+                        >
+                            Rozpocznij mecz
+                        </button>
+                    )
+                ) : null}
+            </div>
 
-            <div>
+            <div className={MatchEventsLayout.matchEventsContent}>
                 <div className={MatchEventsLayout.matchHalfBox}>
                     <div className={MatchEventsLayout.halfHeader}>
                         <h3>1. POŁOWA</h3>
