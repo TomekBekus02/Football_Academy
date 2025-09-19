@@ -38,7 +38,7 @@ export default function Staff() {
             <>
                 <div style={{ position: "relative" }}>
                     <div className={staffLayout.buttonBox}>
-                        <button className={staffLayout.editButton}>
+                        <button className="editBtn">
                             <Link href={`/admin/sztab/${member._id}`}>
                                 <Pencil
                                     className={`${staffLayout.icon} ${staffLayout.editIcon}`}
@@ -46,7 +46,7 @@ export default function Staff() {
                             </Link>
                         </button>
                         <button
-                            className={staffLayout.deleteButton}
+                            className="deleteBtn"
                             onClick={() =>
                                 member._id && mutation.mutate(member._id)
                             }
@@ -74,7 +74,7 @@ export default function Staff() {
             <div className={classes.staffBox}>
                 <div>
                     <Link href={"/admin/sztab/dodaj-czlonka-sztabu"}>
-                        <button className={`buttonStyle ${staffLayout.addBtn}`}>
+                        <button className="buttonStyle addBtn">
                             Dodaj członka sztabu
                         </button>
                     </Link>

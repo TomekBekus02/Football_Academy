@@ -15,27 +15,3 @@
     color: antiquewhite;
     padding: 5px;
 }
-.deleteButton {
-    border: 0.1px dashed red;
-}
-.editButton {
-    border: 0.1px dashed #004cff;
-}
-.editButton:hover {
-    background-color: #2c3ace;
-    box-shadow: 2px 2px 12px #2c3ace;
-}
-.deleteButton:hover {
-    background-color: #c42222;
-    box-shadow: 2px 2px 12px #c42222;
-}
-.addBtn {
-    background-color: #0c5602;
-    color: antiquewhite;
-    font-size: 20px;
-    margin-bottom: 15px;
-}
-.addBtn:hover {
-    background-color: #15660a;
-    box-shadow: 2px 2px 7px #58a858;
-}
