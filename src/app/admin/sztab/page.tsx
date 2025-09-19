@@ -10,6 +10,8 @@ import {
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { Trash, Pencil } from "lucide-react";
 import Link from "next/link";
+import LoadProvider from "@/components/LoadProvider/LoadProvider";
+import staffLayout from "./page.module.css";
 
 export default function Staff() {
     const queryClient = useQueryClient();
@@ -30,26 +32,30 @@ export default function Staff() {
     });
 
     const renderContent = () => {
-        if (isLoading) return <p>Pobieranie...</p>;
-        if (error) return <p>{error.message}</p>;
         if (!staffData?.length) return <p>Brak sztabu</p>;
 
         return staffData.map((member) => (
             <>
-                <div>
-                    <button>
-                        <Link href={`/admin/sztab/${member._id}`}>
-                            Edytuj <Pencil />
-                        </Link>
-                    </button>
-                    <button
-                        onClick={() =>
-                            member._id && mutation.mutate(member._id)
-                        }
-                        style={{ cursor: "pointer" }}
-                    >
-                        Usun <Trash />
-                    </button>
+                <div style={{ position: "relative" }}>
+                    <div className={staffLayout.buttonBox}>
+                        <button className={staffLayout.editButton}>
+                            <Link href={`/admin/sztab/${member._id}`}>
+                                <Pencil
+                                    className={`${staffLayout.icon} ${staffLayout.editIcon}`}
+                                />
+                            </Link>
+                        </button>
+                        <button
+                            className={staffLayout.deleteButton}
+                            onClick={() =>
+                                member._id && mutation.mutate(member._id)
+                            }
+                        >
+                            <Trash
+                                className={`${staffLayout.icon} ${staffLayout.deleteIcon}`}
+                            />
+                        </button>
+                    </div>
                     <Member
                         key={member._id}
                         name={member.name}
@@ -64,15 +70,19 @@ export default function Staff() {
     };
 
     return (
-        <div className={classes.staffBox}>
-            <div>
-                <button>
+        <LoadProvider error={error} isLoading={isLoading}>
+            <div className={classes.staffBox}>
+                <div>
                     <Link href={"/admin/sztab/dodaj-czlonka-sztabu"}>
-                        Dodaj członka sztabu
+                        <button className={`buttonStyle ${staffLayout.addBtn}`}>
+                            Dodaj członka sztabu
+                        </button>
                     </Link>
-                </button>
-                <div className={classes.staffContent}>{renderContent()}</div>
+                    <div className={classes.staffContent}>
+                        {renderContent()}
+                    </div>
+                </div>
             </div>
-        </div>
+        </LoadProvider>
     );
 }

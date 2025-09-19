@@ -25,7 +25,9 @@ export default function member({
                 <h4>{role}</h4>
             </div>
             <div className={classes.ageGroupBox}>
-                <h3>{ageGroup}</h3>
+                <div className={classes.ageGroupContent}>
+                    <h3>{ageGroup}</h3>
+                </div>
             </div>
         </div>
     );
