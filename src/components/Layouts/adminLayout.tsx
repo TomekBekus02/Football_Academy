@@ -1,28 +1,30 @@
-import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
 import { Slack } from "lucide-react";
-import classes from "@/styles/dashboard.module.css";
 import Link from "next/link";
 import globalLayout from "@/styles/globalLayout.module.css";
+import navLayout from "./dashboard.module.css";
 
 export default function AdminLayout({
     children,
+    teamId,
 }: Readonly<{
     children: React.ReactNode;
+    teamId: string;
 }>) {
     return (
         <div className={globalLayout.wrapper}>
-            <nav className={classes.navBox}>
-                <div className={classes.logoBox}>
+            <nav className={navLayout.navBox}>
+                <div className={navLayout.logoBox}>
                     <Link href="/home">
                         <Slack /> Football Academy
                     </Link>
                 </div>
 
-                <ul className={classes.linksBox}>
-                    <div className={classes.tabContainer}>
+                <ul className={navLayout.linksBox}>
+                    <div className={navLayout.tabContainer}>
                         <li>
-                            <Link href="/admin/sklad">Zawodnicy</Link>
+                            <Link href={`/admin/druzyna/${teamId}/sklad`}>
+                                Skład
+                            </Link>
                         </li>
                         <li>
                             <Link href="/admin/sztab">Sztab</Link>
@@ -30,14 +32,8 @@ export default function AdminLayout({
                         <li>
                             <Link href="/admin/rozgrywki">Rozgrywki</Link>
                         </li>
-                        <li>
-                            <Link href="*">O Nas</Link>
-                        </li>
-                        <li>
-                            <Link href="*">Kontakt</Link>
-                        </li>
                     </div>
-                    <div className={classes.joinUsButtonContainer}>
+                    <div className={navLayout.joinUsButtonContainer}>
                         <li>
                             <Link href="*">Dołącz do nas</Link>
                         </li>

@@ -1,30 +1,47 @@
 import { Slack } from "lucide-react";
 import Link from "next/link";
-import classes from "@/styles/dashboard.module.css";
+import navLayout from "./dashboard.module.css";
 
 export default function UserLayout({
     children,
+    teamId,
 }: Readonly<{
     children: React.ReactNode;
+    teamId: string;
 }>) {
     return (
         <>
-            <nav className={classes.navBox}>
-                <div className={classes.logoBox}>
+            <nav className={navLayout.navBox}>
+                <div className={navLayout.logoBox}>
                     <Link href="/home">
                         <Slack /> Football Academy
                     </Link>
                 </div>
-                <ul className={classes.linksBox}>
-                    <div className={classes.tabContainer}>
-                        <li>
-                            <Link href="/players">Zawodnicy</Link>
-                        </li>
-                        <li>
-                            <Link href="/staff">Sztab</Link>
-                        </li>
-                        <li>
-                            <Link href="*">Statystyki klubu</Link>
+                <ul className={navLayout.linksBox}>
+                    <div className={navLayout.tabContainer}>
+                        <li
+                            className={`${navLayout.navItem} ${navLayout.dropdown}`}
+                        >
+                            <p>Drużyna</p>
+                            <ul className={navLayout.dropdownMenu}>
+                                <li>
+                                    <Link href={`/druzyna/${teamId}/sklad`}>
+                                        Skład
+                                    </Link>
+                                </li>
+                                <li>
+                                    <Link
+                                        href={`/druzyna/${teamId}/statystyki-druzyny`}
+                                    >
+                                        Statystyki drużyny
+                                    </Link>
+                                </li>
+                                <li>
+                                    <Link href={`/druzyna/${teamId}/sztab`}>
+                                        Sztab
+                                    </Link>
+                                </li>
+                            </ul>
                         </li>
                         <li>
                             <Link href="*">O Nas</Link>
@@ -33,7 +50,7 @@ export default function UserLayout({
                             <Link href="*">Kontakt</Link>
                         </li>
                     </div>
-                    <div className={classes.joinUsButtonContainer}>
+                    <div className={navLayout.joinUsButtonContainer}>
                         <li>
                             <Link href="*">Dołącz do nas</Link>
                         </li>

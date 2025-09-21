@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { Trash, Pencil, Mouse } from "lucide-react";
+import { Trash, Pencil } from "lucide-react";
 import { IPlayer } from "@/types/IPlayer";
 import {
     deletePlayer,
@@ -10,20 +10,21 @@ import {
 } from "@/services/PlayersFetches/usePlayers";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import rowStyles from "./playerRow.module.css";
+import { useEffect, useState } from "react";
+import SortableTableHeader from "./SortableTableHeader/SortableTableHeader";
 
-export default function playerRow() {
-    const teamId = "";
-    const {
-        data: playersData,
-        error,
-        isLoading,
-    } = useQuery<IPlayer[], Error>({
-        queryKey: ["players", teamId],
-        queryFn: ({ queryKey }) => {
-            const [, teamId] = queryKey;
-            return fetchTeamSquad(teamId as string);
-        },
-    });
+type playerRowType = {
+    teamId: string;
+    playersData: IPlayer[];
+    isLoading: boolean;
+    error: Error | null;
+};
+export default function playerRow({
+    teamId,
+    playersData,
+    isLoading,
+    error,
+}: playerRowType) {
     const queryClient = useQueryClient();
     const mutation = useMutation({
         mutationFn: deletePlayer,
@@ -74,8 +75,11 @@ export default function playerRow() {
                         <td>{player.yellowCards}</td>
                         <td>{player.MVPs}</td>
                         <td>{player.position}</td>
+
                         <td className={rowStyles.buttonBox}>
-                            <Link href={`/admin/sklad/${player._id}`}>
+                            <Link
+                                href={`/admin/druzyna/${teamId}/sklad/${player._id}`}
+                            >
                                 <button className="editBtn">
                                     <Pencil className={rowStyles.icon} />
                                 </button>
@@ -92,7 +96,9 @@ export default function playerRow() {
                     </tr>
                 ))
             ) : (
-                <h1>No players</h1>
+                <tr>
+                    <td>No players</td>
+                </tr>
             )}
         </>
     );

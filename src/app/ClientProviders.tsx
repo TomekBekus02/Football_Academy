@@ -13,10 +13,11 @@ export default function ClientProviders({
 }) {
     const pathname = usePathname();
     const Layout = pathname?.startsWith("/admin") ? AdminLayout : UserLayout;
+        const teamId = "689a4c7170a41052e449061b";
 
-    return (
-        <QueryClientProvider client={queryClient}>
-            <Layout>{children}</Layout>
-        </QueryClientProvider>
-    );
+        return (
+            <QueryClientProvider client={queryClient}>
+                <Layout teamId={teamId}>{children}</Layout>
+            </QueryClientProvider>
+        );
 }
