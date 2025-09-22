@@ -34,7 +34,6 @@ export default function Players({
         <div className={pageLayout.pageBox}>
             <div className={pageLayout.tableBox}>
                 <div className={pageLayout.headerBox}>
-                    <h1>Drużyna Football Academy</h1>
                     <Link
                         href={`/admin/druzyna/${teamId}/sklad/dodaj-zawodnika`}
                     >

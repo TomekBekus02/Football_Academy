@@ -5,3 +5,18 @@
     flex-direction: column;
     color: aliceblue;
 }
+.navWrapper{
+    width: 100%;
+    background-color: #6c716c;
+    position: sticky;
+    top: 0;
+    z-index: 2;
+}
+.contentBox{
+    max-width: 1900px;
+}
+@media (min-width: 1900px) {
+    .contentBox{
+        margin: 0 auto;
+    }
+}
