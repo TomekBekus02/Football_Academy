@@ -94,14 +94,18 @@ export default function matchEvents({
                 {matchStatus !== MatchStatus.FINISHED ? (
                     matchStatus === MatchStatus.IN_PROGRESS ? (
                         <>
-                            <button
-                                onClick={() => {
-                                    eventDialog.current?.showModal();
-                                }}
-                                className={`buttonStyle ${MatchEventsLayout.addEventBtn}`}
-                            >
-                                Dodaj event
-                            </button>
+                            {matchPenalties.homeTeam === 0 &&
+                            matchPenalties.awayTeam === 0 ? (
+                                <button
+                                    onClick={() => {
+                                        eventDialog.current?.showModal();
+                                    }}
+                                    className={`buttonStyle ${MatchEventsLayout.addEventBtn}`}
+                                >
+                                    Dodaj event
+                                </button>
+                            ) : null}
+
                             {!isOverTime && homeTeamScore === awayTeamScore ? (
                                 <button
                                     onClick={() =>
