@@ -33,6 +33,10 @@
     border-radius: 20px;
     margin: 10px;
     background-color: var(--secondary-color);
+    transition: background-color 0.2s ease-in;
+}
+.MatchBox:hover{
+    background-color: #7c827a;
 }
 .RoundName {
     background-color: var(--secondary-color);

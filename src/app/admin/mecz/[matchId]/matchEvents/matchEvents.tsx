@@ -11,6 +11,10 @@ import { updatePlayerStats } from "@/services/PlayersFetches/usePlayers";
 import { MatchStatus } from "@/types/IMatch";
 import { updateMatchProgress } from "@/services/MatchFetches/useMatch";
 
+type penaltiesType = {
+    homeTeam: number;
+    awayTeam: number;
+};
 type matchEventProps = {
     matchId: string;
     awayTeamId: string;
@@ -21,6 +25,7 @@ type matchEventProps = {
     events: IMatchEvent[];
     tournamentId: string;
     isOverTime: boolean;
+    matchPenalties: penaltiesType;
 };
 export default function matchEvents({
     matchId,
@@ -32,6 +37,7 @@ export default function matchEvents({
     matchStatus,
     tournamentId,
     isOverTime,
+    matchPenalties,
 }: matchEventProps) {
     const router = useRouter();
     const queryClient = useQueryClient();
@@ -43,7 +49,13 @@ export default function matchEvents({
     const overTimeEvents = events.filter((event) => event.time.base > 90);
 
     const endMatch = useMutation({
-        mutationFn: (matchId: string) => updatePlayerStats(matchId),
+        mutationFn: ({
+            matchId,
+            matchPenalties,
+        }: {
+            matchId: string;
+            matchPenalties: penaltiesType;
+        }) => updatePlayerStats(matchId, matchPenalties),
         onSuccess: () => {
             queryClient.invalidateQueries({ queryKey: ["players"] });
             const transferPath =
@@ -101,7 +113,12 @@ export default function matchEvents({
                                 </button>
                             ) : (
                                 <button
-                                    onClick={() => endMatch.mutate(matchId)}
+                                    onClick={() =>
+                                        endMatch.mutate({
+                                            matchId,
+                                            matchPenalties,
+                                        })
+                                    }
                                     className={`buttonStyle ${MatchEventsLayout.endGameBtn}`}
                                 >
                                     Zakończ mecz

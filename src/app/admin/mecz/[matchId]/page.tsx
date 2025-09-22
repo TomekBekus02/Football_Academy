@@ -10,7 +10,7 @@ import MatchLayout from "./matchProgress.module.css";
 import MatchEvents from "./matchEvents/matchEvents";
 import { IMatchEvent } from "@/types/IEvent";
 import { mapEventsToIMatchEvent } from "@/utils/utils";
-import React from "react";
+import React, { useState } from "react";
 import { MatchStatus } from "@/types/IMatch";
 
 export default function MatchProgress({
@@ -34,6 +34,17 @@ export default function MatchProgress({
         ? mapEventsToIMatchEvent(matchData.events)
         : [];
 
+    const handlePenaltiesScore = (e: React.ChangeEvent<HTMLInputElement>) => {
+        e.preventDefault();
+        setMatchPenalties((prev) => ({
+            ...prev,
+            [e.target.name]: Number(e.target.value),
+        }));
+    };
+    const [matchPenalties, setMatchPenalties] = useState({
+        homeTeam: 0,
+        awayTeam: 0,
+    });
     return (
         <LoadProvider isLoading={isLoading} error={error}>
             <div>
@@ -59,16 +70,31 @@ export default function MatchProgress({
                                     ) : (
                                         <h1>-</h1>
                                     )}
+                                    {matchData.matchStatus ===
+                                        MatchStatus.IN_PROGRESS && (
+                                        <h2>TRWA</h2>
+                                    )}
 
-                                    <h2>
-                                        {matchData.matchStatus !==
-                                        MatchStatus.CREATED
-                                            ? matchData.matchStatus ===
-                                              MatchStatus.IN_PROGRESS
-                                                ? "TRWA"
-                                                : "KONIEC"
-                                            : null}
-                                    </h2>
+                                    {matchData.matchStatus ===
+                                        MatchStatus.FINISHED && (
+                                        <>
+                                            {matchData.isOverTime ? (
+                                                matchData.homeTeamPenaltiesScore !==
+                                                    0 &&
+                                                matchData.awayTeamPenaltiesScore !==
+                                                    0 ? (
+                                                    <>
+                                                        <h2>{`(${matchData.homeTeamPenaltiesScore} : ${matchData.awayTeamPenaltiesScore})`}</h2>
+                                                        <h2>Po karnych</h2>
+                                                    </>
+                                                ) : (
+                                                    <h2>Po Dogrywce</h2>
+                                                )
+                                            ) : (
+                                                <h2>Koniec</h2>
+                                            )}
+                                        </>
+                                    )}
                                 </div>
                                 <div className={`${MatchLayout.teamBox} `}>
                                     <GetTeamDetails
@@ -76,6 +102,33 @@ export default function MatchProgress({
                                     />
                                 </div>
                             </div>
+                            {matchData.isOverTime &&
+                            matchData.matchStatus ===
+                                MatchStatus.IN_PROGRESS ? (
+                                <div>
+                                    <form>
+                                        <h3>Karne</h3>
+                                        <label>Gospodarze</label>
+                                        <input
+                                            type="number"
+                                            name="homeTeam"
+                                            defaultValue={
+                                                matchPenalties.homeTeam
+                                            }
+                                            onChange={handlePenaltiesScore}
+                                        />
+                                        <label>Goscie</label>
+                                        <input
+                                            type="number"
+                                            name="awayTeam"
+                                            defaultValue={
+                                                matchPenalties.awayTeam
+                                            }
+                                            onChange={handlePenaltiesScore}
+                                        />
+                                    </form>
+                                </div>
+                            ) : null}
                             <div className={MatchLayout.EventsBox}>
                                 <div className={`${MatchLayout.teamSquadBox}`}>
                                     <GetTeamSquad
@@ -94,6 +147,7 @@ export default function MatchProgress({
                                     events={mappedEvents}
                                     tournamentId={matchData.tournamentId.toString()}
                                     isOverTime={matchData.isOverTime}
+                                    matchPenalties={matchPenalties}
                                 />
                                 <div
                                     className={`${MatchLayout.teamSquadBox} ${MatchLayout.awayteamSquadBox}`}

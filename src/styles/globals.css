@@ -10,7 +10,7 @@
 :root {
     --primary-color: #4a4b4c;
     --secondary-color: #626363;
-    --third-color: rgb(69, 67, 93);
+    --third-color: #45435d;
 }
 a{
     color: inherit;

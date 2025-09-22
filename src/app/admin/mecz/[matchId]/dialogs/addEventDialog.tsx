@@ -194,7 +194,7 @@ export const AddEventDialog = forwardRef<HTMLDialogElement, IDialog>(
                         <p>Pobieranie...</p>
                     )}
                     <label>Minuta</label>
-                    <input type="number" name="basicTime" max={90} min={1} />
+                    <input type="number" name="basicTime" min={1} />
                     <label>Doliczona minuta</label>
                     <input
                         type="number"

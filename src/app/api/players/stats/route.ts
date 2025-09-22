@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { connectDB } from "@/lib/mongodb";
 import Player from "@/models/player";
-import Match, { IMatch } from "@/models/match";
+import Match, { IMatch, MatchStatus } from "@/models/match";
 import mongoose, { ObjectId } from "mongoose";
 import Competition from "@/models/competition";
 import Team from "@/models/team";
@@ -14,6 +14,10 @@ interface IPlayerStats {
         quantity: number;
     }[];
 }
+type penaltiesType = {
+    homeTeam: number;
+    awayTeam: number;
+};
 type Accumulator = Record<string, IPlayerStats>;
 
 const reduceForPlayer = (
@@ -74,10 +78,21 @@ async function updateCleanSheetAndAppearances(
         await Player.bulkWrite(bulkOps);
     }
 }
-const matchResult = (homeTeamScore: number, awayTeamScore: number) => {
-    if (homeTeamScore > awayTeamScore) {
+const matchResult = (
+    homeTeamScore: number,
+    awayTeamScore: number,
+    homeTeamPenaltiesScore: number,
+    awayTeamPenaltiesScore: number
+) => {
+    if (
+        homeTeamScore > awayTeamScore ||
+        homeTeamPenaltiesScore > awayTeamPenaltiesScore
+    ) {
         return "wins";
-    } else if (homeTeamScore < awayTeamScore) {
+    } else if (
+        homeTeamScore < awayTeamScore ||
+        homeTeamPenaltiesScore < awayTeamPenaltiesScore
+    ) {
         return "loses";
     } else {
         return "draws";
@@ -89,7 +104,9 @@ async function updateTeamStats(
     homeTeamId: mongoose.Types.ObjectId,
     homeTeamScore: number,
     awayTeamId: mongoose.Types.ObjectId,
-    awayTeamScore: number
+    awayTeamScore: number,
+    homeTeamPenaltiesScore: number,
+    awayTeamPenaltiesScore: number
 ) {
     const [homeTeam, awayTeam] = await Promise.all([
         Team.findById(homeTeamId),
@@ -97,8 +114,18 @@ async function updateTeamStats(
     ]);
     if (!homeTeam || !awayTeam) return;
 
-    const homeTeamResult = matchResult(homeTeamScore, awayTeamScore);
-    const awayTeamResult = matchResult(awayTeamScore, homeTeamScore);
+    const homeTeamResult = matchResult(
+        homeTeamScore,
+        awayTeamScore,
+        homeTeamPenaltiesScore,
+        awayTeamPenaltiesScore
+    );
+    const awayTeamResult = matchResult(
+        awayTeamScore,
+        homeTeamScore,
+        homeTeamPenaltiesScore,
+        awayTeamPenaltiesScore
+    );
 
     const newMatch = {
         matchId: new mongoose.Types.ObjectId(matchId),
@@ -107,13 +134,16 @@ async function updateTeamStats(
             id: homeTeamId,
             name: homeTeam.name,
             score: homeTeamScore,
+            penalties: homeTeamPenaltiesScore > 0 ? homeTeamPenaltiesScore : 0,
         },
         awayTeam: {
             id: awayTeamId,
             name: awayTeam.name,
             score: awayTeamScore,
+            penalties: awayTeamPenaltiesScore > 0 ? awayTeamPenaltiesScore : 0,
         },
     };
+
     const homeTeamForm = [...homeTeam.form, newMatch].slice(-5);
     const awayTeamForm = [...awayTeam.form, newMatch].slice(-5);
     await Promise.all([
@@ -123,7 +153,9 @@ async function updateTeamStats(
                 matches: 1,
                 goal_balance: homeTeamScore - awayTeamScore,
             },
-            $set: { form: homeTeamForm },
+            $set: {
+                form: homeTeamForm,
+            },
         }),
         Team.findByIdAndUpdate(awayTeamId, {
             $inc: {
@@ -131,12 +163,24 @@ async function updateTeamStats(
                 matches: 1,
                 goal_balance: awayTeamScore - homeTeamScore,
             },
-            $set: { form: awayTeamForm },
+            $set: {
+                form: awayTeamForm,
+            },
+        }),
+        Match.findByIdAndUpdate(matchId, {
+            $set: {
+                homeTeamPenaltiesScore,
+                awayTeamPenaltiesScore,
+            },
         }),
     ]);
 }
 
-async function updatedStatsAfterMatch(match: IMatch, matchId: string) {
+async function updatedStatsAfterMatch(
+    match: IMatch,
+    matchId: string,
+    matchPenalties: penaltiesType
+) {
     const playersStats = Object.values(
         match.events.reduce((acc, event) => {
             let playerId = event.player.id.toString();
@@ -187,11 +231,13 @@ async function updatedStatsAfterMatch(match: IMatch, matchId: string) {
         match.homeTeamId,
         match.homeTeamScore,
         match.awayTeamId,
-        match.awayTeamScore
+        match.awayTeamScore,
+        matchPenalties.homeTeam,
+        matchPenalties.awayTeam
     );
 
     await Match.findByIdAndUpdate(matchId, {
-        $set: { isOnGoing: false },
+        $set: { matchStatus: MatchStatus.FINISHED },
     });
     await Competition.findOneAndUpdate(
         { competitionId: new mongoose.Types.ObjectId(matchId) },
@@ -203,7 +249,7 @@ export async function POST(request: NextRequest) {
     try {
         await connectDB();
         const body = await request.json();
-        const matchId = body.matchId;
+        const { matchId, matchPenalties } = body;
         const match = await Match.findById(matchId);
         if (!match) {
             return NextResponse.json({
@@ -211,7 +257,7 @@ export async function POST(request: NextRequest) {
                 status: 404,
             });
         }
-        await updatedStatsAfterMatch(match, matchId);
+        await updatedStatsAfterMatch(match, matchId, matchPenalties);
         if (match.tournamentId !== "") {
             const teamsInTournament = await Tournament.findById(
                 match.tournamentId

@@ -59,8 +59,18 @@ export async function fetchAllPlayersForMatch(
     return (await res).json();
 }
 
-export async function updatePlayerStats(matchId: string) {
-    const res = await axios.post("/api/players/stats", { matchId });
+type penaltiesType = {
+    homeTeam: number;
+    awayTeam: number;
+};
+export async function updatePlayerStats(
+    matchId: string,
+    matchPenalties: penaltiesType
+) {
+    const res = await axios.post("/api/players/stats", {
+        matchId,
+        matchPenalties,
+    });
 
     return res.status;
 }
