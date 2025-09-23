@@ -7,6 +7,8 @@ import { useQuery } from "@tanstack/react-query";
 import Image from "next/image";
 import teamInfoLayout from "./sideTeamInfo.module.css";
 import TeamForm from "@/components/teamForm/teamForm";
+import "@/styles/toolTip.css";
+import PlayersCarousel from "./playersCarousel/playersCarousel";
 
 export default function sideTeamInfo({ teamId }: { teamId: string }) {
     const {
@@ -32,14 +34,26 @@ export default function sideTeamInfo({ teamId }: { teamId: string }) {
                             height={300}
                         ></Image>
                         <h1>{teamData.name}</h1>
+                        <div className={teamInfoLayout.teamStats}>
+                            <h2 className="toolTip">
+                                Bilans{" "}
+                                <span className="toolTipText">(Z-R-P)</span>
+                            </h2>
+                            <h2>{`${teamData.wins}-${teamData.draws}-${teamData.loses}`}</h2>
+                            <h2 className="toolTip">
+                                Forma{" "}
+                                <span className="toolTipText">
+                                    ostatnie 5 meczy
+                                </span>
+                            </h2>
+                            <TeamForm
+                                form={teamData.form}
+                                teamId={teamId}
+                                IconWidth={45}
+                            />
+                        </div>
 
-                        <h2>Forma</h2>
-                        <TeamForm
-                            form={teamData.form}
-                            teamId={teamId}
-                            IconWidth={45}
-                        />
-                        <h2>Bilans</h2>
+                        <PlayersCarousel teamId={teamId} />
                     </div>
                 ) : (
                     <h1>Brak drużyny</h1>

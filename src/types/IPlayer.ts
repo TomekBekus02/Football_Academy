@@ -14,4 +14,12 @@ export interface IPlayer {
     yellowCards?: number;
 }
 
+export interface IStatPlayer {
+    _id: string;
+    name: string;
+    photo: string;
+    statCategory: string;
+    statNumber: number;
+}
+
 

@@ -1,0 +1,61 @@
+.header {
+    font-weight: 800;
+    margin: 10px 0px 10px 10px;
+}
+.carouselBox {
+    display: flex;
+    width: 300px;
+}
+.carouselBox button {
+    border: none;
+    background: none;
+    cursor: pointer;
+}
+.carouselBox button:hover {
+    color: aliceblue;
+}
+
+.carousel {
+    position: relative;
+    width: 280px;
+    overflow: hidden;
+}
+
+.carouselTrack {
+    display: flex;
+    transition: transform 0.5s ease;
+}
+
+.carouselItem {
+    min-width: 260px;
+    min-height: 280px;
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+}
+.playerNameBox {
+    background-color: rgb(13, 101, 13);
+    width: 100%;
+    width: 200px;
+}
+.playerNameBox p {
+    font-size: 22px;
+    font-weight: 700;
+    padding: 3px;
+}
+
+.playerStat {
+    text-align: center;
+    width: 100%;
+    background-color: rgb(197, 198, 197);
+    padding: 8px;
+}
+.playerStat p {
+    font-size: 23px;
+    background-color: var(--secondary-color);
+    padding: 2px;
+    font-weight: 800;
+    border-radius: 30px;
+}

@@ -41,7 +41,7 @@ export default function TeamForm({ teamId, form, IconWidth }: teamFormType) {
                     <Link
                         href={`/admin/mecz/${m.matchId}`}
                         key={index}
-                        className="toolTip"
+                        className={`toolTip ${teamFormLayout.icon}`}
                     >
                         {getTeamPerspectiveIcon(
                             m.homeTeam,

@@ -6,3 +6,10 @@
     text-align: center;
     padding: 0 5px;
 }
+.teamStats{
+    margin-top: 15px;
+    font-size: 20px;
+}
+.teamStats h2{
+    margin-top: 10px;
+}
