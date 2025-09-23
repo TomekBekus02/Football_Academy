@@ -18,12 +18,16 @@ type playerRowType = {
     playersData: IPlayer[];
     isLoading: boolean;
     error: Error | null;
+    setPlayerId: React.Dispatch<React.SetStateAction<string>>;
+    OpenModal: () => void;
 };
 export default function playerRow({
     teamId,
     playersData,
     isLoading,
     error,
+    setPlayerId,
+    OpenModal,
 }: playerRowType) {
     const queryClient = useQueryClient();
     const mutation = useMutation({
@@ -45,6 +49,11 @@ export default function playerRow({
                 <td>Błąd: {error.message}</td>
             </tr>
         );
+
+    function handleEditPlayerDialog(playerId: string) {
+        setPlayerId(playerId);
+        OpenModal();
+    }
 
     return (
         <>
@@ -77,13 +86,15 @@ export default function playerRow({
                         <td>{player.position}</td>
 
                         <td className={rowStyles.buttonBox}>
-                            <Link
-                                href={`/admin/druzyna/${teamId}/sklad/${player._id}`}
+                            <button
+                                className="editBtn"
+                                onClick={() =>
+                                    handleEditPlayerDialog(player._id as string)
+                                }
                             >
-                                <button className="editBtn">
-                                    <Pencil className={rowStyles.icon} />
-                                </button>
-                            </Link>
+                                <Pencil className={rowStyles.icon} />
+                            </button>
+
                             <button
                                 onClick={() =>
                                     player._id && mutation.mutate(player._id)

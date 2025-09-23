@@ -3,11 +3,13 @@
 import PlayerRow from "@/app/admin/druzyna/[teamId]/sklad/playerRow/playerRow";
 import Link from "next/link";
 import pageLayout from "./page.module.css";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { IPlayer } from "@/types/IPlayer";
 import { fetchTeamSquad } from "@/services/PlayersFetches/usePlayers";
 import SortableTableHeader from "./playerRow/SortableTableHeader/SortableTableHeader";
+import { ModalHandle } from "./dialog/managePlayerDialog";
+import { ManagePlayerDialog } from "./dialog/managePlayerDialog";
 
 export default function Players({
     params,
@@ -25,22 +27,33 @@ export default function Players({
 
     const [playersData, setPlayersData] = useState<IPlayer[]>([]);
 
+    const modalRef = useRef<ModalHandle>(null);
+    const handleOpenModal = () => {
+        modalRef.current?.showModal();
+    };
+    const handleAddPlayerDialog = () => {
+        setPlayerId("");
+        handleOpenModal();
+    };
+    const [playerId, setPlayerId] = useState<string>("");
+
     useEffect(() => {
         if (data) {
             setPlayersData(data);
         }
     }, [data]);
+
     return (
         <div className={pageLayout.pageBox}>
+            <ManagePlayerDialog playerId={playerId} ref={modalRef} />
             <div className={pageLayout.tableBox}>
                 <div className={pageLayout.headerBox}>
-                    <Link
-                        href={`/admin/druzyna/${teamId}/sklad/dodaj-zawodnika`}
+                    <button
+                        className="buttonStyle addBtn"
+                        onClick={() => handleAddPlayerDialog()}
                     >
-                        <button className="buttonStyle addBtn">
-                            Dodaj zawodnika
-                        </button>
-                    </Link>
+                        Dodaj zawodnika
+                    </button>
                 </div>
                 <table>
                     <thead>
@@ -58,6 +71,8 @@ export default function Players({
                             teamId={teamId}
                             isLoading={isLoading}
                             error={error}
+                            setPlayerId={setPlayerId}
+                            OpenModal={handleOpenModal}
                         />
                     </tbody>
                 </table>
