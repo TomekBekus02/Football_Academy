@@ -1,13 +1,21 @@
 import teamLayout from "./teamLayout.module.css";
+import SideTeamInfo from "./sideTeamInfo";
+import React, { ReactNode } from "react";
 
-export default function TeamLayout({
-    children,
-}: {
-    children: React.ReactNode;
-}) {
+interface TeamLayoutProps {
+    children: ReactNode;
+    params: { teamId: string };
+}
+
+export default function TeamLayout({ children, params }: TeamLayoutProps) {
+    const { teamId } = params;
     return (
         <div className={teamLayout.teamPage}>
-            <aside>Sidebar tylko dla drużyny</aside>
+            <div className={teamLayout.sideBarBox}>
+                <div className={teamLayout.sideTeamInfo}>
+                    <SideTeamInfo teamId={teamId} />
+                </div>
+            </div>
             <main>{children}</main>
         </div>
     );

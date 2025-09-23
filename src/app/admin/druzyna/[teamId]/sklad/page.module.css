@@ -25,7 +25,7 @@
 }
 
 .tableBox thead th {
-    background-color: #36513a;
+    background-color: var(--green-color);
     color: #f0f0f0;
     text-align: center;
     padding: 12px 10px;
