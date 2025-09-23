@@ -37,3 +37,4 @@ export const updateScore = (
         awayTeamResult: isHomeTeamGoal ? awayTeamResult : awayTeamResult + 1,
     };
 };
+

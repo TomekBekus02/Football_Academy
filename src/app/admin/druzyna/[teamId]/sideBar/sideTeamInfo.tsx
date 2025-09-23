@@ -6,6 +6,7 @@ import { ITeam } from "@/types/ITeam";
 import { useQuery } from "@tanstack/react-query";
 import Image from "next/image";
 import teamInfoLayout from "./sideTeamInfo.module.css";
+import TeamForm from "@/components/teamForm/teamForm";
 
 export default function sideTeamInfo({ teamId }: { teamId: string }) {
     const {
@@ -33,6 +34,11 @@ export default function sideTeamInfo({ teamId }: { teamId: string }) {
                         <h1>{teamData.name}</h1>
 
                         <h2>Forma</h2>
+                        <TeamForm
+                            form={teamData.form}
+                            teamId={teamId}
+                            IconWidth={45}
+                        />
                         <h2>Bilans</h2>
                     </div>
                 ) : (

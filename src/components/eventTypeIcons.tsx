@@ -5,6 +5,8 @@ import {
     WinIcon,
     LoseIcon,
     DrawIcon,
+    DrawLoseIcon,
+    DrawWinIcon,
 } from "@/components/icons/matchIcons";
 import { Volleyball } from "lucide-react";
 
@@ -20,13 +22,22 @@ export const eventTypeIcon = (type: string) => {
             return <RedCard width={25} />;
     }
 };
-
-export const resultIcon = (homeTeamScore: number, awayTeamScore: number) => {
-    if (homeTeamScore > awayTeamScore) {
-        return <WinIcon />;
-    } else if (homeTeamScore < awayTeamScore) {
-        return <LoseIcon />;
+export const matchResultIcon = (
+    yourTeamScore: number,
+    yourTeamPenScore: number,
+    oppositeTeamScore: number,
+    oppositeTeamPenScore: number,
+    IconWidth: number
+) => {
+    if (yourTeamScore > oppositeTeamScore) {
+        return <WinIcon width={IconWidth} />;
+    } else if (yourTeamScore < oppositeTeamScore) {
+        return <LoseIcon width={IconWidth} />;
+    } else if (yourTeamPenScore > oppositeTeamPenScore) {
+        return <DrawWinIcon width={IconWidth} />;
+    } else if (yourTeamPenScore < oppositeTeamPenScore) {
+        return <DrawLoseIcon width={IconWidth} />;
     } else {
-        return <DrawIcon />;
+        return <DrawIcon width={IconWidth} />;
     }
 };

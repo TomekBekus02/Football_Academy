@@ -178,3 +178,98 @@ export const DrawIcon = (props: React.SVGProps<SVGSVGElement>) => (
         </text>
     </svg>
 );
+
+export const DrawWinIcon = (props: React.SVGProps<SVGSVGElement>) => (
+    <svg
+        width="64"
+        height="64"
+        viewBox="0 0 64 64"
+        xmlns="http://www.w3.org/2000/svg"
+        role="img"
+        aria-labelledby="winTitle"
+    >
+        <defs>
+            <linearGradient
+                id="diagGradient"
+                x1="0%"
+                y1="0%"
+                x2="100%"
+                y2="100%"
+            >
+                <stop offset="0%" stop-color="#cccccc" />
+                <stop offset="50%" stop-color="#cccccc" />
+                <stop offset="50%" stop-color="#28a745" />
+                <stop offset="100%" stop-color="#28a745" />
+            </linearGradient>
+        </defs>
+
+        <rect
+            x="0"
+            y="0"
+            width="64"
+            height="64"
+            rx="10"
+            ry="10"
+            fill="url(#diagGradient)"
+        />
+        <text
+            x="50%"
+            y="50%"
+            text-anchor="middle"
+            dominant-baseline="middle"
+            font-family="system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial"
+            font-weight="700"
+            font-size="36"
+            fill="#ffffff"
+        >
+            Z
+        </text>
+    </svg>
+);
+export const DrawLoseIcon = (props: React.SVGProps<SVGSVGElement>) => (
+    <svg
+        width="64"
+        height="64"
+        viewBox="0 0 64 64"
+        xmlns="http://www.w3.org/2000/svg"
+        role="img"
+        aria-labelledby="winTitle"
+    >
+        <defs>
+            <linearGradient
+                id="diagGradient"
+                x1="0%"
+                y1="0%"
+                x2="100%"
+                y2="100%"
+            >
+                <stop offset="0%" stop-color="#cccccc" />
+                <stop offset="50%" stop-color="#cccccc" />
+                <stop offset="50%" stop-color="#dc3545" />
+                <stop offset="100%" stop-color="#dc3545" />
+            </linearGradient>
+        </defs>
+
+        <rect
+            x="0"
+            y="0"
+            width="64"
+            height="64"
+            rx="10"
+            ry="10"
+            fill="url(#diagGradient)"
+        />
+        <text
+            x="50%"
+            y="50%"
+            text-anchor="middle"
+            dominant-baseline="middle"
+            font-family="system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial"
+            font-weight="700"
+            font-size="36"
+            fill="#ffffff"
+        >
+            L
+        </text>
+    </svg>
+);
