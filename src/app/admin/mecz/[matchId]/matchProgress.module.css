@@ -31,3 +31,56 @@
     display: flex;
     justify-content: end;
 }
+
+.penBox{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+.penBox form{
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    padding: 15px;
+    background-color: var(--secondary-color);
+    border-radius: 15px;
+}
+
+.inputGroup {
+    position: relative;
+    width: 75px;
+    display: flex;
+}
+
+.inputGroup input {
+    width: 100%;
+    padding: 6px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    outline: none;
+    font-size: 22px;
+    appearance: none;
+    text-align: center;
+    background-color: var(--secondary-color);
+    color: antiquewhite;
+}
+
+.inputGroup label {
+    position: absolute;
+    left: 12px;
+    top: 12px;
+    color: #7b7878;
+    pointer-events: none;
+    transition: 0.2s ease all;
+    background-color: var(--secondary-color);
+    padding: 0 4px;
+
+}
+
+.inputGroup input:focus + label,
+.inputGroup input:not(:placeholder-shown) + label {
+    top: -9px;
+    left: 8px;
+    font-size: 18px;
+    color:antiquewhite;
+}

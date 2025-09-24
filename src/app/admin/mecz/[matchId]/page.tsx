@@ -105,27 +105,32 @@ export default function MatchProgress({
                             {matchData.isOverTime &&
                             matchData.matchStatus ===
                                 MatchStatus.IN_PROGRESS ? (
-                                <div>
+                                <div className={MatchLayout.penBox}>
+                                    <h1>Karne</h1>
                                     <form>
-                                        <h3>Karne</h3>
-                                        <label>Gospodarze</label>
-                                        <input
-                                            type="number"
-                                            name="homeTeam"
-                                            defaultValue={
-                                                matchPenalties.homeTeam
-                                            }
-                                            onChange={handlePenaltiesScore}
-                                        />
-                                        <label>Goscie</label>
-                                        <input
-                                            type="number"
-                                            name="awayTeam"
-                                            defaultValue={
-                                                matchPenalties.awayTeam
-                                            }
-                                            onChange={handlePenaltiesScore}
-                                        />
+                                        <div className={MatchLayout.inputGroup}>
+                                            <input
+                                                type="number"
+                                                name="homeTeam"
+                                                defaultValue={
+                                                    matchPenalties.homeTeam
+                                                }
+                                                onChange={handlePenaltiesScore}
+                                            />
+                                            <label>Gosp.</label>
+                                        </div>
+                                        <h1>:</h1>
+                                        <div className={MatchLayout.inputGroup}>
+                                            <input
+                                                type="number"
+                                                name="awayTeam"
+                                                defaultValue={
+                                                    matchPenalties.awayTeam
+                                                }
+                                                onChange={handlePenaltiesScore}
+                                            />
+                                            <label>Goście</label>
+                                        </div>
                                     </form>
                                 </div>
                             ) : null}
