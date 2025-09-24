@@ -1,27 +1,28 @@
 "use Client";
 
 import InputTemplate from "@/components/inputTemplate/inputTemplate";
-import {
-    addPlayer,
-    fetchSinglePlayer,
-    updatedPlayer,
-} from "@/services/PlayersFetches/usePlayers";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { forwardRef, useImperativeHandle, useRef } from "react";
 import inputLayout from "@/components/inputTemplate/inputTemplate.module.css";
 import "@/styles/dialog.css";
 import { ChevronDown } from "lucide-react";
+import {
+    addStaffMember,
+    editStaffMember,
+    FetchStaffMember,
+} from "@/services/StaffFetches/useStaff";
 
 type IDialog = {
-    playerId: string;
+    staffMemberId: string;
 };
 
 export type ModalHandle = {
     showModal: () => void;
 };
 
-export const ManagePlayerDialog = forwardRef<ModalHandle, IDialog>(
-    ({ playerId }, ref) => {
+export const ManageStaffDialog = forwardRef<ModalHandle, IDialog>(
+    ({ staffMemberId }, ref) => {
+        console.log("staffMemberId", staffMemberId);
         const dialogRef = useRef<HTMLDialogElement>(null);
         const formRef = useRef<HTMLFormElement>(null);
 
@@ -35,34 +36,35 @@ export const ManagePlayerDialog = forwardRef<ModalHandle, IDialog>(
 
         const { mutate, isPending, isError } = useMutation({
             mutationFn: (payload: {
-                playerId?: string;
+                memberId?: string;
                 formData: FormData;
             }) => {
-                if (payload.playerId) {
-                    return updatedPlayer({
-                        playerId: payload.playerId,
-                        newPlayer: payload.formData,
+                if (payload.memberId) {
+                    return editStaffMember({
+                        memberId: payload.memberId,
+                        formData: payload.formData,
                     });
                 } else {
-                    return addPlayer(payload.formData);
+                    return addStaffMember(payload.formData);
                 }
             },
             onSuccess: () => {
-                queryClient.invalidateQueries({ queryKey: ["players"] });
+                queryClient.invalidateQueries({ queryKey: ["staffMembers"] });
             },
         });
 
         const {
-            data: playerData,
+            data: memberData,
             error,
             isLoading,
         } = useQuery({
-            queryKey: ["players", playerId],
+            queryKey: ["staffMembers", staffMemberId],
             queryFn: ({ queryKey }) => {
-                const [, playerId] = queryKey;
-                return fetchSinglePlayer(playerId as string);
+                const [, staffMemberId] = queryKey;
+                console.log(staffMemberId);
+                return FetchStaffMember(staffMemberId as string);
             },
-            enabled: !!playerId,
+            enabled: !!staffMemberId,
         });
 
         const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
@@ -71,7 +73,7 @@ export const ManagePlayerDialog = forwardRef<ModalHandle, IDialog>(
             const form = e.currentTarget;
             const formData = new FormData(form);
 
-            mutate({ playerId: playerId || undefined, formData });
+            mutate({ memberId: staffMemberId || undefined, formData });
             e.currentTarget.reset();
             dialogRef?.current?.close();
         };
@@ -87,37 +89,48 @@ export const ManagePlayerDialog = forwardRef<ModalHandle, IDialog>(
                         type="text"
                         inputText="Imie i nazwisko"
                         name="name"
-                        defaultValue={playerId !== "" ? playerData?.name : null}
+                        defaultValue={
+                            staffMemberId !== "" ? memberData?.name : null
+                        }
                     />
                     <InputTemplate
-                        type="date"
-                        inputText="Data urodzenia"
-                        name="dateOfBirth"
+                        type="number"
+                        inputText="Wiek"
+                        name="age"
                         defaultValue={
-                            playerId !== "" ? playerData?.dateOfBirth : null
+                            staffMemberId !== "" ? memberData?.age : null
                         }
                     />
                     <div className={inputLayout.inputGroup}>
-                        <select
-                            name="position"
-                            defaultValue={playerData?.position}
-                        >
-                            <option value="Bramkarz">Bramkarz</option>
-                            <option value="Obrońca">Obrońca</option>
-                            <option value="Pomocnik">Pomocnik</option>
-                            <option value="Napastnik">Napastnik</option>
+                        <select name="role" defaultValue={memberData?.role}>
+                            <option value="Główny Trener">Główny Trener</option>
+                            <option value="Asystent Trenera">
+                                Asystent Trenera
+                            </option>
+                            <option value="Trener Bramkarzy">
+                                Trener Bramkarzy
+                            </option>
+                            <option value="Fizjoterapeuta">
+                                Fizjoterapeuta
+                            </option>
+                            <option value="Lekarz">Lekarz</option>
+                            <option value="Trener przygotowania fizycznego">
+                                Trener przygotowania fizycznego
+                            </option>
+                            <option value="Analityk">Analityk</option>
                         </select>
                         <label>Pozycja</label>
                         <ChevronDown className={inputLayout.selectIcon} />
                     </div>
-                    <InputTemplate
-                        type="number"
-                        inputText="Numer na koszulce"
-                        name="number"
-                        defaultValue={
-                            playerId !== "" ? playerData?.shirtNumber : null
-                        }
-                    />
+                    <div className={inputLayout.inputGroup}>
+                        <select
+                            name="ageGroup"
+                            defaultValue={memberData?.ageGroup}
+                        >
+                            <option value="U12">U12</option>
+                        </select>
+                        <label>Grupa wiekowa</label>
+                    </div>
                     <div>
                         <input
                             type="file"
@@ -127,7 +140,7 @@ export const ManagePlayerDialog = forwardRef<ModalHandle, IDialog>(
                     </div>
                     <input
                         type="text"
-                        defaultValue={playerData?.photo}
+                        defaultValue={memberData?.photo}
                         name="photoPath"
                         hidden
                     />
@@ -147,7 +160,7 @@ export const ManagePlayerDialog = forwardRef<ModalHandle, IDialog>(
                             disabled={isPending}
                             className="buttonStyle addBtn"
                         >
-                            {playerId
+                            {staffMemberId
                                 ? isPending
                                     ? "Aktualizowanie..."
                                     : "Edytuj"

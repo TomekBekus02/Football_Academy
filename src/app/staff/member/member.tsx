@@ -14,9 +14,9 @@ export default function member({
             <Image
                 src={photo}
                 alt={`${name}'s photo`}
-                width={480}
-                height={580}
-                className={classes.memberPhoto}
+                width={400}
+                height={500}
+                className="imageStyle"
             />
             <div className={classes.DetailsBox}>
                 <h2>

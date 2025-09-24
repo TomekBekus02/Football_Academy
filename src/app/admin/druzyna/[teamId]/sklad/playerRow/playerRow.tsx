@@ -65,8 +65,10 @@ export default function playerRow({
                                 <Image
                                     src={player.photo}
                                     alt=""
-                                    width={50}
-                                    height={60}
+                                    width={60}
+                                    height={70}
+                                    className="imageStyle"
+                                    style={{ marginTop: "3px" }}
                                 />
                             }
                         </th>

@@ -12,6 +12,8 @@ import { Trash, Pencil } from "lucide-react";
 import Link from "next/link";
 import LoadProvider from "@/components/LoadProvider/LoadProvider";
 import staffLayout from "./page.module.css";
+import { useRef, useState } from "react";
+import { ManageStaffDialog, ModalHandle } from "./dialog/manageStaffDialog";
 
 export default function Staff() {
     const queryClient = useQueryClient();
@@ -31,6 +33,16 @@ export default function Staff() {
         queryFn: FetchStaff,
     });
 
+    const modalRef = useRef<ModalHandle>(null);
+    const handleOpenModal = () => {
+        modalRef.current?.showModal();
+    };
+    const handleStaffDialog = (memberId: string) => {
+        setStaffMemberId(memberId !== "" ? memberId : "");
+        handleOpenModal();
+    };
+    const [staffMemberId, setStaffMemberId] = useState<string>("");
+
     const renderContent = () => {
         if (!staffData?.length) return <p>Brak sztabu</p>;
 
@@ -38,12 +50,15 @@ export default function Staff() {
             <>
                 <div style={{ position: "relative" }} key={member._id}>
                     <div className={staffLayout.buttonBox}>
-                        <button className="editBtn">
-                            <Link href={`/admin/sztab/${member._id}`}>
-                                <Pencil
-                                    className={`${staffLayout.icon} ${staffLayout.editIcon}`}
-                                />
-                            </Link>
+                        <button
+                            className="editBtn"
+                            onClick={() =>
+                                handleStaffDialog(member._id as string)
+                            }
+                        >
+                            <Pencil
+                                className={`${staffLayout.icon} ${staffLayout.editIcon}`}
+                            />
                         </button>
                         <button
                             className="deleteBtn"
@@ -73,11 +88,17 @@ export default function Staff() {
         <LoadProvider error={error} isLoading={isLoading}>
             <div className={classes.staffBox}>
                 <div>
-                    <Link href={"/admin/sztab/dodaj-czlonka-sztabu"}>
-                        <button className="buttonStyle addBtn">
-                            Dodaj członka sztabu
-                        </button>
-                    </Link>
+                    <ManageStaffDialog
+                        staffMemberId={staffMemberId}
+                        ref={modalRef}
+                    />
+                    <button
+                        className="buttonStyle addBtn"
+                        onClick={() => handleStaffDialog("")}
+                    >
+                        Dodaj członka sztabu
+                    </button>
+
                     <div className={classes.staffContent}>
                         {renderContent()}
                     </div>

@@ -19,7 +19,9 @@ export default function AdminLayout({ teamId }: { teamId: string }) {
                         </Link>
                     </li>
                     <li>
-                        <Link href="/admin/sztab">Sztab</Link>
+                        <Link href={`/admin/druzyna/${teamId}/sztab`}>
+                            Sztab
+                        </Link>
                     </li>
                     <li>
                         <Link href="/admin/rozgrywki">Rozgrywki</Link>

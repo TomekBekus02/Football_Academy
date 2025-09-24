@@ -32,6 +32,7 @@ export default function sideTeamInfo({ teamId }: { teamId: string }) {
                             alt={teamData.name}
                             width={250}
                             height={250}
+                            className="imageStyle"
                         ></Image>
                         <h1>{teamData.name}</h1>
                         <div className={teamInfoLayout.teamStats}>
