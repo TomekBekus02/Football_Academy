@@ -15,7 +15,7 @@ export const YellowCard = (props: React.SVGProps<SVGSVGElement>) => (
             rx="2"
             fill="#FACC15"
             stroke="#EAB308"
-            stroke-width="1.5"
+            strokeWidth="1.5"
         />
     </svg>
 );
@@ -37,7 +37,7 @@ export const RedCard = (props: React.SVGProps<SVGSVGElement>) => (
             rx="2"
             fill="#EF4444"
             stroke="#DC2626"
-            stroke-width="1.5"
+            strokeWidth="1.5"
         />
     </svg>
 );

@@ -15,10 +15,10 @@ export async function GET(req: NextRequest) {
         const awayTeamId = searchParams.get("awayTeam");
 
         const homeTeamName = await Team.findById(homeTeamId).select(
-            "_id, name"
+            "_id name logo"
         );
         const awayTeamName = await Team.findById(awayTeamId).select(
-            "_id, name"
+            "_id name logo"
         );
         if (!awayTeamName || !homeTeamName) {
             return NextResponse.json({

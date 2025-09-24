@@ -1,4 +1,4 @@
-import inputLayout from "./inputTemplate.module.css";
+import inputLayout from "@/components/inputTemplate/inputTemplate.module.css";
 
 type InputTemplateProps = React.InputHTMLAttributes<HTMLInputElement> & {
     inputText: string;

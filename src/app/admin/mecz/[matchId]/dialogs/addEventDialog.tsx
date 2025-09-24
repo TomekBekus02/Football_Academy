@@ -5,6 +5,8 @@ import { IMatchEventExt } from "@/types/IEvent";
 import { extractPlayerName, updateScore } from "@/utils/utils";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { forwardRef, useState } from "react";
+import inputLayout from "@/components/inputTemplate/inputTemplate.module.css";
+import eventDialogLayout from "./eventDialog.module.css";
 
 type IDialog = {
     matchId: string;
@@ -121,57 +123,66 @@ export const AddEventDialog = forwardRef<HTMLDialogElement, IDialog>(
             }
         }
         return (
-            <dialog ref={ref}>
-                <form id="EventForm" onSubmit={handleEvents}>
-                    <label>Typ wydarzenia</label>
-                    <select
-                        name="eventType"
-                        onChange={(e) => setEventType(e.target.value)}
-                    >
-                        <option value="">Wybierz</option>
-                        <option value="Goal">Bramka</option>
-                        <option value="RedCard">Czerwona kartka</option>
-                        <option value="YellowCard">Żółta kartka</option>
-                    </select>
-                    <label>Drużyna</label>
+            <dialog ref={ref} className="dialogBox">
+                <form
+                    id="EventForm"
+                    onSubmit={handleEvents}
+                    className="dialogContent"
+                >
+                    <div className={inputLayout.inputGroup}>
+                        <select
+                            name="eventType"
+                            onChange={(e) => setEventType(e.target.value)}
+                        >
+                            <option value="Goal">Bramka</option>
+                            <option value="RedCard">Czerwona kartka</option>
+                            <option value="YellowCard">Żółta kartka</option>
+                        </select>
+                        <label>Typ wydarzenia</label>
+                    </div>
+
                     {!isLoading ? (
                         <>
-                            <select
-                                name="playerTeamId"
-                                defaultValue={matchData.homeTeam?._id.toString()}
-                                onChange={(e) =>
-                                    setSelectedTeam(e.target.value)
-                                }
-                            >
-                                <option
-                                    value={matchData.homeTeam?._id.toString()}
+                            <div className={inputLayout.inputGroup}>
+                                <select
+                                    name="playerTeamId"
+                                    defaultValue={matchData.homeTeam?._id.toString()}
+                                    onChange={(e) =>
+                                        setSelectedTeam(e.target.value)
+                                    }
                                 >
-                                    {matchData.homeTeam?.name}
-                                </option>
-                                <option
-                                    value={matchData.awayTeam?._id.toString()}
-                                >
-                                    {matchData.awayTeam?.name}
-                                </option>
-                            </select>
-                            <label>Zawodnik</label>
-                            <select name="playerId">
-                                {players?.map(
-                                    (player: {
-                                        _id: string;
-                                        name: string;
-                                        shirtNumber: string;
-                                    }) => (
-                                        <option
-                                            value={player._id}
-                                            key={player._id}
-                                        >{`${player.shirtNumber}. ${player.name}`}</option>
-                                    )
-                                )}
-                            </select>
+                                    <option
+                                        value={matchData.homeTeam?._id.toString()}
+                                    >
+                                        {matchData.homeTeam?.name}
+                                    </option>
+                                    <option
+                                        value={matchData.awayTeam?._id.toString()}
+                                    >
+                                        {matchData.awayTeam?.name}
+                                    </option>
+                                </select>
+                                <label>Drużyna</label>
+                            </div>
+                            <div className={inputLayout.inputGroup}>
+                                <select name="playerId">
+                                    {players?.map(
+                                        (player: {
+                                            _id: string;
+                                            name: string;
+                                            shirtNumber: string;
+                                        }) => (
+                                            <option
+                                                value={player._id}
+                                                key={player._id}
+                                            >{`${player.shirtNumber}. ${player.name}`}</option>
+                                        )
+                                    )}
+                                </select>
+                                <label>Zawodnik</label>
+                            </div>
                             {eventType === "Goal" ? (
-                                <div>
-                                    <label>Asystujący</label>
+                                <div className={inputLayout.inputGroup}>
                                     <select name="assist_playerId">
                                         <option value=""></option>
                                         {players?.map(
@@ -187,33 +198,47 @@ export const AddEventDialog = forwardRef<HTMLDialogElement, IDialog>(
                                             )
                                         )}
                                     </select>
+                                    <label>Asystujący</label>
                                 </div>
                             ) : null}
                         </>
                     ) : (
                         <p>Pobieranie...</p>
                     )}
-                    <label>Minuta</label>
-                    <input type="number" name="basicTime" min={1} />
-                    <label>Doliczona minuta</label>
-                    <input
-                        type="number"
-                        name="extraTime"
-                        min={0}
-                        defaultValue={0}
-                    />
+                    <div className={eventDialogLayout.minsBox}>
+                        <div className={eventDialogLayout.inputGroupd}>
+                            <input type="number" name="basicTime" min={1} />
+                            <label>czas podstawowy</label>
+                        </div>
+                        <div className={eventDialogLayout.inputGroupd}>
+                            <input
+                                type="number"
+                                name="extraTime"
+                                min={0}
+                                defaultValue={0}
+                            />
+                            <label>czas doliczony</label>
+                        </div>
+                    </div>
                     <input type="text" defaultValue={matchId} hidden />
                 </form>
 
-                <button
-                    type="button"
-                    onClick={() => dialogRef?.current?.close()}
-                >
-                    Anuluj
-                </button>
-                <button type="submit" form="EventForm">
-                    {isPending ? "Tworzenie..." : "Dodaj wydarzenie"}
-                </button>
+                <div className="dialogButtonBox">
+                    <button
+                        type="button"
+                        onClick={() => dialogRef?.current?.close()}
+                        className="buttonStyle cancelBtn"
+                    >
+                        Anuluj
+                    </button>
+                    <button
+                        type="submit"
+                        form="EventForm"
+                        className="buttonStyle addBtn"
+                    >
+                        {isPending ? "Tworzenie..." : "Dodaj wydarzenie"}
+                    </button>
+                </div>
             </dialog>
         );
     }
