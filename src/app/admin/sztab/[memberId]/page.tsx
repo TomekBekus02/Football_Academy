@@ -5,6 +5,7 @@ import {
     editStaffMember,
     FetchStaffMember,
 } from "@/services/StaffFetches/useStaff";
+import { IStaffMember } from "@/types/IStaffMember";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
 import React from "react";
@@ -31,11 +32,11 @@ export default function editedStaffMember({
         data: memberData,
         isLoading,
         error,
-    } = useQuery({
+    } = useQuery<IStaffMember>({
         queryKey: ["staffMembers", memberId],
         queryFn: ({ queryKey }) => {
             const [, memberId] = queryKey;
-            return FetchStaffMember(memberId);
+            return FetchStaffMember(memberId as string);
         },
     });
 
@@ -56,7 +57,7 @@ export default function editedStaffMember({
                         <input
                             type="text"
                             name="name"
-                            defaultValue={memberData.name}
+                            defaultValue={memberData?.name}
                         />
                     </div>
                     <div>
@@ -64,12 +65,12 @@ export default function editedStaffMember({
                         <input
                             type="number"
                             name="age"
-                            defaultValue={memberData.age}
+                            defaultValue={memberData?.age}
                         />
                     </div>
                     <div>
                         <label>Rola</label>
-                        <select name="role" defaultValue={memberData.role}>
+                        <select name="role" defaultValue={memberData?.role}>
                             <option value="Główny Trener">Główny Trener</option>
                             <option value="Asystent Trenera">
                                 Asystent Trenera
@@ -91,7 +92,7 @@ export default function editedStaffMember({
                         <label>Grupa wiekowa</label>
                         <select
                             name="ageGroup"
-                            defaultValue={memberData.ageGroup}
+                            defaultValue={memberData?.ageGroup}
                         >
                             <option value="U12">U12</option>
                         </select>
@@ -106,7 +107,7 @@ export default function editedStaffMember({
                     <input
                         type="text"
                         name="photoPath"
-                        defaultValue={memberData.photo}
+                        defaultValue={memberData?.photo}
                         hidden
                     />
                     <button>

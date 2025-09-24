@@ -17,7 +17,6 @@ export async function FetchStaffMember(memberId: string) {
     if (!res.ok) {
         throw new Error("Błąd podczas pobierania danych");
     }
-
     return res.json();
 }
 

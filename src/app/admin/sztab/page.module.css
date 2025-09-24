@@ -5,7 +5,6 @@
 .buttonBox button {
     margin: 4px;
     height: 65px;
-    background: none;
     cursor: pointer;
     transition: background-color 0.3s ease, box-shadow 0.3s ease;
 }

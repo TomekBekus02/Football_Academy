@@ -36,7 +36,7 @@ export default function Staff() {
 
         return staffData.map((member) => (
             <>
-                <div style={{ position: "relative" }}>
+                <div style={{ position: "relative" }} key={member._id}>
                     <div className={staffLayout.buttonBox}>
                         <button className="editBtn">
                             <Link href={`/admin/sztab/${member._id}`}>

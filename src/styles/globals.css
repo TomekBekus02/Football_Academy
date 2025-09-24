@@ -31,9 +31,13 @@ a{
 
 .deleteBtn {
     border: 0.1px dashed red;
+    background-color: #484848;
+    border-radius: 5px;
 }
 .editBtn {
     border: 0.1px dashed #004cff;
+    background-color: #484848;
+    border-radius: 5px;
 }
 .editBtn:hover {
     background-color: #2c3ace;
