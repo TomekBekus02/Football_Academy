@@ -30,8 +30,8 @@ export default function sideTeamInfo({ teamId }: { teamId: string }) {
                         <Image
                             src={teamData.logo}
                             alt={teamData.name}
-                            width={300}
-                            height={300}
+                            width={250}
+                            height={250}
                         ></Image>
                         <h1>{teamData.name}</h1>
                         <div className={teamInfoLayout.teamStats}>

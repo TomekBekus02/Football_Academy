@@ -122,8 +122,8 @@ export default function PlayersCarousel({ teamId }: { teamId: string }) {
                                             <Image
                                                 src={player.photo}
                                                 alt={player.name}
-                                                width={200}
-                                                height={220}
+                                                width={170}
+                                                height={190}
                                             />
                                             <div
                                                 className={

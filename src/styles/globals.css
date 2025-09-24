@@ -18,7 +18,7 @@ a{
     text-decoration: none;
 }
 .buttonStyle {
-    padding: 8px;
+    padding: 8px 15px;
     margin: 5px;
     border-radius: 12px;
     border: none;
@@ -50,6 +50,17 @@ a{
     margin-bottom: 15px;
 }
 .addBtn:hover {
-    background-color: #15660a;
+    background-color: #1d7711;
     box-shadow: 2px 2px 7px #58a858;
+}
+.cancelBtn {
+    background-color: #5e5f5f;
+    color: antiquewhite;
+    font-size: 20px;
+    margin-bottom: 15px;
+    border: #353d45;
+}
+.cancelBtn:hover {
+    background-color: #858484;
+    box-shadow: 2px 2px 7px #646766;
 }

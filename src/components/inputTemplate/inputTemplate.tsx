@@ -1,27 +1,16 @@
 import inputLayout from "./inputTemplate.module.css";
 
-type inputTemplateType = {
+type InputTemplateProps = React.InputHTMLAttributes<HTMLInputElement> & {
     inputText: string;
-    inputName: string;
-    inputValue: string;
-    inputType: string;
 };
 
 export default function InputTemplate({
     inputText,
-    inputName,
-    inputValue,
-    inputType,
     ...rest
-}: inputTemplateType) {
+}: InputTemplateProps) {
     return (
         <div className={inputLayout.inputGroup}>
-            <input
-                type={inputType}
-                name={inputName}
-                defaultValue={inputValue}
-                {...rest}
-            />
+            <input {...rest} />
             <label>{inputText}</label>
         </div>
     );
