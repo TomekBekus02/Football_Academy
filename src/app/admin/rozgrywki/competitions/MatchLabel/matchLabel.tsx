@@ -2,7 +2,6 @@ import { Hammer, Trash } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { IMatchCompetition } from "@/types/ICompetition";
-import { resultIcon } from "@/components/eventTypeIcons";
 import { MatchStatus } from "@/types/IMatch";
 
 type competitionProps = {

@@ -58,6 +58,11 @@ a{
     font-size: 20px;
     margin-bottom: 15px;
 }
+.defaultBtn{
+    font-size: 20px;
+    margin-bottom: 15px;
+    background-color: #abb2ac;
+}
 .addBtn:hover {
     background-color: #1d7711;
     box-shadow: 2px 2px 7px #58a858;

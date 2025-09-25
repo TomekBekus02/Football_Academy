@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import ChooseTeams from "./chooseTeams/chooseTeams";
 import { ITournamentTeam } from "@/types/ITeam";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
@@ -8,11 +8,15 @@ import { fetchTeamsBasics } from "@/services/TeamsFetches/useTeams";
 import LoadProvider from "@/components/LoadProvider/LoadProvider";
 import { ITournament } from "@/types/ITournament";
 import { createNewTournament } from "@/services/TournamentFetches/useTournament";
-import { useRouter } from "next/navigation";
+import inputLayout from "@/components/inputTemplate/inputTemplate.module.css";
 
-export default function createTournament() {
+type matchPropsType = {
+    dialogRef: React.MutableRefObject<HTMLDialogElement | null>;
+};
+
+export default function createTournament({ dialogRef }: matchPropsType) {
     const queryClient = useQueryClient();
-    const router = useRouter();
+
     const {
         mutate,
         isPending,
@@ -22,8 +26,9 @@ export default function createTournament() {
             createNewTournament(newTournament),
         onSuccess: () => {
             queryClient.invalidateQueries({ queryKey: ["tournaments"] });
-            router.push("/admin/rozgrywki");
-            router.refresh();
+            queryClient.invalidateQueries({ queryKey: ["competitions"] });
+            formRef?.current?.reset();
+            dialogRef?.current?.close();
         },
     });
     const {
@@ -34,10 +39,13 @@ export default function createTournament() {
         queryKey: ["teams"],
         queryFn: fetchTeamsBasics,
     });
+
     const [availableTeams, setAvailableTeams] =
         useState<ITournamentTeam[]>(teams);
     const [selectedTeams, setSelectedTeams] = useState<ITournamentTeam[]>([]);
     const [teamLimits, setTeamLimits] = useState<number>(4);
+
+    const formRef = useRef<HTMLFormElement>(null);
 
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
@@ -58,28 +66,29 @@ export default function createTournament() {
     useEffect(() => {
         setAvailableTeams(teams);
     }, [teams]);
+
     return (
-        <form onSubmit={handleSubmit} className="flex gap-6 p-6">
-            <LoadProvider error={queryError} isLoading={isLoading}>
-                <div>
-                    <label>Nazwa turnieju</label>
+        <LoadProvider error={queryError} isLoading={isLoading}>
+            <form onSubmit={handleSubmit} ref={formRef}>
+                <div className={inputLayout.inputGroup}>
                     <input type="text" name="title" />
+                    <label>Nazwa turnieju</label>
                 </div>
-                <div>
-                    <label>Data i godzina rozpoczęcia</label>
+                <div className={inputLayout.inputGroup}>
                     <input type="date" name="date" />
                     <input type="time" name="hour" />
+                    <label>Data i godzina rozpoczęcia</label>
                 </div>
-                <div>
-                    <label>Miejsce turnieju</label>
+                <div className={inputLayout.inputGroup}>
                     <input type="text" name="place" />
+                    <label>Miejsce turnieju</label>
                 </div>
-                <div>
-                    <label>Ilość drużyn</label>
+                <div className={inputLayout.inputGroup}>
                     <select name="teamLimits" onChange={handleOnChange}>
-                        <option value="4">Four</option>
-                        <option value="8">Eight</option>
+                        <option value="4">4</option>
+                        <option value="8">8</option>
                     </select>
+                    <label>Ilość drużyn</label>
                 </div>
                 {availableTeams !== undefined ? (
                     <ChooseTeams
@@ -93,15 +102,26 @@ export default function createTournament() {
                 ) : (
                     <p>Brak drużyn</p>
                 )}
-            </LoadProvider>
-
-            <button
-                type="submit"
-                className="bg-blue-500 text-white px-4 py-2 rounded h-fit"
-                disabled={teamLimits !== selectedTeams.length}
-            >
-                {isPending ? "Tworzenie..." : "Zapisz"}
-            </button>
-        </form>
+                <div className="dialogButtonBox">
+                    <button
+                        type="button"
+                        onClick={() => {
+                            formRef?.current?.reset();
+                            dialogRef?.current?.close();
+                        }}
+                        className="buttonStyle cancelBtn"
+                    >
+                        Anuluj
+                    </button>
+                    <button
+                        type="submit"
+                        disabled={teamLimits !== selectedTeams.length}
+                        className="buttonStyle addBtn"
+                    >
+                        {isPending ? "Tworzenie..." : "Zapisz"}
+                    </button>
+                </div>
+            </form>
+        </LoadProvider>
     );
 }
