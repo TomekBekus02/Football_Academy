@@ -16,11 +16,13 @@ export interface ITeam extends Document {
             id: string;
             name: string;
             score: number;
+            penalties: number;
         };
         awayTeam: {
             id: string;
             name: string;
             score: number;
+            penalties: number;
         };
     }[];
     achievements: {
@@ -46,11 +48,13 @@ const TeamSchema: Schema<ITeam> = new Schema({
                 id: String,
                 name: String,
                 score: Number,
+                penalties: Number,
             },
             awayTeam: {
                 id: String,
                 name: String,
                 score: Number,
+                penalties: Number,
             },
         },
     ],

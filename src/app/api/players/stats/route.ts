@@ -78,6 +78,7 @@ async function updateCleanSheetAndAppearances(
         await Player.bulkWrite(bulkOps);
     }
 }
+
 const matchResult = (
     homeTeamScore: number,
     awayTeamScore: number,
@@ -98,6 +99,7 @@ const matchResult = (
         return "draws";
     }
 };
+
 async function updateTeamStats(
     matchId: string,
     matchDate: string,
@@ -123,8 +125,8 @@ async function updateTeamStats(
     const awayTeamResult = matchResult(
         awayTeamScore,
         homeTeamScore,
-        homeTeamPenaltiesScore,
-        awayTeamPenaltiesScore
+        awayTeamPenaltiesScore,
+        homeTeamPenaltiesScore
     );
 
     const newMatch = {
@@ -259,17 +261,26 @@ export async function POST(request: NextRequest) {
         }
         await updatedStatsAfterMatch(match, matchId, matchPenalties);
         if (match.tournamentId !== "") {
-            const teamsInTournament = await Tournament.findById(
+            const teamsQuantityInTournament = await Tournament.findById(
                 match.tournamentId
             ).select("_id participants");
-            if (teamsInTournament) {
+            if (teamsQuantityInTournament) {
                 const maxRounds = Math.log2(
-                    teamsInTournament?.toObject().participants.length
+                    teamsQuantityInTournament?.toObject().participants.length
                 );
-                const winnerId =
-                    match.homeTeamScore > match.awayTeamScore
-                        ? match.homeTeamId
-                        : match.awayTeamId;
+                let winnerId;
+                if (match.homeTeamScore === match.awayTeamScore) {
+                    winnerId =
+                        matchPenalties.homeTeam > matchPenalties.awayTeam
+                            ? match.homeTeamId
+                            : match.awayTeamId;
+                } else {
+                    winnerId =
+                        match.homeTeamScore > match.awayTeamScore
+                            ? match.homeTeamId
+                            : match.awayTeamId;
+                }
+
                 if (match.round === maxRounds) {
                     await Tournament.findByIdAndUpdate(match.tournamentId, {
                         $set: { isOnGoing: false, winnerId: winnerId },
