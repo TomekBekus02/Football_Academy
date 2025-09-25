@@ -103,8 +103,9 @@ export default function MatchProgress({
                                 </div>
                             </div>
                             {matchData.isOverTime &&
-                            matchData.matchStatus ===
-                                MatchStatus.IN_PROGRESS ? (
+                            matchData.matchStatus === MatchStatus.IN_PROGRESS &&
+                            matchData.homeTeamScore ===
+                                matchData.awayTeamScore ? (
                                 <div className={MatchLayout.penBox}>
                                     <h1>Karne</h1>
                                     <form>

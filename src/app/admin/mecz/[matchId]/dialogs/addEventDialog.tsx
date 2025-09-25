@@ -67,6 +67,9 @@ export const AddEventDialog = forwardRef<HTMLDialogElement, IDialog>(
             const selectEl1 = e.currentTarget.elements.namedItem(
                 "playerId"
             ) as HTMLSelectElement;
+            console.log("playerTeamId:", playerTeamId);
+            console.log("eventType:", eventType);
+            console.log("selectEl1:", selectEl1);
             const playerName = extractPlayerName(selectEl1);
 
             let assist_playerName = "";
@@ -111,7 +114,7 @@ export const AddEventDialog = forwardRef<HTMLDialogElement, IDialog>(
         };
 
         const [selectedTeam, setSelectedTeam] = useState<string>("");
-        const [eventType, setEventType] = useState<string>("");
+        const [eventType, setEventType] = useState<string>("Goal");
         let players = [];
         if (!isLoading) {
             players = matchData.homeTeam?.players;
