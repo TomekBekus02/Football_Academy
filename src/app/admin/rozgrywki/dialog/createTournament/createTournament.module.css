@@ -1,0 +1,13 @@
+.formBox {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+.inputBox {
+    width: 400px !important;
+    display: flex;
+}
+.teamsBox {
+    display: flex;
+    gap: 10px;
+}

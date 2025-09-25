@@ -1,6 +1,6 @@
 "use client";
 
-import { Dispatch, SetStateAction } from "react";
+import { Dispatch, SetStateAction, useEffect, useState } from "react";
 import {
     DragDropContext,
     Droppable,
@@ -9,6 +9,7 @@ import {
 } from "@hello-pangea/dnd";
 import { ITournamentTeam } from "@/types/ITeam";
 import Image from "next/image";
+import TeamsLayout from "./chooseTeams.module.css";
 
 type chooseTeamsParams = {
     availableTeams: ITournamentTeam[];
@@ -29,10 +30,10 @@ export default function ChooseTeams({
     const handleDragEnd = (result: DropResult) => {
         const { source, destination } = result;
 
-        // upuszczone poza listę
+        // Jeśli upuszczono poza listę, nic nie robimy
         if (!destination) return;
 
-        // przeciągamy między różnymi listami
+        // Sprawdzamy, czy element zmienił listę
         if (source.droppableId !== destination.droppableId) {
             const sourceList =
                 source.droppableId === "available"
@@ -54,92 +55,97 @@ export default function ChooseTeams({
                 setSelectedTeams(sourceList);
                 setAvailableTeams(destList);
             }
-        } else {
-            // przeciąganie w tej samej liście (zmiana kolejności)
-            if (source.droppableId === "available") {
-                const newAvailable = Array.from(availableTeams);
-                const [moved] = newAvailable.splice(source.index, 1);
-                newAvailable.splice(destination.index, 0, moved);
-                setAvailableTeams(newAvailable);
-            } else {
-                const newSelected = Array.from(selectedTeams);
-                const [moved] = newSelected.splice(source.index, 1);
-                newSelected.splice(destination.index, 0, moved);
-                setSelectedTeams(newSelected);
-            }
         }
     };
 
     return (
         <DragDropContext onDragEnd={handleDragEnd}>
             {/* Dostępne drużyny */}
-            <h2 className="mb-4 font-bold">Dostępne drużyny</h2>
-            <Droppable droppableId="available">
-                {(provided) => (
-                    <div ref={provided.innerRef} {...provided.droppableProps}>
-                        {availableTeams.map((team, index) => (
-                            <Draggable
-                                key={team._id}
-                                draggableId={team._id}
-                                index={index}
-                            >
-                                {(provided) => (
-                                    <div
-                                        ref={provided.innerRef}
-                                        {...provided.draggableProps}
-                                        {...provided.dragHandleProps}
-                                    >
-                                        <Image
-                                            src={team.logo}
-                                            alt={team.name}
-                                            width={50}
-                                            height={45}
-                                        />
-                                        <p>{team.name}</p>
-                                    </div>
-                                )}
-                            </Draggable>
-                        ))}
-                        {provided.placeholder}
-                    </div>
-                )}
-            </Droppable>
+            <div>
+                <h2 className="mb-4 font-bold">Dostępne drużyny</h2>
+                <Droppable droppableId="available">
+                    {(provided) => (
+                        <div
+                            ref={provided.innerRef}
+                            {...provided.droppableProps}
+                            className={TeamsLayout.teamBox}
+                        >
+                            {availableTeams.map((team, index) => (
+                                <Draggable
+                                    key={team._id}
+                                    draggableId={team._id}
+                                    index={index}
+                                >
+                                    {(provided) => (
+                                        <div
+                                            ref={provided.innerRef}
+                                            {...provided.draggableProps}
+                                            {...provided.dragHandleProps}
+                                            className={TeamsLayout.teamItem}
+                                        >
+                                            <Image
+                                                src={team.logo}
+                                                alt={team.name}
+                                                width={60}
+                                                height={50}
+                                                className="imageStyle"
+                                            />
+                                            <p>{team.name}</p>
+                                        </div>
+                                    )}
+                                </Draggable>
+                            ))}
+                            {provided.placeholder}
+                        </div>
+                    )}
+                </Droppable>
+            </div>
 
             {/* Wybrane drużyny */}
-            <h1>
-                {currentTeamsSize}/{teamLimits}
-            </h1>
-            <h2 className="mb-4 font-bold">Wybrane drużyny</h2>
-            <Droppable droppableId="selected">
-                {(provided) => (
-                    <div ref={provided.innerRef} {...provided.droppableProps}>
-                        {selectedTeams.map((team, index) => (
-                            <Draggable
-                                key={team._id}
-                                draggableId={team._id}
-                                index={index}
-                            >
-                                {(provided) => (
-                                    <div
-                                        ref={provided.innerRef}
-                                        {...provided.draggableProps}
-                                        {...provided.dragHandleProps}
-                                    >
-                                        <Image
-                                            src={team.logo}
-                                            alt={team.name}
-                                            width={50}
-                                            height={45}
-                                        />
-                                        <p>{team.name}</p>
-                                    </div>
-                                )}
-                            </Draggable>
-                        ))}
-                        {provided.placeholder}
-                    </div>
-                )}
-            </Droppable>
+            <div>
+                <h2 className="mb-4 font-bold">
+                    Wybrane drużyny{" "}
+                    <span>
+                        {currentTeamsSize}/{teamLimits}
+                    </span>
+                </h2>
+                <Droppable droppableId="selected">
+                    {(provided) => (
+                        <div
+                            ref={provided.innerRef}
+                            {...provided.droppableProps}
+                            className={TeamsLayout.teamBox}
+                        >
+                            {selectedTeams.map((team, index) => (
+                                <Draggable
+                                    key={team._id}
+                                    draggableId={team._id}
+                                    index={index}
+                                >
+                                    {(provided) => (
+                                        <div
+                                            ref={provided.innerRef}
+                                            {...provided.draggableProps}
+                                            {...provided.dragHandleProps}
+                                            className={TeamsLayout.teamItem}
+                                        >
+                                            <Image
+                                                src={team.logo}
+                                                alt={team.name}
+                                                width={60}
+                                                height={50}
+                                                className="imageStyle"
+                                            />
+                                            <p>{team.name}</p>
+                                        </div>
+                                    )}
+                                </Draggable>
+                            ))}
+                            {provided.placeholder}
+                        </div>
+                    )}
+                </Droppable>
+            </div>
         </DragDropContext>
     );
 }

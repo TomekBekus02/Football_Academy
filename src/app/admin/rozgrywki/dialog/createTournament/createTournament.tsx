@@ -9,6 +9,7 @@ import LoadProvider from "@/components/LoadProvider/LoadProvider";
 import { ITournament } from "@/types/ITournament";
 import { createNewTournament } from "@/services/TournamentFetches/useTournament";
 import inputLayout from "@/components/inputTemplate/inputTemplate.module.css";
+import createTourLayout from "./createTournament.module.css";
 
 type matchPropsType = {
     dialogRef: React.MutableRefObject<HTMLDialogElement | null>;
@@ -69,21 +70,33 @@ export default function createTournament({ dialogRef }: matchPropsType) {
 
     return (
         <LoadProvider error={queryError} isLoading={isLoading}>
-            <form onSubmit={handleSubmit} ref={formRef}>
-                <div className={inputLayout.inputGroup}>
+            <form
+                onSubmit={handleSubmit}
+                ref={formRef}
+                className={`${createTourLayout.formBox}`}
+            >
+                <div
+                    className={`${inputLayout.inputGroup} ${createTourLayout.inputBox}`}
+                >
                     <input type="text" name="title" />
                     <label>Nazwa turnieju</label>
                 </div>
-                <div className={inputLayout.inputGroup}>
+                <div
+                    className={`${inputLayout.inputGroup} ${createTourLayout.inputBox}`}
+                >
                     <input type="date" name="date" />
                     <input type="time" name="hour" />
-                    <label>Data i godzina rozpoczęcia</label>
+                    <label>Termin rozpoczęcia</label>
                 </div>
-                <div className={inputLayout.inputGroup}>
+                <div
+                    className={`${inputLayout.inputGroup} ${createTourLayout.inputBox}`}
+                >
                     <input type="text" name="place" />
                     <label>Miejsce turnieju</label>
                 </div>
-                <div className={inputLayout.inputGroup}>
+                <div
+                    className={`${inputLayout.inputGroup} ${createTourLayout.inputBox}`}
+                >
                     <select name="teamLimits" onChange={handleOnChange}>
                         <option value="4">4</option>
                         <option value="8">8</option>
@@ -91,14 +104,16 @@ export default function createTournament({ dialogRef }: matchPropsType) {
                     <label>Ilość drużyn</label>
                 </div>
                 {availableTeams !== undefined ? (
-                    <ChooseTeams
-                        availableTeams={availableTeams}
-                        setAvailableTeams={setAvailableTeams}
-                        selectedTeams={selectedTeams}
-                        setSelectedTeams={setSelectedTeams}
-                        teamLimits={teamLimits}
-                        currentTeamsSize={selectedTeams.length}
-                    />
+                    <div className={createTourLayout.teamsBox}>
+                        <ChooseTeams
+                            availableTeams={availableTeams}
+                            setAvailableTeams={setAvailableTeams}
+                            selectedTeams={selectedTeams}
+                            setSelectedTeams={setSelectedTeams}
+                            teamLimits={teamLimits}
+                            currentTeamsSize={selectedTeams.length}
+                        />
+                    </div>
                 ) : (
                     <p>Brak drużyn</p>
                 )}

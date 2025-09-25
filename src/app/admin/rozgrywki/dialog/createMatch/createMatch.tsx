@@ -43,12 +43,9 @@ export default function createNewMatch({ dialogRef }: matchPropsType) {
                 <label>Adres meczu</label>
             </div>
             <div className={inputLayout.inputGroup}>
-                <input type="time" name="matchHour" />
-                <label>Data</label>
-            </div>
-            <div className={inputLayout.inputGroup}>
                 <input type="date" name="matchDate" />
-                <label>Godzina</label>
+                <input type="time" name="matchHour" />
+                <label>Termin meczu</label>
             </div>
 
             <input type="text" name="tournamentId" defaultValue="" hidden />

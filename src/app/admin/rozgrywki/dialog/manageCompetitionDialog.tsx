@@ -20,7 +20,7 @@ export const ManageCompetitionDialog = forwardRef<ModalHandle>(({}, ref) => {
         },
     }));
     return (
-        <dialog ref={dialogRef} className={`dialogBox`}>
+        <dialog ref={dialogRef} className={competitionDialogLayout.dialogBox}>
             <div className="dialogContent">
                 <h1>Nowe wydarzenie</h1>
                 <div>
@@ -41,13 +41,12 @@ export const ManageCompetitionDialog = forwardRef<ModalHandle>(({}, ref) => {
                         Mecz
                     </button>
                 </div>
-                <div>
-                    {eventType === "tournament" ? (
-                        <CreateTournament dialogRef={dialogRef} />
-                    ) : (
-                        <CreateMatch dialogRef={dialogRef} />
-                    )}
-                </div>
+
+                {eventType === "tournament" ? (
+                    <CreateTournament dialogRef={dialogRef} />
+                ) : (
+                    <CreateMatch dialogRef={dialogRef} />
+                )}
             </div>
         </dialog>
     );
