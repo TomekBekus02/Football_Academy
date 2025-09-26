@@ -7,37 +7,38 @@ import Tournament from "@/models/tournament";
 
 export async function GET(req: NextRequest) {
     try {
-        const { searchParams } = new URL(req.url);
-        const isOnGoingParam = searchParams.get("isOnGoing");
-        const isOnGoing = isOnGoingParam === "true";
-
         await connectDB();
-        const competitions = await Competition.find({
-            isOngoing: isOnGoing,
-        }).sort({ _id: -1 });
-        const fullData = await Promise.all(
+        const competitions = await Competition.find().sort({ isOnGoing: -1 });
+        const allMatches: any[] = [];
+        const allTournaments: any[] = [];
+        await Promise.all(
             competitions.map(async (comp) => {
-                const compObj = comp.toObject();
                 if (comp.label === "Match") {
                     const TeamDetails = await Match.findById(comp.competitionId)
                         .select(
-                            "_id homeTeamId awayTeamId matchStatus homeTeamScore awayTeamScore"
+                            "_id homeTeamId awayTeamId matchStatus homeTeamScore homeTeamPenaltiesScore awayTeamScore awayTeamPenaltiesScore matchDate matchHour place"
                         )
                         .populate("homeTeamId", "name logo")
                         .populate("awayTeamId", "name logo");
-                    return { TeamDetails, ...compObj };
+                    allMatches.push(TeamDetails);
                 } else {
                     const TournamentDetails = await Tournament.findById(
                         comp.competitionId
                     )
                         .select("_id title date hour isOnGoing winnerId")
                         .populate("winnerId", "_id name logo");
-                    return { TournamentDetails, ...compObj };
+                    allTournaments.push(TournamentDetails);
                 }
             })
         );
 
-        return NextResponse.json(fullData, { status: 200 });
+        return NextResponse.json(
+            {
+                allMatches: allMatches,
+                allTournaments: allTournaments,
+            },
+            { status: 200 }
+        );
     } catch (error) {
         return NextResponse.json(
             { message: "Nie udało się pobrać danych" },

@@ -28,6 +28,7 @@ export async function POST(request: NextRequest) {
             place,
             participants: shuffleArray(participants),
             topTeams: [],
+            winnerId: null,
             isOnGoing: true,
         });
         await newTournament.save();

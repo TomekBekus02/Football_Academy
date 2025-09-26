@@ -19,12 +19,7 @@ export default function tournaments() {
                 Stwórz nowe wydarzenie
             </button>
             <div>
-                <h1>Zaplanowane Rozgrywki</h1>
-                <Competitions isFinished={true} />
-            </div>
-            <div>
-                <h1>Zakończone Rozgrywki</h1>
-                <Competitions isFinished={false} />
+                <Competitions />
             </div>
         </div>
     );
