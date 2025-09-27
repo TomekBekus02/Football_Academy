@@ -20,7 +20,7 @@ export interface IshortTeamInfo {
     id: string;
     name: string;
     score: number;
-    penScore: number;
+    penalties: number;
 }
 export interface ITeamsForm {
     matchId: string;

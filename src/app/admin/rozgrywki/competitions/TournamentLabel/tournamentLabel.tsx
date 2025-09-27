@@ -16,19 +16,16 @@ export default function TournamentLabel({ tournaments }: competitionProps) {
     return (
         <>
             {tournaments.map((t) => (
-                <div
-                    key={t._id}
-                    onClick={() =>
-                        t._id === openedId
-                            ? setOpenedId("")
-                            : setOpenedId(t._id)
-                    }
-                    className={CompetitionLayout.accordionItem}
-                >
+                <div key={t._id} className={CompetitionLayout.accordionItem}>
                     <div
                         className={`${CompetitionLayout.accordionTitle} ${
                             openedId === t._id ? CompetitionLayout.selected : ""
                         }`}
+                        onClick={() =>
+                            t._id === openedId
+                                ? setOpenedId("")
+                                : setOpenedId(t._id)
+                        }
                     >
                         <div className={CompetitionLayout.competitionName}>
                             <Image
@@ -52,10 +49,10 @@ export default function TournamentLabel({ tournaments }: competitionProps) {
                     {openedId === t._id && (
                         <div className={CompetitionLayout.accordionContent}>
                             <CompetitionDetails
-                                isFinished={t.isOnGoing}
+                                isFinished={!t.isOnGoing}
                                 textDate={t.date}
                                 textHour={t.hour}
-                                textPlace="-"
+                                textPlace={t.place}
                             />
                             <div style={{ textAlign: "center" }}>
                                 <h2>Uczestnicy</h2>

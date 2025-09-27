@@ -106,7 +106,9 @@ export default function matchEvents({
                                 </button>
                             ) : null}
 
-                            {!isOverTime && homeTeamScore === awayTeamScore ? (
+                            {!isOverTime &&
+                            homeTeamScore === awayTeamScore &&
+                            tournamentId !== "" ? (
                                 <button
                                     onClick={() =>
                                         startOverTime.mutate(matchId)

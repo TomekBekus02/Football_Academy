@@ -29,6 +29,10 @@ export const matchResultIcon = (
     oppositeTeamPenScore: number,
     IconSize: number
 ) => {
+    // console.log("yourTeamScore: ", yourTeamScore);
+    // console.log("yourTeamPenScore: ", yourTeamPenScore);
+    // console.log("oppositeTeamScore: ", oppositeTeamScore);
+    // console.log("oppositeTeamPenScore: ", oppositeTeamPenScore);
     if (yourTeamScore > oppositeTeamScore) {
         return <WinIcon width={IconSize} height={IconSize} />;
     } else if (yourTeamScore < oppositeTeamScore) {

@@ -13,17 +13,17 @@ const getTeamPerspectiveIcon = (
     if (homeTeam.id == teamId) {
         return matchResultIcon(
             homeTeam.score,
-            homeTeam.penScore,
+            homeTeam.penalties,
             awayTeam.score,
-            awayTeam.penScore,
+            awayTeam.penalties,
             IconSize
         );
     } else {
         return matchResultIcon(
             awayTeam.score,
-            awayTeam.penScore,
+            awayTeam.penalties,
             homeTeam.score,
-            homeTeam.penScore,
+            homeTeam.penalties,
             IconSize
         );
     }
@@ -34,6 +34,7 @@ type teamFormType = {
     IconSize: number;
 };
 export default function TeamForm({ teamId, form, IconSize }: teamFormType) {
+    console.log("form: ", JSON.stringify(form, null, 2));
     return form.length > 0 ? (
         <div>
             {form.map((m, index) => {

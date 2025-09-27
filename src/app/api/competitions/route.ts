@@ -13,20 +13,20 @@ const transformData = (teamDetails: any) => {
         ...teamDetails,
         homeTeamId: {
             ...home,
-            form: away.form?.map((f: any) => ({
+            form: home.form?.map((f: any) => ({
                 matchId: f.matchId,
                 matchDate: f.matchDate,
                 homeTeam: {
                     id: f.homeTeam.id,
                     name: f.homeTeam.name,
                     score: f.homeTeam.score,
-                    penScore: f.homeTeam.penalties,
+                    penalties: f.homeTeam.penalties,
                 },
                 awayTeam: {
                     id: f.awayTeam.id,
                     name: f.awayTeam.name,
                     score: f.awayTeam.score,
-                    penScore: f.awayTeam.penalties,
+                    penalties: f.awayTeam.penalties,
                 },
             })),
         },
@@ -39,13 +39,13 @@ const transformData = (teamDetails: any) => {
                     id: f.homeTeam.id,
                     name: f.homeTeam.name,
                     score: f.homeTeam.score,
-                    penScore: f.homeTeam.penalties,
+                    penalties: f.homeTeam.penalties,
                 },
                 awayTeam: {
                     id: f.awayTeam.id,
                     name: f.awayTeam.name,
                     score: f.awayTeam.score,
-                    penScore: f.awayTeam.penalties,
+                    penalties: f.awayTeam.penalties,
                 },
             })),
         },
@@ -76,7 +76,7 @@ export async function GET(req: NextRequest) {
                         comp.competitionId
                     )
                         .select(
-                            "_id title date hour isOnGoing winnerId participants"
+                            "_id title date hour place isOnGoing winnerId participants"
                         )
                         .populate("winnerId", "_id name logo")
                         .populate("participants", "_id logo");

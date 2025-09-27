@@ -48,6 +48,7 @@ export interface ITournamentCompetition {
     title: string;
     date: string;
     hour: string;
+    place: string;
     winnerId: {
         _id: string;
         name: string;
