@@ -39,12 +39,14 @@ a{
     background-color: #484848;
     border-radius: 5px;
     color: antiquewhite;
+    cursor: pointer;
 }
 .editBtn {
     border: 0.1px dashed #004cff;
     background-color: #484848;
     border-radius: 5px;
     color: antiquewhite;
+    cursor: pointer;
 }
 .editBtn:hover {
     background-color: #2c3ace;
@@ -59,11 +61,13 @@ a{
     color: antiquewhite;
     font-size: 20px;
     margin-bottom: 15px;
+    cursor: pointer;
 }
 .defaultBtn{
     font-size: 20px;
     margin-bottom: 15px;
     background-color: #abb2ac;
+    cursor: pointer;
 }
 .addBtn:hover {
     background-color: #1d7711;
@@ -75,6 +79,7 @@ a{
     font-size: 20px;
     margin-bottom: 15px;
     border: #353d45;
+    cursor: pointer;
 }
 .cancelBtn:hover {
     background-color: #858484;

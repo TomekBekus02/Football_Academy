@@ -2,8 +2,12 @@
 import { eventTypeIcon } from "@/components/eventTypeIcons";
 import eventLayout from "./eventsHalf.module.css";
 import { IMatchEvent } from "@/types/IEvent";
+import { Trash } from "lucide-react";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { deleteEvent } from "@/services/MatchFetches/useMatch";
 
 type EventType = {
+    matchId: string;
     awayTeamId: string;
     events: IMatchEvent[];
 };
@@ -13,7 +17,15 @@ const shortName = (name: string | undefined) => {
     return `${name[0].toUpperCase()}. ${name.substring(name.indexOf(" ") + 1)}`;
 };
 
-export const EventsHalf = ({ awayTeamId, events }: EventType) => {
+export const EventsHalf = ({ matchId, awayTeamId, events }: EventType) => {
+    console.log("events", events);
+    const queryClient = useQueryClient();
+    const mutation = useMutation({
+        mutationFn: deleteEvent,
+        onSuccess: () => {
+            queryClient.invalidateQueries({ queryKey: ["match"] });
+        },
+    });
     if (events.length == 0) return null;
     events.sort((a, b) => {
         if (a.time.base === b.time.base) {
@@ -43,6 +55,19 @@ export const EventsHalf = ({ awayTeamId, events }: EventType) => {
                         <p>{`(${shortName(event.assist_player?.name)})`}</p>
                     ) : (
                         ""
+                    )}
+                    {true && (
+                        <button
+                            className="deleteBtn"
+                            onClick={() =>
+                                mutation.mutate({
+                                    eventId: event._id,
+                                    matchId: matchId,
+                                })
+                            }
+                        >
+                            <Trash size={20} />
+                        </button>
                     )}
                 </div>
             </div>

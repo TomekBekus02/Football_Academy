@@ -1,6 +1,7 @@
 import { IMatchEvent } from "./IEvent";
 
 export interface IMatch {
+    _id: string;
     matchDate: string;
     matchHour: string;
     place: string;

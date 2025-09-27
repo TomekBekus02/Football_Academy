@@ -1,7 +1,7 @@
 "use client";
 
 import LoadProvider from "@/components/LoadProvider/LoadProvider";
-import { IMatch } from "@/models/match";
+
 import { fetchMatchDetails } from "@/services/MatchFetches/useMatch";
 import GetTeamSquad from "./teamSquad/teamSquad";
 import { useQuery } from "@tanstack/react-query";
@@ -11,7 +11,7 @@ import MatchEvents from "./matchEvents/matchEvents";
 import { IMatchEvent } from "@/types/IEvent";
 import { mapEventsToIMatchEvent } from "@/utils/utils";
 import React, { useState } from "react";
-import { MatchStatus } from "@/types/IMatch";
+import { IMatch, MatchStatus } from "@/types/IMatch";
 
 export default function MatchProgress({
     params,

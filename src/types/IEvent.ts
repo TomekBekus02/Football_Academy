@@ -13,17 +13,8 @@ export interface IEvent {
     };
 }
 
-// export interface IPlayersEvent {
-//     id: string;
-//     name: string;
-//     teamId: string;
-//     events: {
-//         eventType: string;
-//         quantity: number;
-//     }[];
-// }
-
 export interface IMatchEvent {
+    _id: string;
     eventType: string;
     teamId: string;
     player: {

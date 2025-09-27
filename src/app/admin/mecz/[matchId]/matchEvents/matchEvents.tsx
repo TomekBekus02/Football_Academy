@@ -148,6 +148,7 @@ export default function matchEvents({
                         <h3>1. POŁOWA</h3>
                     </div>
                     <EventsHalf
+                        matchId={matchId}
                         awayTeamId={awayTeamId}
                         events={firstHalfEvents}
                     />
@@ -157,6 +158,7 @@ export default function matchEvents({
                         <h3>2. POŁOWA</h3>
                     </div>
                     <EventsHalf
+                        matchId={matchId}
                         awayTeamId={awayTeamId}
                         events={secondHalfEvents}
                     />
@@ -167,6 +169,7 @@ export default function matchEvents({
                             <h3>Dogrywka</h3>
                         </div>
                         <EventsHalf
+                            matchId={matchId}
                             awayTeamId={awayTeamId}
                             events={overTimeEvents}
                         />

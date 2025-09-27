@@ -8,6 +8,7 @@ export const extractPlayerName = (selectElement: HTMLSelectElement) => {
 
 export const mapEventsToIMatchEvent = (events: any[]): IMatchEvent[] => {
     return events.map((e) => ({
+        _id: e._id,
         eventType: e.eventType,
         teamId: e.teamId,
         player: {
