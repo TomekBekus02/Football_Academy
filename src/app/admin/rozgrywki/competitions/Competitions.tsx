@@ -28,7 +28,7 @@ export default function Competitions() {
                         {competitions && competitions.allMatches?.length > 0 ? (
                             <MatchLabel matches={competitions.allMatches} />
                         ) : (
-                            <h4>Brak meczy</h4>
+                            <h2>Brak meczy</h2>
                         )}
                     </div>
                 </div>
@@ -44,7 +44,7 @@ export default function Competitions() {
                                 tournaments={competitions.allTournaments}
                             />
                         ) : (
-                            <h4>Brak Turniejów</h4>
+                            <h2>Brak Turniejów</h2>
                         )}
                     </div>
                 </div>

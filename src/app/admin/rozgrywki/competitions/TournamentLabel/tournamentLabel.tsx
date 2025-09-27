@@ -4,7 +4,8 @@ import Image from "next/image";
 import Link from "next/link";
 import CompetitionLayout from "../competitionLabel.module.css";
 import { useState } from "react";
-import { ChevronUp } from "lucide-react";
+import { ChevronUp, Medal } from "lucide-react";
+import CompetitionDetails from "../competitionDetails";
 
 type competitionProps = {
     tournaments: ITournamentCompetition[];
@@ -50,16 +51,70 @@ export default function TournamentLabel({ tournaments }: competitionProps) {
                     </div>
                     {openedId === t._id && (
                         <div className={CompetitionLayout.accordionContent}>
-                            <div>
-                                <button>
-                                    <Link href={`/admin/tournament/${t._id}`}>
-                                        <Hammer /> Zarządzaj
-                                    </Link>
-                                </button>
-                                <button>
-                                    <Trash /> Usuń
-                                </button>
+                            <CompetitionDetails
+                                isFinished={t.isOnGoing}
+                                textDate={t.date}
+                                textHour={t.hour}
+                                textPlace="-"
+                            />
+                            <div style={{ textAlign: "center" }}>
+                                <h2>Uczestnicy</h2>
+                                <div
+                                    className={
+                                        CompetitionLayout.participantsBox
+                                    }
+                                >
+                                    {t.participants.map((team, index) => (
+                                        <Image
+                                            src={team.logo}
+                                            alt=""
+                                            key={index}
+                                            width={70}
+                                            height={65}
+                                            className={`imageStyle ${CompetitionLayout.accordionImgBox}`}
+                                        />
+                                    ))}
+                                </div>
                             </div>
+                            {true ? (
+                                <div className={CompetitionLayout.buttonBox}>
+                                    <div>
+                                        <button className="buttonStyle editBtn">
+                                            <Link
+                                                href={`/admin/tournament/${t._id}`}
+                                            >
+                                                <Hammer />
+                                            </Link>
+                                        </button>
+                                        <button className="buttonStyle deleteBtn">
+                                            <Trash />
+                                        </button>
+                                    </div>
+                                </div>
+                            ) : (
+                                <div className={CompetitionLayout.buttonBox}>
+                                    <h2>
+                                        <Medal />
+                                        Zwycięzca:
+                                        <div style={{ textAlign: "center" }}>
+                                            {t.winnerId ? (
+                                                <>
+                                                    <Image
+                                                        src={t.winnerId.logo}
+                                                        alt={t.winnerId.name}
+                                                        width={70}
+                                                        height={65}
+                                                        className={`imageStyle ${CompetitionLayout.accordionImgBox}`}
+                                                    />
+                                                    <p>{t.winnerId.name}</p>
+                                                </>
+                                            ) : (
+                                                <h1>-</h1>
+                                            )}
+                                        </div>
+                                    </h2>
+                                </div>
+                            )}
                         </div>
                     )}
                 </div>

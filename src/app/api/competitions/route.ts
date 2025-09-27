@@ -6,6 +6,51 @@ import { NextRequest, NextResponse } from "next/server";
 import Tournament from "@/models/tournament";
 import { ITeamsForm } from "@/types/ITeam";
 
+const transformData = (teamDetails: any) => {
+    const home = teamDetails.homeTeamId as any;
+    const away = teamDetails.awayTeamId as any;
+    return {
+        ...teamDetails,
+        homeTeamId: {
+            ...home,
+            form: away.form?.map((f: any) => ({
+                matchId: f.matchId,
+                matchDate: f.matchDate,
+                homeTeam: {
+                    id: f.homeTeam.id,
+                    name: f.homeTeam.name,
+                    score: f.homeTeam.score,
+                    penScore: f.homeTeam.penalties,
+                },
+                awayTeam: {
+                    id: f.awayTeam.id,
+                    name: f.awayTeam.name,
+                    score: f.awayTeam.score,
+                    penScore: f.awayTeam.penalties,
+                },
+            })),
+        },
+        awayTeamId: {
+            ...away,
+            form: away.form?.map((f: any) => ({
+                matchId: f.matchId,
+                matchDate: f.matchDate,
+                homeTeam: {
+                    id: f.homeTeam.id,
+                    name: f.homeTeam.name,
+                    score: f.homeTeam.score,
+                    penScore: f.homeTeam.penalties,
+                },
+                awayTeam: {
+                    id: f.awayTeam.id,
+                    name: f.awayTeam.name,
+                    score: f.awayTeam.score,
+                    penScore: f.awayTeam.penalties,
+                },
+            })),
+        },
+    };
+};
 export async function GET(req: NextRequest) {
     try {
         await connectDB();
@@ -23,58 +68,18 @@ export async function GET(req: NextRequest) {
                         .populate("awayTeamId", "name logo form")
                         .lean();
                     if (teamDetails) {
-                        const home = teamDetails.homeTeamId as any;
-                        const away = teamDetails.awayTeamId as any;
-
-                        const transformed = {
-                            ...teamDetails,
-                            homeTeamId: {
-                                ...home,
-                                form: away.form?.map((f: any) => ({
-                                    matchId: f.matchId,
-                                    matchDate: f.matchDate,
-                                    homeTeam: {
-                                        id: f.homeTeam.id,
-                                        name: f.homeTeam.name,
-                                        score: f.homeTeam.score,
-                                        penScore: f.homeTeam.penalties,
-                                    },
-                                    awayTeam: {
-                                        id: f.awayTeam.id,
-                                        name: f.awayTeam.name,
-                                        score: f.awayTeam.score,
-                                        penScore: f.awayTeam.penalties,
-                                    },
-                                })),
-                            },
-                            awayTeamId: {
-                                ...away,
-                                form: away.form?.map((f: any) => ({
-                                    matchId: f.matchId,
-                                    matchDate: f.matchDate,
-                                    homeTeam: {
-                                        id: f.homeTeam.id,
-                                        name: f.homeTeam.name,
-                                        score: f.homeTeam.score,
-                                        penScore: f.homeTeam.penalties,
-                                    },
-                                    awayTeam: {
-                                        id: f.awayTeam.id,
-                                        name: f.awayTeam.name,
-                                        score: f.awayTeam.score,
-                                        penScore: f.awayTeam.penalties,
-                                    },
-                                })),
-                            },
-                        };
+                        const transformed = transformData(teamDetails);
                         allMatches.push(transformed);
                     }
                 } else {
                     const TournamentDetails = await Tournament.findById(
                         comp.competitionId
                     )
-                        .select("_id title date hour isOnGoing winnerId")
-                        .populate("winnerId", "_id name logo");
+                        .select(
+                            "_id title date hour isOnGoing winnerId participants"
+                        )
+                        .populate("winnerId", "_id name logo")
+                        .populate("participants", "_id logo");
                     allTournaments.push(TournamentDetails);
                 }
             })

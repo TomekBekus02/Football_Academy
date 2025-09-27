@@ -48,6 +48,14 @@ export interface ITournamentCompetition {
     title: string;
     date: string;
     hour: string;
-    winnerId: string;
+    winnerId: {
+        _id: string;
+        name: string;
+        logo: string;
+    };
     isOnGoing: boolean;
+    participants: {
+        _id: string;
+        logo: string;
+    }[];
 }

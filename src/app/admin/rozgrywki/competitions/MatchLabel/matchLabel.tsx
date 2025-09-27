@@ -18,16 +18,13 @@ export default function MatchLabel({ matches }: competitionProps) {
     return (
         <>
             {matches.map((m) => (
-                <div
-                    key={m._id}
-                    onClick={() =>
-                        m._id === openedId
-                            ? setOpenedId("")
-                            : setOpenedId(m._id)
-                    }
-                    className={CompetitionLayout.accordionItem}
-                >
+                <div key={m._id} className={CompetitionLayout.accordionItem}>
                     <div
+                        onClick={() =>
+                            m._id === openedId
+                                ? setOpenedId("")
+                                : setOpenedId(m._id)
+                        }
                         className={`${CompetitionLayout.accordionTitle} ${
                             openedId === m._id ? CompetitionLayout.selected : ""
                         }`}
@@ -68,28 +65,15 @@ export default function MatchLabel({ matches }: competitionProps) {
                     </div>
                     {openedId === m._id && (
                         <div className={CompetitionLayout.accordionContent}>
-                            <div>
-                                <CompetitionDetails
-                                    label="Status: "
-                                    text={
-                                        m.matchStatus === MatchStatus.FINISHED
-                                            ? "Roztrzygnięty"
-                                            : "Nieroztrzygnięty"
-                                    }
-                                />
-                                <CompetitionDetails
-                                    label="Data: "
-                                    text={m.matchDate}
-                                />
-                                <CompetitionDetails
-                                    label="Godzina: "
-                                    text={m.matchHour}
-                                />
-                                <CompetitionDetails
-                                    label="Miejsce: "
-                                    text={m.place}
-                                />
-                            </div>
+                            <CompetitionDetails
+                                isFinished={
+                                    m.matchStatus === MatchStatus.FINISHED
+                                }
+                                textDate={m.matchDate}
+                                textHour={m.matchHour}
+                                textPlace={m.place}
+                            />
+
                             <div style={{ textAlign: "center" }}>
                                 <h3>Forma</h3>
                                 <div
