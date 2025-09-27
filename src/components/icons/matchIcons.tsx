@@ -60,10 +60,10 @@ export const RedYellowCard = (props: React.SVGProps<SVGSVGElement>) => (
                 x2="0%"
                 y2="100%"
             >
-                <stop offset="0%" stop-color="#EF4444" />
-                <stop offset="50%" stop-color="#EF4444" />
-                <stop offset="50%" stop-color="#FACC15" />
-                <stop offset="100%" stop-color="#FACC15" />
+                <stop offset="0%" stopColor="#EF4444" />
+                <stop offset="50%" stopColor="#EF4444" />
+                <stop offset="50%" stopColor="#FACC15" />
+                <stop offset="100%" stopColor="#FACC15" />
             </linearGradient>
         </defs>
 
@@ -196,10 +196,10 @@ export const DrawWinIcon = (props: React.SVGProps<SVGSVGElement>) => (
                 x2="100%"
                 y2="100%"
             >
-                <stop offset="0%" stop-color="#cccccc" />
-                <stop offset="50%" stop-color="#cccccc" />
-                <stop offset="50%" stop-color="#28a745" />
-                <stop offset="100%" stop-color="#28a745" />
+                <stop offset="0%" stopColor="#cccccc" />
+                <stop offset="50%" stopColor="#cccccc" />
+                <stop offset="50%" stopColor="#28a745" />
+                <stop offset="100%" stopColor="#28a745" />
             </linearGradient>
         </defs>
 
@@ -215,11 +215,11 @@ export const DrawWinIcon = (props: React.SVGProps<SVGSVGElement>) => (
         <text
             x="50%"
             y="50%"
-            text-anchor="middle"
-            dominant-baseline="middle"
-            font-family="system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial"
-            font-weight="700"
-            font-size="36"
+            textAnchor="middle"
+            dominantBaseline="middle"
+            fontFamily="system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial"
+            fontWeight="700"
+            fontSize="36"
             fill="#ffffff"
         >
             Z
@@ -243,10 +243,10 @@ export const DrawLoseIcon = (props: React.SVGProps<SVGSVGElement>) => (
                 x2="100%"
                 y2="100%"
             >
-                <stop offset="0%" stop-color="#cccccc" />
-                <stop offset="50%" stop-color="#cccccc" />
-                <stop offset="50%" stop-color="#dc3545" />
-                <stop offset="100%" stop-color="#dc3545" />
+                <stop offset="0%" stopColor="#cccccc" />
+                <stop offset="50%" stopColor="#cccccc" />
+                <stop offset="50%" stopColor="#dc3545" />
+                <stop offset="100%" stopColor="#dc3545" />
             </linearGradient>
         </defs>
 
@@ -262,11 +262,11 @@ export const DrawLoseIcon = (props: React.SVGProps<SVGSVGElement>) => (
         <text
             x="50%"
             y="50%"
-            text-anchor="middle"
-            dominant-baseline="middle"
-            font-family="system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial"
-            font-weight="700"
-            font-size="36"
+            textAnchor="middle"
+            dominantBaseline="middle"
+            fontFamily="system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial"
+            fontWeight="700"
+            fontSize="36"
             fill="#ffffff"
         >
             L

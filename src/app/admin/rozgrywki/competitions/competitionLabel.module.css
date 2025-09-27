@@ -1,0 +1,50 @@
+.accordionItem {
+    margin: 7px;
+}
+.accordionTitle {
+    display: flex;
+    justify-content: space-between;
+    background-color: var(--secondary-color);
+    padding: 10px;
+    border-radius: 10px 10px 0 0;
+    transition: background-color 0.3s ease, box-shadow 0.3s ease;
+    cursor: pointer;
+}
+.selected {
+    box-shadow: 0px 1px 5px #707870;
+    background-color: #959595;
+}
+.accordionContent {
+    background-color: var(--secondary-color);
+    border: 1px solid gray;
+    padding: 10px;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+}
+.competitionName {
+    display: flex;
+    align-items: center;
+    width: 100%;
+}
+.accordionIcon {
+    transition: transform 0.3s ease-in;
+    font-size: 30px;
+}
+.accordionIconActive {
+    transform: rotate(180deg);
+}
+
+.teamsBox {
+    display: grid;
+    grid-template-columns: 45% 10% 45%;
+    width: 100%;
+}
+.scoreBox {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.buttonBox {
+    display: flex;
+    justify-content: end;
+}

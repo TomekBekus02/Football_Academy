@@ -1,0 +1,10 @@
+.homeTeam {
+    justify-content: end;
+    flex-direction: row-reverse;
+    text-align: end;
+}
+.competitionName {
+    display: flex;
+    align-items: center;
+    width: 100%;
+}

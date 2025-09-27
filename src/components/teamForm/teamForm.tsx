@@ -8,7 +8,7 @@ const getTeamPerspectiveIcon = (
     homeTeam: IshortTeamInfo,
     awayTeam: IshortTeamInfo,
     teamId: string,
-    IconWidth: number
+    IconSize: number
 ) => {
     if (homeTeam.id == teamId) {
         return matchResultIcon(
@@ -16,7 +16,7 @@ const getTeamPerspectiveIcon = (
             homeTeam.penScore,
             awayTeam.score,
             awayTeam.penScore,
-            IconWidth
+            IconSize
         );
     } else {
         return matchResultIcon(
@@ -24,16 +24,16 @@ const getTeamPerspectiveIcon = (
             awayTeam.penScore,
             homeTeam.score,
             homeTeam.penScore,
-            IconWidth
+            IconSize
         );
     }
 };
 type teamFormType = {
     teamId: string;
     form: Array<ITeamsForm>;
-    IconWidth: number;
+    IconSize: number;
 };
-export default function TeamForm({ teamId, form, IconWidth }: teamFormType) {
+export default function TeamForm({ teamId, form, IconSize }: teamFormType) {
     return form.length > 0 ? (
         <div>
             {form.map((m, index) => {
@@ -47,7 +47,7 @@ export default function TeamForm({ teamId, form, IconWidth }: teamFormType) {
                             m.homeTeam,
                             m.awayTeam,
                             teamId,
-                            IconWidth
+                            IconSize
                         )}
                         <span
                             className={`toolTipText ${teamFormLayout.textTip}`}

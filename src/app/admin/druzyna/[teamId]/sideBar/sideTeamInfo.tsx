@@ -50,7 +50,7 @@ export default function sideTeamInfo({ teamId }: { teamId: string }) {
                             <TeamForm
                                 form={teamData.form}
                                 teamId={teamId}
-                                IconWidth={45}
+                                IconSize={45}
                             />
                         </div>
 

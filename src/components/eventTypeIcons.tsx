@@ -27,17 +27,17 @@ export const matchResultIcon = (
     yourTeamPenScore: number,
     oppositeTeamScore: number,
     oppositeTeamPenScore: number,
-    IconWidth: number
+    IconSize: number
 ) => {
     if (yourTeamScore > oppositeTeamScore) {
-        return <WinIcon width={IconWidth} />;
+        return <WinIcon width={IconSize} height={IconSize} />;
     } else if (yourTeamScore < oppositeTeamScore) {
-        return <LoseIcon width={IconWidth} />;
+        return <LoseIcon width={IconSize} height={IconSize} />;
     } else if (yourTeamPenScore > oppositeTeamPenScore) {
-        return <DrawWinIcon width={IconWidth} />;
+        return <DrawWinIcon width={IconSize} height={IconSize} />;
     } else if (yourTeamPenScore < oppositeTeamPenScore) {
-        return <DrawLoseIcon width={IconWidth} />;
+        return <DrawLoseIcon width={IconSize} height={IconSize} />;
     } else {
-        return <DrawIcon width={IconWidth} />;
+        return <DrawIcon width={IconSize} height={IconSize} />;
     }
 };

@@ -1,0 +1,19 @@
+.competitionsBox {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+    margin: 10px;
+}
+.competitionContent {
+    width: 100%;
+    min-width: 750px;
+}
+.accordionsBox {
+    background-color: var(--green-color);
+    padding: 6px;
+    height: 720px;
+    overflow: auto;
+}
+.competitionTitle {
+    border-bottom: 1px solid whitesmoke;
+}
