@@ -122,17 +122,21 @@ export async function PUT(
         });
     }
 }
-const translateEventType = (eventType: string): string => {
-    if (eventType === "Goal") {
-        return "goals";
-    } else if (eventType === "YellowCard") {
-        return "yellowCards";
-    } else if (eventType === "RedCard") {
-        return "redCards";
-    } else {
-        return "";
+export async function deleteMatch(match: IMatch, matchId: string) {
+    if (match.matchStatus === MatchStatus.FINISHED) {
+        await updatedStatsAfterMatch(
+            match,
+            matchId,
+            {
+                homeTeam: match.homeTeamPenaltiesScore,
+                awayTeam: match.awayTeamPenaltiesScore,
+            },
+            -1
+        );
     }
-};
+    await match.deleteOne();
+}
+
 export async function DELETE(
     request: NextRequest,
     { params }: { params: { matchId: string } }
@@ -143,20 +147,7 @@ export async function DELETE(
         const competitionId = searchParams.get("competitionId");
         const match = await Match.findById(matchId);
         if (match) {
-            if (match.matchStatus === MatchStatus.FINISHED) {
-                await Promise.all([
-                    updatedStatsAfterMatch(
-                        match,
-                        matchId,
-                        {
-                            homeTeam: match.homeTeamPenaltiesScore,
-                            awayTeam: match.awayTeamPenaltiesScore,
-                        },
-                        -1
-                    ),
-                ]);
-            }
-            await Match.findByIdAndDelete(matchId);
+            deleteMatch(match, matchId);
             await Competition.findByIdAndDelete(competitionId);
         }
         return NextResponse.json({

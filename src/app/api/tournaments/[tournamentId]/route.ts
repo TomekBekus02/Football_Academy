@@ -1,6 +1,10 @@
 import { connectDB } from "@/lib/mongodb";
+import Match from "@/models/match";
 import Tournament from "@/models/tournament";
 import { NextRequest, NextResponse } from "next/server";
+import { deleteMatch } from "../../matches/[matchId]/route";
+import Competition from "@/models/competition";
+import Team from "@/models/team";
 
 export async function GET(
     request: NextRequest,
@@ -54,6 +58,43 @@ export async function GET(
         console.log(error);
         return NextResponse.json({
             message: "Nie udało się pobrać danych",
+            status: 500,
+        });
+    }
+}
+
+export async function DELETE(
+    request: NextRequest,
+    { params }: { params: { tournamentId: string } }
+) {
+    try {
+        const { tournamentId } = await params;
+        const { searchParams } = new URL(request.url);
+        const competitionId = searchParams.get("competitionId");
+        const tournament = await Tournament.findById(tournamentId);
+        if (tournament) {
+            await Promise.all(
+                tournament.matches.map(async (matchId) => {
+                    const match = await Match.findById(matchId);
+                    if (match) {
+                        await deleteMatch(match, match._id as string);
+                    }
+                })
+            );
+            await Team.findByIdAndUpdate(tournament.winnerId, {
+                $pull: { achievements: { competitionId: tournamentId } },
+            });
+            await tournament.deleteOne();
+        }
+        await Competition.findByIdAndDelete(competitionId);
+
+        return NextResponse.json({
+            message: "Poprawnie usunięto dane",
+            status: 200,
+        });
+    } catch (error) {
+        return NextResponse.json({
+            message: "Błąd podczas usuwania danych",
             status: 500,
         });
     }

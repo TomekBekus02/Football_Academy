@@ -10,3 +10,16 @@ export async function fetchTournament(tournamentId: string) {
     const res = await fetch(`/api/tournaments/${tournamentId}`);
     return res.json();
 }
+interface deleteTournamentVars {
+    competitionId: string;
+    tournamentId: string;
+}
+export async function deleteTournament({
+    competitionId,
+    tournamentId,
+}: deleteTournamentVars) {
+    const res = await axios.delete(
+        `/api/tournaments/${tournamentId}?competitionId=${competitionId}`
+    );
+    return res.status;
+}

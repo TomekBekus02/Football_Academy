@@ -6,12 +6,24 @@ import CompetitionLayout from "../competitionLabel.module.css";
 import { useState } from "react";
 import { ChevronUp, Medal } from "lucide-react";
 import CompetitionDetails from "../competitionDetails";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { deleteTournament } from "@/services/TournamentFetches/useTournament";
 
 type competitionProps = {
     tournaments: ITournamentCompetition[];
 };
 
 export default function TournamentLabel({ tournaments }: competitionProps) {
+    const queryClient = useQueryClient();
+
+    const { mutate, isPending } = useMutation({
+        mutationFn: deleteTournament,
+        onSuccess: () => {
+            queryClient.invalidateQueries({ queryKey: ["competitions"] });
+            queryClient.invalidateQueries({ queryKey: ["match"] });
+            queryClient.invalidateQueries({ queryKey: ["teams"] });
+        },
+    });
     const [openedId, setOpenedId] = useState("");
     return (
         <>
@@ -94,7 +106,16 @@ export default function TournamentLabel({ tournaments }: competitionProps) {
                                                     <Hammer />
                                                 </Link>
                                             </button>
-                                            <button className="buttonStyle deleteBtn">
+                                            <button
+                                                className="buttonStyle deleteBtn"
+                                                onClick={() =>
+                                                    mutate({
+                                                        competitionId:
+                                                            tournament.competitionId,
+                                                        tournamentId: t._id,
+                                                    })
+                                                }
+                                            >
                                                 <Trash />
                                             </button>
                                         </div>
