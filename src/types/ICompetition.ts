@@ -22,6 +22,7 @@ export interface ITeamForm {
 
 export interface IMatchCompetition {
     _id: string;
+    competitionId: string;
     homeTeamId: {
         _id: string;
         name: string;
@@ -44,19 +45,22 @@ export interface IMatchCompetition {
     place: string;
 }
 export interface ITournamentCompetition {
-    _id: string;
-    title: string;
-    date: string;
-    hour: string;
-    place: string;
-    winnerId: {
+    TournamentDetails: {
         _id: string;
-        name: string;
-        logo: string;
+        title: string;
+        date: string;
+        hour: string;
+        place: string;
+        winnerId: {
+            _id: string;
+            name: string;
+            logo: string;
+        };
+        isOnGoing: boolean;
+        participants: {
+            _id: string;
+            logo: string;
+        }[];
     };
-    isOnGoing: boolean;
-    participants: {
-        _id: string;
-        logo: string;
-    }[];
+    competitionId: string;
 }

@@ -6,11 +6,12 @@ import { NextRequest, NextResponse } from "next/server";
 import Tournament from "@/models/tournament";
 import { ITeamsForm } from "@/types/ITeam";
 
-const transformData = (teamDetails: any) => {
+const transformData = (teamDetails: any, competitionId: string) => {
     const home = teamDetails.homeTeamId as any;
     const away = teamDetails.awayTeamId as any;
     return {
         ...teamDetails,
+        competitionId,
         homeTeamId: {
             ...home,
             form: home.form?.map((f: any) => ({
@@ -68,7 +69,10 @@ export async function GET(req: NextRequest) {
                         .populate("awayTeamId", "name logo form")
                         .lean();
                     if (teamDetails) {
-                        const transformed = transformData(teamDetails);
+                        const transformed = transformData(
+                            teamDetails,
+                            comp._id as string
+                        );
                         allMatches.push(transformed);
                     }
                 } else {
@@ -80,11 +84,13 @@ export async function GET(req: NextRequest) {
                         )
                         .populate("winnerId", "_id name logo")
                         .populate("participants", "_id logo");
-                    allTournaments.push(TournamentDetails);
+                    allTournaments.push({
+                        TournamentDetails,
+                        competitionId: comp._id,
+                    });
                 }
             })
         );
-
         return NextResponse.json(
             {
                 allMatches: allMatches,

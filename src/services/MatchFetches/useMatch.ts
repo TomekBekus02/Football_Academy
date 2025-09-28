@@ -41,3 +41,14 @@ export async function deleteEvent({ eventId, matchId }: deleteEventVars) {
     const res = await axios.delete(`/api/matches/${matchId}/${eventId}`);
     return res.status;
 }
+interface deleteMatchVars {
+    competitionId: string;
+    matchId: string;
+}
+export async function deleteMatch({ competitionId, matchId }: deleteMatchVars) {
+    const res = await axios.delete(
+        `/api/matches/${matchId}?competitionId=${competitionId}`
+    );
+    return res.status;
+}
+

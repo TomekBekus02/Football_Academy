@@ -9,11 +9,23 @@ import TeamDetails from "./teamDetails";
 import { ChevronUp } from "lucide-react";
 import CompetitionDetails from "../competitionDetails";
 import TeamForm from "@/components/teamForm/teamForm";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { deleteMatch } from "@/services/MatchFetches/useMatch";
 
 type competitionProps = {
     matches: IMatchCompetition[];
 };
 export default function MatchLabel({ matches }: competitionProps) {
+    const queryClient = useQueryClient();
+
+    const { mutate, isPending } = useMutation({
+        mutationFn: deleteMatch,
+        onSuccess: () => {
+            queryClient.invalidateQueries({ queryKey: ["competitions"] });
+            queryClient.invalidateQueries({ queryKey: ["match"] });
+            queryClient.invalidateQueries({ queryKey: ["teams"] });
+        },
+    });
     const [openedId, setOpenedId] = useState("");
     return (
         <>
@@ -142,7 +154,15 @@ export default function MatchLabel({ matches }: competitionProps) {
                                             <Hammer />
                                         </Link>
                                     </button>
-                                    <button className="buttonStyle deleteBtn">
+                                    <button
+                                        className="buttonStyle deleteBtn"
+                                        onClick={() =>
+                                            mutate({
+                                                competitionId: m.competitionId,
+                                                matchId: m._id,
+                                            })
+                                        }
+                                    >
                                         <Trash />
                                     </button>
                                 </div>
