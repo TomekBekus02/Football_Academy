@@ -5,11 +5,13 @@ import { IMatchEvent } from "@/types/IEvent";
 import { Trash } from "lucide-react";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { deleteEvent } from "@/services/MatchFetches/useMatch";
+import { MatchStatus } from "@/types/IMatch";
 
 type EventType = {
     matchId: string;
     awayTeamId: string;
     events: IMatchEvent[];
+    matchStatus: MatchStatus;
 };
 
 const shortName = (name: string | undefined) => {
@@ -17,8 +19,12 @@ const shortName = (name: string | undefined) => {
     return `${name[0].toUpperCase()}. ${name.substring(name.indexOf(" ") + 1)}`;
 };
 
-export const EventsHalf = ({ matchId, awayTeamId, events }: EventType) => {
-    console.log("events", events);
+export const EventsHalf = ({
+    matchId,
+    awayTeamId,
+    events,
+    matchStatus,
+}: EventType) => {
     const queryClient = useQueryClient();
     const mutation = useMutation({
         mutationFn: deleteEvent,
@@ -56,7 +62,7 @@ export const EventsHalf = ({ matchId, awayTeamId, events }: EventType) => {
                     ) : (
                         ""
                     )}
-                    {true && (
+                    {true && matchStatus !== MatchStatus.FINISHED ? (
                         <button
                             className="deleteBtn"
                             onClick={() =>
@@ -68,7 +74,7 @@ export const EventsHalf = ({ matchId, awayTeamId, events }: EventType) => {
                         >
                             <Trash size={20} />
                         </button>
-                    )}
+                    ) : null}
                 </div>
             </div>
         );

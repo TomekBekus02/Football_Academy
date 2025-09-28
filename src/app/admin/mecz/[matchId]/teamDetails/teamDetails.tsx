@@ -4,12 +4,27 @@ import { ITeam } from "@/types/ITeam";
 import { useQuery } from "@tanstack/react-query";
 import Image from "next/image";
 import TeamDetailsLayout from "./teamDetails.module.css";
+import { MatchStatus } from "@/types/IMatch";
 
 interface TeamDetailsProps {
     teamId: string;
+    matchStatus: MatchStatus;
+    isHomeTeam: boolean;
+    homeTeamScore: number;
+    homeTeamPenScore: number;
+    awayTeamScore: number;
+    awayTeamPenScore: number;
 }
 
-export default function GetTeamDetails({ teamId }: TeamDetailsProps) {
+export default function GetTeamDetails({
+    teamId,
+    matchStatus,
+    isHomeTeam,
+    homeTeamScore,
+    homeTeamPenScore,
+    awayTeamScore,
+    awayTeamPenScore,
+}: TeamDetailsProps) {
     const {
         data: teamData,
         isLoading,
@@ -21,6 +36,18 @@ export default function GetTeamDetails({ teamId }: TeamDetailsProps) {
             return fetchTeamDetails(teamId as string);
         },
     });
+    let isWinner = false;
+    if (matchStatus === MatchStatus.FINISHED) {
+        if (isHomeTeam) {
+            isWinner =
+                homeTeamScore > awayTeamScore ||
+                homeTeamPenScore > awayTeamPenScore;
+        } else {
+            isWinner =
+                homeTeamScore < awayTeamScore ||
+                homeTeamPenScore < awayTeamPenScore;
+        }
+    }
     return (
         <LoadProvider error={error} isLoading={isLoading}>
             <div className={TeamDetailsLayout.pageBox}>
@@ -32,8 +59,14 @@ export default function GetTeamDetails({ teamId }: TeamDetailsProps) {
                             height={140}
                             width={140}
                             className={TeamDetailsLayout.teamImage}
-                        ></Image>
-                        <h3>{teamData.name}</h3>
+                        />
+                        {isWinner ? (
+                            <h2 style={{ fontWeight: "900" }}>
+                                {teamData.name}*
+                            </h2>
+                        ) : (
+                            <h2>{teamData.name}</h2>
+                        )}
                     </div>
                 ) : (
                     <div>

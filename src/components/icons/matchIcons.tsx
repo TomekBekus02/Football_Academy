@@ -199,8 +199,8 @@ export const DrawWinIcon = (props: React.SVGProps<SVGSVGElement>) => {
                     x2="100%"
                     y2="100%"
                 >
-                    <stop offset="0%" stopColor="#cccccc" />
-                    <stop offset="50%" stopColor="#cccccc" />
+                    <stop offset="0%" stopColor="#a8a5a5ff" />
+                    <stop offset="50%" stopColor="#a8a5a5ff" />
                     <stop offset="50%" stopColor="#28a745" />
                     <stop offset="100%" stopColor="#28a745" />
                 </linearGradient>
@@ -251,8 +251,8 @@ export const DrawLoseIcon = (props: React.SVGProps<SVGSVGElement>) => {
                     x2="100%"
                     y2="100%"
                 >
-                    <stop offset="0%" stopColor="#cccccc" />
-                    <stop offset="50%" stopColor="#cccccc" />
+                    <stop offset="0%" stopColor="#a8a5a5ff" />
+                    <stop offset="50%" stopColor="#a8a5a5ff" />
                     <stop offset="50%" stopColor="#dc3545" />
                     <stop offset="100%" stopColor="#dc3545" />
                 </linearGradient>

@@ -7,10 +7,10 @@ export interface IMatch {
     place: string;
     homeTeamId: string;
     homeTeamScore: number;
-    homeTeamPenaltiesScore: Number;
+    homeTeamPenaltiesScore: number;
     awayTeamId: string;
     awayTeamScore: number;
-    awayTeamPenaltiesScore: Number;
+    awayTeamPenaltiesScore: number;
     tournamentId: string;
     events: IMatchEvent[];
     matchStatus: MatchStatus;

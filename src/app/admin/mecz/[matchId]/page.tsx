@@ -57,6 +57,16 @@ export default function MatchProgress({
                                 >
                                     <GetTeamDetails
                                         teamId={matchData.homeTeamId.toString()}
+                                        matchStatus={matchData.matchStatus}
+                                        isHomeTeam={true}
+                                        homeTeamScore={matchData.homeTeamScore}
+                                        homeTeamPenScore={
+                                            matchData.homeTeamPenaltiesScore
+                                        }
+                                        awayTeamScore={matchData.awayTeamScore}
+                                        awayTeamPenScore={
+                                            matchData.awayTeamPenaltiesScore
+                                        }
                                     />
                                 </div>
                                 <div className={MatchLayout.gameInfo}>
@@ -99,6 +109,16 @@ export default function MatchProgress({
                                 <div className={`${MatchLayout.teamBox} `}>
                                     <GetTeamDetails
                                         teamId={matchData.awayTeamId.toString()}
+                                        matchStatus={matchData.matchStatus}
+                                        isHomeTeam={false}
+                                        homeTeamScore={matchData.homeTeamScore}
+                                        homeTeamPenScore={
+                                            matchData.homeTeamPenaltiesScore
+                                        }
+                                        awayTeamScore={matchData.awayTeamScore}
+                                        awayTeamPenScore={
+                                            matchData.awayTeamPenaltiesScore
+                                        }
                                     />
                                 </div>
                             </div>

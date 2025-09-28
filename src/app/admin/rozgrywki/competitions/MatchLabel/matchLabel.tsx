@@ -35,6 +35,9 @@ export default function MatchLabel({ matches }: competitionProps) {
                                     name={m.homeTeamId.name}
                                     logo={m.homeTeamId.logo}
                                     isHomeTeam={true}
+                                    homeTeamScore={m.homeTeamScore}
+                                    awayTeamScore={m.awayTeamScore}
+                                    matchStatus={m.matchStatus}
                                 />
                             </div>
                             <div className={CompetitionLayout.scoreBox}>
@@ -45,12 +48,20 @@ export default function MatchLabel({ matches }: competitionProps) {
                                 ) : (
                                     <h3>VS</h3>
                                 )}
+                                {m.matchStatus === MatchStatus.IN_PROGRESS && (
+                                    <div
+                                        className={CompetitionLayout.liveDot}
+                                    ></div>
+                                )}
                             </div>
                             <div>
                                 <TeamDetails
                                     name={m.awayTeamId.name}
                                     logo={m.awayTeamId.logo}
                                     isHomeTeam={false}
+                                    homeTeamScore={m.homeTeamScore}
+                                    awayTeamScore={m.awayTeamScore}
+                                    matchStatus={m.matchStatus}
                                 />
                             </div>
                         </div>

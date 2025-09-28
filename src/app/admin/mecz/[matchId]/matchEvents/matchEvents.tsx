@@ -151,6 +151,7 @@ export default function matchEvents({
                         matchId={matchId}
                         awayTeamId={awayTeamId}
                         events={firstHalfEvents}
+                        matchStatus={matchStatus}
                     />
                 </div>
                 <div className={MatchEventsLayout.matchHalfBox}>
@@ -161,6 +162,7 @@ export default function matchEvents({
                         matchId={matchId}
                         awayTeamId={awayTeamId}
                         events={secondHalfEvents}
+                        matchStatus={matchStatus}
                     />
                 </div>
                 {isOverTime ? (
@@ -172,6 +174,7 @@ export default function matchEvents({
                             matchId={matchId}
                             awayTeamId={awayTeamId}
                             events={overTimeEvents}
+                            matchStatus={matchStatus}
                         />
                     </div>
                 ) : null}
