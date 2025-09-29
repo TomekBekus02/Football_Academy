@@ -1,5 +1,6 @@
+import SideTeamInfo from "@/components/sideTeamBar/sideTeamInfo";
 import teamLayout from "./teamLayout.module.css";
-import SideTeamInfo from "./sideBar/sideTeamInfo";
+
 import React, { ReactNode } from "react";
 
 export default function TeamLayout({

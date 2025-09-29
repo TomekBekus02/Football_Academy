@@ -10,7 +10,7 @@ import TeamForm from "@/components/teamForm/teamForm";
 import "@/styles/toolTip.css";
 import PlayersCarousel from "./playersCarousel/playersCarousel";
 
-export default function sideTeamInfo({ teamId }: { teamId: string }) {
+export default function SideTeamInfo({ teamId }: { teamId: string }) {
     const {
         data: teamData,
         isLoading,
