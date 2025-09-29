@@ -1,0 +1,39 @@
+.minsBox {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    width: 250px;
+}
+.inputGroupd {
+    position: relative;
+    margin: 5px 0px 20px 0px;
+}
+.inputGroupd input {
+    width: 100%;
+    padding: 16px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    outline: none;
+    font-size: 22px;
+    appearance: none;
+    text-align: center;
+}
+
+.inputGroupd label {
+    position: absolute;
+    left: 12px;
+    top: 12px;
+    color: #aaa;
+    pointer-events: none;
+    transition: 0.2s ease all;
+    background: white;
+    padding: 0 4px;
+}
+
+.inputGroupd input:focus + label,
+.inputGroupd input:not(:placeholder-shown) + label {
+    top: -9px;
+    left: 8px;
+    font-size: 14px;
+    color: #333;
+}

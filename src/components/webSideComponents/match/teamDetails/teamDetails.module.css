@@ -1,0 +1,9 @@
+.contentBox {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+.teamImage {
+    border-radius: 20px;
+    background-color: rgb(60, 72, 72);
+}
