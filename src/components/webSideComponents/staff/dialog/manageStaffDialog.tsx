@@ -22,7 +22,6 @@ export type ModalHandle = {
 
 export const ManageStaffDialog = forwardRef<ModalHandle, IDialog>(
     ({ staffMemberId }, ref) => {
-        console.log("staffMemberId", staffMemberId);
         const dialogRef = useRef<HTMLDialogElement>(null);
         const formRef = useRef<HTMLFormElement>(null);
 

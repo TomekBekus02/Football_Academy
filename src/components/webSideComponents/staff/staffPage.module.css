@@ -14,3 +14,14 @@
     color: antiquewhite;
     padding: 5px;
 }
+
+.staffBox {
+    display: flex;
+    justify-content: center;
+    margin: 15px 0px;
+}
+.staffContent {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+}

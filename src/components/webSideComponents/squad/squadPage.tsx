@@ -40,17 +40,22 @@ export default function SquadPage({ teamId, isAdmin }: squadPageParams) {
 
     return (
         <div className={pageLayout.pageBox}>
-            <ManagePlayerDialog playerId={playerId} ref={modalRef} />
             <div className={pageLayout.tableBox}>
                 {isAdmin && (
-                    <div className={pageLayout.headerBox}>
-                        <button
-                            className="buttonStyle addBtn"
-                            onClick={() => handleAddPlayerDialog()}
-                        >
-                            Dodaj zawodnika
-                        </button>
-                    </div>
+                    <>
+                        <ManagePlayerDialog
+                            playerId={playerId}
+                            ref={modalRef}
+                        />
+                        <div className={pageLayout.headerBox}>
+                            <button
+                                className="buttonStyle addBtn"
+                                onClick={() => handleAddPlayerDialog()}
+                            >
+                                Dodaj zawodnika
+                            </button>
+                        </div>
+                    </>
                 )}
 
                 <table>
