@@ -14,7 +14,6 @@ export default function label({
     Icon,
     backgroundImage,
 }: LabelProps) {
-    console.log("Icon", Icon);
     return (
         <div className={classes.labelBox}>
             <div className={classes.labelInner}>

@@ -1,0 +1,15 @@
+.contentBox {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    padding: 0 5px;
+}
+.teamStats{
+    margin-top: 15px;
+    font-size: 20px;
+}
+.teamStats h2{
+    margin-top: 10px;
+}

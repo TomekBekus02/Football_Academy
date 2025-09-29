@@ -1,0 +1,15 @@
+.teamPage {
+  width: 100%;
+  display: grid;
+  grid-template-columns: 20% 80%;
+}
+.sideTeamInfo {
+  position: sticky;
+  top: 70px; 
+  align-self: start;
+}
+.sideBarBox{
+  background-color: var(--green-color);
+  height: 100%;
+  margin: 0 15px;
+}

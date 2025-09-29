@@ -10,6 +10,7 @@ import { useRouter } from "next/navigation";
 import { updatePlayerStats } from "@/services/PlayersFetches/usePlayers";
 import { MatchStatus } from "@/types/IMatch";
 import { updateMatchProgress } from "@/services/MatchFetches/useMatch";
+import MatchButtons from "./matchButtons/matchButtons";
 
 type penaltiesType = {
     homeTeam: number;
@@ -90,57 +91,16 @@ export default function matchEvents({
                 homeTeamScore={homeTeamScore}
                 awayTeamScore={awayTeamScore}
             />
-            <div className={MatchEventsLayout.buttonsBox}>
-                {matchStatus !== MatchStatus.FINISHED ? (
-                    matchStatus === MatchStatus.IN_PROGRESS ? (
-                        <>
-                            {matchPenalties.homeTeam === 0 &&
-                            matchPenalties.awayTeam === 0 ? (
-                                <button
-                                    onClick={() => {
-                                        eventDialog.current?.showModal();
-                                    }}
-                                    className={`buttonStyle ${MatchEventsLayout.addEventBtn}`}
-                                >
-                                    Dodaj event
-                                </button>
-                            ) : null}
-
-                            {!isOverTime &&
-                            homeTeamScore === awayTeamScore &&
-                            tournamentId !== "" ? (
-                                <button
-                                    onClick={() =>
-                                        startOverTime.mutate(matchId)
-                                    }
-                                    className={`buttonStyle ${MatchEventsLayout.overTimeBtn}`}
-                                >
-                                    Rozpocznij Dogrywke
-                                </button>
-                            ) : (
-                                <button
-                                    onClick={() =>
-                                        endMatch.mutate({
-                                            matchId,
-                                            matchPenalties,
-                                        })
-                                    }
-                                    className={`buttonStyle ${MatchEventsLayout.endGameBtn}`}
-                                >
-                                    Zakończ mecz
-                                </button>
-                            )}
-                        </>
-                    ) : (
-                        <button
-                            onClick={() => startMatch.mutate(matchId)}
-                            className={`buttonStyle ${MatchEventsLayout.startGame}`}
-                        >
-                            Rozpocznij mecz
-                        </button>
-                    )
-                ) : null}
-            </div>
+            <MatchButtons
+                matchId={matchId}
+                tournamentId={tournamentId}
+                homeTeamScore={homeTeamScore}
+                awayTeamScore={awayTeamScore}
+                matchStatus={matchStatus}
+                isOverTime={isOverTime}
+                matchPenalties={matchPenalties}
+                eventDialog={eventDialog}
+            />
 
             <div className={MatchEventsLayout.matchEventsContent}>
                 <div className={MatchEventsLayout.matchHalfBox}>
