@@ -9,7 +9,7 @@ type InputTeamsOptionProps = {
     labelText: string;
 };
 
-export default function inputTeamsOption({
+export default function InputTeamsOption({
     selectName,
     labelText,
 }: InputTeamsOptionProps) {

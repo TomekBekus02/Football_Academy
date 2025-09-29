@@ -1,7 +1,7 @@
 import { IMatchEventExt } from "@/types/IEvent";
 import axios from "axios";
 
-export async function createMatch(newMatch: FormData) {
+export async function createNewMatch(newMatch: FormData) {
     const res = await axios.post("/api/matches", newMatch);
 
     return res.status;

@@ -11,9 +11,13 @@ import { deleteTournament } from "@/services/TournamentFetches/useTournament";
 
 type competitionProps = {
     tournaments: ITournamentCompetition[];
+    isAdmin: boolean;
 };
 
-export default function TournamentLabel({ tournaments }: competitionProps) {
+export default function TournamentLabel({
+    tournaments,
+    isAdmin,
+}: competitionProps) {
     const queryClient = useQueryClient();
 
     const { mutate, isPending } = useMutation({
@@ -54,7 +58,9 @@ export default function TournamentLabel({ tournaments }: competitionProps) {
                                     height={65}
                                     className="imageStyle"
                                 />
-                                <h1>{t.title}</h1>
+                                <Link href={`/turniej/${t._id}`}>
+                                    <h1>{t.title}</h1>
+                                </Link>
                             </div>
                             <ChevronUp
                                 className={`${
@@ -94,7 +100,7 @@ export default function TournamentLabel({ tournaments }: competitionProps) {
                                         ))}
                                     </div>
                                 </div>
-                                {true ? (
+                                {isAdmin ? (
                                     <div
                                         className={CompetitionLayout.buttonBox}
                                     >

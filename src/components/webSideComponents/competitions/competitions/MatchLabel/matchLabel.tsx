@@ -14,8 +14,9 @@ import { deleteMatch } from "@/services/MatchFetches/useMatch";
 
 type competitionProps = {
     matches: IMatchCompetition[];
+    isAdmin: boolean;
 };
-export default function MatchLabel({ matches }: competitionProps) {
+export default function MatchLabel({ matches, isAdmin }: competitionProps) {
     const queryClient = useQueryClient();
 
     const { mutate, isPending } = useMutation({
@@ -53,13 +54,15 @@ export default function MatchLabel({ matches }: competitionProps) {
                                 />
                             </div>
                             <div className={CompetitionLayout.scoreBox}>
-                                {m.matchStatus !== MatchStatus.CREATED ? (
-                                    <h1>
-                                        {m.homeTeamScore}:{m.awayTeamScore}
-                                    </h1>
-                                ) : (
-                                    <h3>VS</h3>
-                                )}
+                                <Link href={`/mecz/${m._id}`}>
+                                    {m.matchStatus !== MatchStatus.CREATED ? (
+                                        <h1>
+                                            {m.homeTeamScore}:{m.awayTeamScore}
+                                        </h1>
+                                    ) : (
+                                        <h3>VS</h3>
+                                    )}
+                                </Link>
                                 {m.matchStatus === MatchStatus.IN_PROGRESS && (
                                     <div
                                         className={CompetitionLayout.liveDot}
@@ -147,26 +150,33 @@ export default function MatchLabel({ matches }: competitionProps) {
                                     </div>
                                 </div>
                             </div>
-                            <div className={CompetitionLayout.buttonBox}>
-                                <div>
-                                    <button className="buttonStyle editBtn">
+                            {isAdmin ? (
+                                <div className={CompetitionLayout.buttonBox}>
+                                    <div>
                                         <Link href={`/admin/mecz/${m._id}`}>
-                                            <Hammer />
+                                            <button className="buttonStyle editBtn">
+                                                <Hammer />
+                                            </button>
                                         </Link>
-                                    </button>
-                                    <button
-                                        className="buttonStyle deleteBtn"
-                                        onClick={() =>
-                                            mutate({
-                                                competitionId: m.competitionId,
-                                                matchId: m._id,
-                                            })
-                                        }
-                                    >
-                                        <Trash />
-                                    </button>
+                                        <button
+                                            className="buttonStyle deleteBtn"
+                                            onClick={() =>
+                                                mutate({
+                                                    competitionId:
+                                                        m.competitionId,
+                                                    matchId: m._id,
+                                                })
+                                            }
+                                        >
+                                            <Trash />
+                                        </button>
+                                    </div>
                                 </div>
-                            </div>
+                            ) : (
+                                <div>
+                                    <p>there will be head-to-head record</p>
+                                </div>
+                            )}
                         </div>
                     )}
                 </div>

@@ -1,9 +1,9 @@
 "use client";
 
 import { forwardRef, useImperativeHandle, useRef, useState } from "react";
-import CreateMatch from "@/app/admin/rozgrywki/dialog/createMatch/createMatch";
-import CreateTournament from "@/app/admin/rozgrywki/dialog/createTournament/createTournament";
 import competitionDialogLayout from "./CompetitionDialog.module.css";
+import CreateTournament from "./createTournament/createTournament";
+import CreateMatch from "./createMatch/createMatch";
 
 export type ModalHandle = {
     showModal: () => void;

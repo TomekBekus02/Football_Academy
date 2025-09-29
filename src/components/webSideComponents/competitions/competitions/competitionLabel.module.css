@@ -26,6 +26,9 @@
     align-items: center;
     width: 100%;
 }
+.competitionName a:hover {
+    text-decoration: underline;
+}
 .accordionIcon {
     transition: transform 0.3s ease-in;
     font-size: 30px;
@@ -45,22 +48,25 @@
     justify-content: center;
     position: relative;
 }
+.scoreBox:hover {
+    text-decoration: underline;
+}
 .buttonBox {
     display: flex;
     justify-content: end;
 }
-.participantsBox{
+.participantsBox {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
 }
-.accordionImgBox{
+.accordionImgBox {
     border: 1px solid #4d504d;
     border-radius: 50%;
     background-color: #959595;
     padding: 5px;
     margin: 4px;
 }
-.liveDot{
+.liveDot {
     position: absolute;
     top: 15px;
     right: 8px;
@@ -68,11 +74,11 @@
     height: 8px;
     border-radius: 50%;
     background-color: red;
-    animation: blink 1.5s step-start infinite; 
+    animation: blink 1.5s step-start infinite;
 }
 
 @keyframes blink {
-  50% {
-    opacity: 0; 
-  }
+    50% {
+        opacity: 0;
+    }
 }

@@ -1,21 +1,21 @@
 "use client";
 
-import InputTeamsOption from "@/app/admin/rozgrywki/dialog/createMatch/inputTeamsOption/inputTeamsOption";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { createMatch } from "@/services/MatchFetches/useMatch";
+import { createNewMatch } from "@/services/MatchFetches/useMatch";
 import inputLayout from "@/components/inputTemplate/inputTemplate.module.css";
 
 import React, { useRef } from "react";
+import InputTeamsOption from "./inputTeamsOption/inputTeamsOption";
 
 type matchPropsType = {
     dialogRef: React.MutableRefObject<HTMLDialogElement | null>;
 };
-export default function createNewMatch({ dialogRef }: matchPropsType) {
+export default function CreateMatch({ dialogRef }: matchPropsType) {
     const queryClient = useQueryClient();
     const formRef = useRef<HTMLFormElement>(null);
 
     const { mutate, isPending, error } = useMutation({
-        mutationFn: (newMatch: FormData) => createMatch(newMatch),
+        mutationFn: (newMatch: FormData) => createNewMatch(newMatch),
         onSuccess: () => {
             queryClient.invalidateQueries({ queryKey: ["match"] });
             queryClient.invalidateQueries({ queryKey: ["competitions"] });

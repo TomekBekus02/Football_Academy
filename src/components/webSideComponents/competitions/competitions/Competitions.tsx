@@ -8,7 +8,10 @@ import MatchLabel from "./MatchLabel/matchLabel";
 import TournamentLabel from "./TournamentLabel/tournamentLabel";
 import CompetitionLayout from "./competitions.module.css";
 
-export default function Competitions() {
+interface CompetitionsParams {
+    isAdmin: boolean;
+}
+export default function Competitions({ isAdmin }: CompetitionsParams) {
     const {
         data: competitions,
         isLoading,
@@ -26,7 +29,10 @@ export default function Competitions() {
                     </h1>
                     <div className={CompetitionLayout.accordionsBox}>
                         {competitions && competitions.allMatches?.length > 0 ? (
-                            <MatchLabel matches={competitions.allMatches} />
+                            <MatchLabel
+                                matches={competitions.allMatches}
+                                isAdmin={isAdmin}
+                            />
                         ) : (
                             <h2>Brak meczy</h2>
                         )}
@@ -42,6 +48,7 @@ export default function Competitions() {
                         competitions.allTournaments?.length > 0 ? (
                             <TournamentLabel
                                 tournaments={competitions.allTournaments}
+                                isAdmin={isAdmin}
                             />
                         ) : (
                             <h2>Brak Turniejów</h2>

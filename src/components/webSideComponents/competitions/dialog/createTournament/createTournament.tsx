@@ -15,7 +15,7 @@ type matchPropsType = {
     dialogRef: React.MutableRefObject<HTMLDialogElement | null>;
 };
 
-export default function createTournament({ dialogRef }: matchPropsType) {
+export default function CreateTournament({ dialogRef }: matchPropsType) {
     const queryClient = useQueryClient();
 
     const {

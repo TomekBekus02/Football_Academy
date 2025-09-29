@@ -1,26 +1,10 @@
 "use client";
 
-import Competitions from "@/app/admin/rozgrywki/competitions/Competitions";
-import {
-    ManageCompetitionDialog,
-    ModalHandle,
-} from "./dialog/manageCompetitionDialog";
-import { useRef } from "react";
+import { usePathname } from "next/navigation";
+import CompetitionsPage from "@/components/webSideComponents/competitions/competitionsPage";
 
 export default function tournaments() {
-    const modalRef = useRef<ModalHandle>(null);
-    const handleOpenModal = () => {
-        modalRef.current?.showModal();
-    };
-    return (
-        <div>
-            <ManageCompetitionDialog ref={modalRef} />
-            <button onClick={handleOpenModal} className="buttonStyle addBtn">
-                Stwórz nowe wydarzenie
-            </button>
-            <div>
-                <Competitions />
-            </div>
-        </div>
-    );
+    const pathname = usePathname();
+    const isAdmin = pathname.startsWith("/admin");
+    return <CompetitionsPage isAdmin={isAdmin} />;
 }
