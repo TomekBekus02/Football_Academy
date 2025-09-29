@@ -20,6 +20,7 @@ type playerRowType = {
     error: Error | null;
     setPlayerId: React.Dispatch<React.SetStateAction<string>>;
     OpenModal: () => void;
+    isAdmin: boolean;
 };
 export default function playerRow({
     teamId,
@@ -28,6 +29,7 @@ export default function playerRow({
     error,
     setPlayerId,
     OpenModal,
+    isAdmin,
 }: playerRowType) {
     const queryClient = useQueryClient();
     const mutation = useMutation({
@@ -87,25 +89,30 @@ export default function playerRow({
                         <td>{player.MVPs}</td>
                         <td>{player.position}</td>
 
-                        <td className={rowStyles.buttonBox}>
-                            <button
-                                className="editBtn"
-                                onClick={() =>
-                                    handleEditPlayerDialog(player._id as string)
-                                }
-                            >
-                                <Pencil className={rowStyles.icon} />
-                            </button>
+                        {isAdmin && (
+                            <td className={rowStyles.buttonBox}>
+                                <button
+                                    className="editBtn"
+                                    onClick={() =>
+                                        handleEditPlayerDialog(
+                                            player._id as string
+                                        )
+                                    }
+                                >
+                                    <Pencil className={rowStyles.icon} />
+                                </button>
 
-                            <button
-                                onClick={() =>
-                                    player._id && mutation.mutate(player._id)
-                                }
-                                className="deleteBtn"
-                            >
-                                <Trash className={rowStyles.icon} />
-                            </button>
-                        </td>
+                                <button
+                                    onClick={() =>
+                                        player._id &&
+                                        mutation.mutate(player._id)
+                                    }
+                                    className="deleteBtn"
+                                >
+                                    <Trash className={rowStyles.icon} />
+                                </button>
+                            </td>
+                        )}
                     </tr>
                 ))
             ) : (

@@ -4,12 +4,12 @@ import { ChevronDown } from "lucide-react";
 import headerLayout from "./sortableTableHeader.module.css";
 import { columns } from "@/data/columnPlayersHeader";
 
-type TableHeadersType = {
+type TableHeadersProps = {
     setPlayersData: React.Dispatch<React.SetStateAction<IPlayer[]>>;
 };
 export default function SortableTableHeader({
     setPlayersData,
-}: TableHeadersType) {
+}: TableHeadersProps) {
     const [sortDirection, setSortDirection] = useState({
         name: "",
         sortOrder: true, //true - descending / false - ascending
