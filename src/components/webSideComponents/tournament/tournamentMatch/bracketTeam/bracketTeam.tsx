@@ -9,7 +9,7 @@ type bracketTeamProps = {
     isOverTime: boolean;
     isDraw: boolean;
 };
-export default function bracketTeam({
+export default function BracketTeam({
     imgPath,
     teamName,
     score,

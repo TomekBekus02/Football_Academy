@@ -6,7 +6,7 @@ import BracketTeam from "./bracketTeam/bracketTeam";
 type tournamentMatchProps = {
     match: IBracketMatch;
 };
-export default function tournamentMatch({ match }: tournamentMatchProps) {
+export default function TournamentMatch({ match }: tournamentMatchProps) {
     return (
         <div className={bracketMatchLayout.matchBox}>
             {match.home.team == null ? (
