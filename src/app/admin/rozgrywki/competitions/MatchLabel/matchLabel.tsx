@@ -121,7 +121,7 @@ export default function MatchLabel({ matches }: competitionProps) {
                                         <TeamForm
                                             teamId={m.homeTeamId._id}
                                             form={m.homeTeamId.form}
-                                            IconSize={35}
+                                            IconSize={30}
                                         />
                                     </div>
                                 </div>
@@ -142,7 +142,7 @@ export default function MatchLabel({ matches }: competitionProps) {
                                         <TeamForm
                                             teamId={m.awayTeamId._id}
                                             form={m.awayTeamId.form}
-                                            IconSize={35}
+                                            IconSize={30}
                                         />
                                     </div>
                                 </div>

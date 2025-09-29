@@ -6,10 +6,14 @@ import { Trash } from "lucide-react";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { deleteEvent } from "@/services/MatchFetches/useMatch";
 import { MatchStatus } from "@/types/IMatch";
+import { updateScore } from "@/utils/utils";
 
 type EventType = {
     matchId: string;
+    homeTeamId: string;
     awayTeamId: string;
+    homeTeamScore: number;
+    awayTeamScore: number;
     events: IMatchEvent[];
     matchStatus: MatchStatus;
     isAdmin: boolean;
@@ -22,7 +26,10 @@ const shortName = (name: string | undefined) => {
 
 export const EventsHalf = ({
     matchId,
+    homeTeamId,
+    homeTeamScore,
     awayTeamId,
+    awayTeamScore,
     events,
     matchStatus,
     isAdmin,
@@ -71,6 +78,14 @@ export const EventsHalf = ({
                                 mutation.mutate({
                                     eventId: event._id,
                                     matchId: matchId,
+                                    result: updateScore(
+                                        event.teamId,
+                                        homeTeamId,
+                                        homeTeamScore,
+                                        awayTeamScore,
+                                        event.eventType,
+                                        -1
+                                    ),
                                 })
                             }
                         >

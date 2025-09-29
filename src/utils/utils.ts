@@ -27,15 +27,21 @@ export const updateScore = (
     homeTeamId: string,
     homeTeamResult: number,
     awayTeamResult: number,
-    eventType: string
+    eventType: string,
+    incValue: number
 ) => {
     if (eventType !== "Goal") {
         return { homeTeamResult, awayTeamResult };
     }
     const isHomeTeamGoal = eventTeamId === homeTeamId;
+
     return {
-        homeTeamResult: isHomeTeamGoal ? homeTeamResult + 1 : homeTeamResult,
-        awayTeamResult: isHomeTeamGoal ? awayTeamResult : awayTeamResult + 1,
+        homeTeamResult: isHomeTeamGoal
+            ? homeTeamResult + incValue
+            : homeTeamResult,
+        awayTeamResult: isHomeTeamGoal
+            ? awayTeamResult
+            : awayTeamResult + incValue,
     };
 };
 

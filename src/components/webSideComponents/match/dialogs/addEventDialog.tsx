@@ -84,7 +84,8 @@ export const AddEventDialog = forwardRef<HTMLDialogElement, IDialog>(
                 homeTeamId,
                 homeTeamScore,
                 awayTeamScore,
-                eventType
+                eventType,
+                1
             );
 
             const newEvent: IMatchEventExt = {

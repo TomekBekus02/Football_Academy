@@ -36,9 +36,21 @@ export async function updateMatchProgress({
 interface deleteEventVars {
     eventId: string;
     matchId: string;
+    result: {
+        homeTeamResult: number;
+        awayTeamResult: number;
+    };
 }
-export async function deleteEvent({ eventId, matchId }: deleteEventVars) {
-    const res = await axios.delete(`/api/matches/${matchId}/${eventId}`);
+export async function deleteEvent({
+    eventId,
+    matchId,
+    result,
+}: deleteEventVars) {
+    const res = await axios.delete(
+        `/api/matches/${matchId}/${eventId}?result=${encodeURIComponent(
+            JSON.stringify(result)
+        )}`
+    );
     return res.status;
 }
 interface deleteMatchVars {

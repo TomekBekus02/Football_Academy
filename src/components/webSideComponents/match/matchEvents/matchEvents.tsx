@@ -81,7 +81,10 @@ export default function MatchEvents({
                     </div>
                     <EventsHalf
                         matchId={matchId}
+                        homeTeamId={homeTeamId}
+                        homeTeamScore={homeTeamScore}
                         awayTeamId={awayTeamId}
+                        awayTeamScore={awayTeamScore}
                         events={firstHalfEvents}
                         matchStatus={matchStatus}
                         isAdmin={isAdmin}
@@ -93,7 +96,10 @@ export default function MatchEvents({
                     </div>
                     <EventsHalf
                         matchId={matchId}
+                        homeTeamId={homeTeamId}
+                        homeTeamScore={homeTeamScore}
                         awayTeamId={awayTeamId}
+                        awayTeamScore={awayTeamScore}
                         events={secondHalfEvents}
                         matchStatus={matchStatus}
                         isAdmin={isAdmin}
@@ -106,7 +112,10 @@ export default function MatchEvents({
                         </div>
                         <EventsHalf
                             matchId={matchId}
+                            homeTeamId={homeTeamId}
+                            homeTeamScore={homeTeamScore}
                             awayTeamId={awayTeamId}
+                            awayTeamScore={awayTeamScore}
                             events={overTimeEvents}
                             matchStatus={matchStatus}
                             isAdmin={isAdmin}
