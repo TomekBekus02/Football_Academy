@@ -76,7 +76,9 @@ export default function playerRow({
                         </th>
                         <td>{player.shirtNumber}</td>
                         <td className={rowStyles.nameStyle}>
-                            <Link href={`/players/${player._id}`}>
+                            <Link
+                                href={`/druzyna/${teamId}/zawodnik/${player._id}`}
+                            >
                                 {player.name}
                             </Link>
                         </td>

@@ -5,6 +5,7 @@ import { useQuery } from "@tanstack/react-query";
 import Image from "next/image";
 import TeamDetailsLayout from "./teamDetails.module.css";
 import { MatchStatus } from "@/types/IMatch";
+import Link from "next/link";
 
 interface TeamDetailsProps {
     teamId: string;
@@ -60,13 +61,15 @@ export default function GetTeamDetails({
                             width={140}
                             className={TeamDetailsLayout.teamImage}
                         />
-                        {isWinner ? (
-                            <h2 style={{ fontWeight: "900" }}>
-                                {teamData.name}*
-                            </h2>
-                        ) : (
-                            <h2>{teamData.name}</h2>
-                        )}
+                        <Link href={`/druzyna/${teamId}/sklad`}>
+                            {isWinner ? (
+                                <h2 style={{ fontWeight: "900" }}>
+                                    {teamData.name}*
+                                </h2>
+                            ) : (
+                                <h2>{teamData.name}</h2>
+                            )}
+                        </Link>
                     </div>
                 ) : (
                     <div>

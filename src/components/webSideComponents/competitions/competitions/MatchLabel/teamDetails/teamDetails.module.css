@@ -8,3 +8,7 @@
     align-items: center;
     width: 100%;
 }
+
+.competitionName a:hover {
+    text-decoration: underline;
+}

@@ -6,6 +6,7 @@ import { useQuery } from "@tanstack/react-query";
 import TeamSquadLayout from "./teamSquad.module.css";
 import DisplayPlayersEvents from "./playersEvents/playersEvents";
 import { IMatchEvent } from "@/types/IEvent";
+import Link from "next/link";
 
 interface TeamDetailsProps {
     teamId: string;
@@ -57,7 +58,12 @@ export default function TeamSquad({
                                     playerId={player._id}
                                     playersEvents={events}
                                 />
-                                <p>{player.name}</p>
+                                <Link
+                                    href={`/druzyna/${teamId}/zawodnik/${player._id}`}
+                                >
+                                    <p>{player.name}</p>
+                                </Link>
+
                                 <p className={TeamSquadLayout.playerNumber}>
                                     {player.shirtNumber}
                                 </p>

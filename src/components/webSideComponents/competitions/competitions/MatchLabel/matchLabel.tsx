@@ -5,7 +5,7 @@ import { IMatchCompetition } from "@/types/ICompetition";
 import { MatchStatus } from "@/types/IMatch";
 import CompetitionLayout from "../competitionLabel.module.css";
 import { useState } from "react";
-import TeamDetails from "./teamDetails";
+import TeamDetails from "./teamDetails/teamDetails";
 import { ChevronUp } from "lucide-react";
 import CompetitionDetails from "../competitionDetails";
 import TeamForm from "@/components/teamForm/teamForm";
@@ -45,6 +45,7 @@ export default function MatchLabel({ matches, isAdmin }: competitionProps) {
                         <div className={CompetitionLayout.teamsBox}>
                             <div>
                                 <TeamDetails
+                                    teamId={m.homeTeamId._id}
                                     name={m.homeTeamId.name}
                                     logo={m.homeTeamId.logo}
                                     isHomeTeam={true}
@@ -71,6 +72,7 @@ export default function MatchLabel({ matches, isAdmin }: competitionProps) {
                             </div>
                             <div>
                                 <TeamDetails
+                                    teamId={m.awayTeamId._id}
                                     name={m.awayTeamId.name}
                                     logo={m.awayTeamId.logo}
                                     isHomeTeam={false}
