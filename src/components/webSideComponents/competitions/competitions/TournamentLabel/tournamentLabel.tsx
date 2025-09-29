@@ -58,7 +58,7 @@ export default function TournamentLabel({
                                     height={65}
                                     className="imageStyle"
                                 />
-                                <Link href={`/turniej/${t._id}`}>
+                                <Link href={`/rozgrywki/turniej/${t._id}`}>
                                     <h1>{t.title}</h1>
                                 </Link>
                             </div>
@@ -105,13 +105,13 @@ export default function TournamentLabel({
                                         className={CompetitionLayout.buttonBox}
                                     >
                                         <div>
-                                            <button className="buttonStyle editBtn">
-                                                <Link
-                                                    href={`/admin/tournament/${t._id}`}
-                                                >
+                                            <Link
+                                                href={`/admin/turniej/${t._id}`}
+                                            >
+                                                <button className="buttonStyle editBtn">
                                                     <Hammer />
-                                                </Link>
-                                            </button>
+                                                </button>
+                                            </Link>
                                             <button
                                                 className="buttonStyle deleteBtn"
                                                 onClick={() =>

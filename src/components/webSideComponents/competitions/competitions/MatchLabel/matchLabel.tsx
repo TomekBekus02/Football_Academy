@@ -54,7 +54,7 @@ export default function MatchLabel({ matches, isAdmin }: competitionProps) {
                                 />
                             </div>
                             <div className={CompetitionLayout.scoreBox}>
-                                <Link href={`/mecz/${m._id}`}>
+                                <Link href={`/rozgrywki/mecz/${m._id}`}>
                                     {m.matchStatus !== MatchStatus.CREATED ? (
                                         <h1>
                                             {m.homeTeamScore}:{m.awayTeamScore}

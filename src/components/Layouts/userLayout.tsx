@@ -37,7 +37,7 @@ export default function UserLayout({ teamId }: { teamId: string }) {
                         </ul>
                     </li>
                     <li>
-                        <Link href="*">O Nas</Link>
+                        <Link href="/rozgrywki">Rozgrywki</Link>
                     </li>
                     <li>
                         <Link href="*">Kontakt</Link>
