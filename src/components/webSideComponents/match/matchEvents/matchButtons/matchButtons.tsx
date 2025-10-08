@@ -32,6 +32,7 @@ export default function matchButtons({
 }: matchEventProps) {
     const router = useRouter();
     const queryClient = useQueryClient();
+
     const endMatch = useMutation({
         mutationFn: ({
             matchId,
@@ -50,6 +51,7 @@ export default function matchButtons({
             router.refresh();
         },
     });
+
     const startMatch = useMutation({
         mutationFn: (matchId: string) =>
             updateMatchProgress({ matchStatusType: "matchStatus", matchId }),

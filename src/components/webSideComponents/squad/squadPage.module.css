@@ -16,12 +16,13 @@
     margin-top: 10px;
 }
 .tableBox table {
+    position: relative;
     border-collapse: collapse;
     font-family: Arial, sans-serif;
     background-color: var(--secondary-color);
     border-radius: 8px;
-    overflow: hidden;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    margin: 15px 0px;
 }
 
 .tableBox thead th {
@@ -32,6 +33,8 @@
     font-weight: 600;
     font-size: 20px;
     white-space: nowrap;
+    position:sticky;
+    top: 70px;
 }
 
 .tableBox thead th:first-child,

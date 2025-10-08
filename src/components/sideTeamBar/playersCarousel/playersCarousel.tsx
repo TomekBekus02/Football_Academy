@@ -131,7 +131,7 @@ export default function PlayersCarousel({ teamId }: { teamId: string }) {
                                                 }
                                             >
                                                 <p>
-                                                    {player.statCategory} :{" "}
+                                                    {player.statCategory}:{" "}
                                                     {player.statNumber}
                                                 </p>
                                             </div>

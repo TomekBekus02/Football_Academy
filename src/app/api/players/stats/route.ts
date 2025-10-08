@@ -54,8 +54,6 @@ export async function updateCleanSheetAndAppearances(
     shouldUpdate: boolean,
     IncValue: number
 ) {
-    if (!shouldUpdate) return;
-
     const teamPlayers = await Player.find({
         teamId: new mongoose.Types.ObjectId(teamId),
     }).select("_id position");
@@ -65,7 +63,7 @@ export async function updateCleanSheetAndAppearances(
         .map((p) => ({
             updateOne: {
                 filter: { _id: p._id },
-                update: { $inc: { cleanSheet: IncValue } },
+                update: { $inc: { cleanSheet: shouldUpdate ? IncValue : 0 } },
             },
         }));
     const appearancesOps = teamPlayers.map((p) => ({
