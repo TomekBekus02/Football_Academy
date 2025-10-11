@@ -1,3 +1,5 @@
+import { ITeamStats } from "./ITeam";
+
 export interface IPlayer {
     _id?: string;
     name: string;
@@ -22,4 +24,64 @@ export interface IStatPlayer {
     statNumber: number;
 }
 
+export interface IPlayerDetails {
+    _id: string;
+    name: string;
+    shirtNumber: number;
+    dateBirth: string;
+    photo: string;
+    position: string;
+    playerStatsdetails: IPlayerStatsDetails;
+    teamStats: ITeamStats;
+}
 
+export interface IPlayerStatsDetails {
+    appearances: number;
+    Attack: IAttackStat;
+    Playmaking: IPlaymakingStat;
+    Deffense: IDeffenseStat;
+    Goalkeeper: IGoalkeeperStat;
+}
+interface IAttackStat {
+    goals: number;
+    xpGoal: number;
+    shots: number;
+    shotsOntarget: number;
+    offensiveDuels: {
+        lost: number;
+        won: number;
+    };
+}
+interface IPlaymakingStat {
+    assists: number;
+    xpAssists: number;
+    createdChances: number;
+    passAccuracy: number;
+    longPassAccuracy: number;
+    progressivePasses: number;
+    crosses: {
+        failed: number;
+        succeded: number;
+    };
+}
+interface IDeffenseStat {
+    cleanSheets: number;
+    yellowCards: number;
+    redCards: number;
+    headerDuels: {
+        lost: number;
+        won: number;
+    };
+    groundDuels: {
+        lost: number;
+        won: number;
+    };
+    fauls: number;
+    interceptions: number;
+}
+interface IGoalkeeperStat {
+    cleanSheets: number;
+    xpConcededGoals: number;
+    saveSuccessRate: number;
+    interventions: number;
+}

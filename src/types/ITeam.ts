@@ -28,3 +28,21 @@ export interface ITeamsForm {
     homeTeam: IshortTeamInfo;
     awayTeam: IshortTeamInfo;
 }
+export interface ITeamStats {
+    matches: number;
+    wins: number;
+    draws: number;
+    loses: number;
+    assists: number;
+    goals_scored: number;
+    goals_conceded: number;
+    goals_balance: number;
+    avgTeamStats: IAvgTeamStats;
+}
+export interface IAvgTeamStats {
+    shots: number;
+    passAccuracy: number;
+    offDuelsRate: number;
+    deffDuelsRate: number;
+    fauls: number;
+}

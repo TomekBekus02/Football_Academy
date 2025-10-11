@@ -56,7 +56,7 @@ export async function fetchAllPlayersForMatch(
     const res = await fetch(
         `/api/matches?homeTeam=${homeTeam}&awayTeam=${awayTeam}`
     );
-    return (await res).json();
+    return res.json();
 }
 
 type penaltiesType = {
@@ -73,4 +73,8 @@ export async function updatePlayerStats(
     });
 
     return res.status;
+}
+export async function fetchPlayerStats(playerId: string) {
+    const res = await fetch(`/api/players/${playerId}/details`);
+    return res.json();
 }
