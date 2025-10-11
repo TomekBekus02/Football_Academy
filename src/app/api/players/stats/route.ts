@@ -161,15 +161,14 @@ export async function updateTeamStats(
         );
     }
 
-    const homeTeamGoalBalance = (homeTeamScore - awayTeamScore) * IncValue;
-    const awayTeamGoalBalance = (awayTeamScore - homeTeamScore) * IncValue;
-
+    console.log("homeTeamScore", homeTeamScore, "awayTeamScore", awayTeamScore);
     await Promise.all([
         Team.findByIdAndUpdate(homeTeamId, {
             $inc: {
                 [homeTeamResult]: IncValue,
                 matches: IncValue,
-                goal_balance: homeTeamGoalBalance,
+                scoredGoals: homeTeamScore * IncValue,
+                concededGoals: awayTeamScore * IncValue,
             },
             $set: {
                 form: homeTeamForm,
@@ -179,7 +178,8 @@ export async function updateTeamStats(
             $inc: {
                 [awayTeamResult]: IncValue,
                 matches: IncValue,
-                goal_balance: awayTeamGoalBalance,
+                scoredGoals: awayTeamScore * IncValue,
+                concededGoals: homeTeamScore * IncValue,
             },
             $set: {
                 form: awayTeamForm,

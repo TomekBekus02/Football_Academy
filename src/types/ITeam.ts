@@ -6,7 +6,8 @@ export interface ITeam {
     wins: number;
     draws: number;
     loses: number;
-    goal_balance: number;
+    scoredGoals: number;
+    concededGoals: number;
     form: Array<ITeamsForm>;
     achievements: Array<string>;
 }

@@ -1,5 +1,4 @@
 import mongoose, { Document, Model, Schema } from "mongoose";
-import { IPlayer } from "./player";
 
 export interface ITeam extends Document {
     name: string;
@@ -8,7 +7,8 @@ export interface ITeam extends Document {
     wins: number;
     draws: number;
     loses: number;
-    goal_balance: number;
+    scoredGoals: number;
+    concededGoals: number;
     form: {
         matchId: mongoose.Types.ObjectId;
         matchDate: string;
@@ -39,7 +39,8 @@ const TeamSchema: Schema<ITeam> = new Schema({
     wins: Number,
     draws: Number,
     loses: Number,
-    goal_balance: Number,
+    scoredGoals: Number,
+    concededGoals: Number,
     form: [
         {
             matchId: { type: mongoose.Schema.Types.ObjectId, ref: "Match" },
