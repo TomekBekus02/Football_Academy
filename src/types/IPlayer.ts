@@ -31,15 +31,20 @@ export interface IPlayerDetails {
     dateBirth: string;
     photo: string;
     position: string;
-    playerStatsdetails: IPlayerStatsDetails;
+    appearances: number;
+    cleanSheet: number;
+    goals: number;
+    assists: number;
+    redCards: number;
+    yellowCards: number;
+    AvgPlayerStatsdetails: IPlayerStatsDetails;
     teamStats: ITeamStats;
 }
 
 export interface IPlayerStatsDetails {
-    appearances: number;
     Attack: IAttackStat;
     Playmaking: IPlaymakingStat;
-    Deffense: IDeffenseStat;
+    Defense: IDeffenseStat;
     Goalkeeper: IGoalkeeperStat;
 }
 interface IAttackStat {

@@ -22,7 +22,7 @@ export const midFielderStats = {
             succeded: 0.7,
         },
     },
-    Deffense: {
+    Defense: {
         cleanSheets: 0.35,
         yellowCards: 0.2,
         redCards: 0.01,

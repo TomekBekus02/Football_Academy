@@ -17,6 +17,7 @@ export default function SquadTeam({
             return fetchPlayerStats(playerId as string);
         },
     });
+   
     return (
         <LoadProvider isLoading={isLoading} error={error}>
             <div>

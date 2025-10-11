@@ -22,7 +22,7 @@ export const goalkeeperStats = {
             succeded: 0.0,
         },
     },
-    Deffense: {
+    Defense: {
         cleanSheets: 0.4,
         yellowCards: 0.05,
         redCards: 0.005,

@@ -22,7 +22,7 @@ export const deffenderStats = {
             succeded: 0.4,
         },
     },
-    Deffense: {
+    Defense: {
         cleanSheets: 0.45,
         yellowCards: 0.25,
         redCards: 0.02,

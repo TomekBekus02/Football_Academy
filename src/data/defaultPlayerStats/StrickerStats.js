@@ -22,7 +22,7 @@ export const strickerStats = {
             succeded: 0.3,
         },
     },
-    Deffense: {
+    Defense: {
         cleanSheets: 0.3,
         yellowCards: 0.1,
         redCards: 0.01,
