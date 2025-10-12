@@ -5,6 +5,7 @@ import { useQuery } from "@tanstack/react-query";
 import React from "react";
 import PlayerDetailedStats from "./playerDetailedStats/playerDetailedStats";
 import PlayerInfo from "./playerInfo/playerInfo";
+import RadarChart from "./charts/radarChart";
 
 type playerStatsTypes = {
     teamId: string;
@@ -30,6 +31,12 @@ export default function PlayerStats({ teamId, playerId }: playerStatsTypes) {
                     <div style={{ display: "flex" }}>
                         <PlayerInfo player={player} />
                         <PlayerDetailedStats player={player} />
+                    </div>
+                    <div>
+                        <RadarChart
+                            player={player}
+                            position={player.position}
+                        />
                     </div>
                 </div>
             ) : (
