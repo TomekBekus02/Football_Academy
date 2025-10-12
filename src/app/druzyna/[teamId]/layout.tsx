@@ -1,7 +1,10 @@
+"use client";
+
 import SideTeamInfo from "@/components/sideTeamBar/sideTeamInfo";
 import teamLayout from "./teamLayout.module.css";
 
 import React, { ReactNode } from "react";
+import { usePathname } from "next/navigation";
 
 export default function TeamLayout({
     children,
@@ -11,13 +14,17 @@ export default function TeamLayout({
     params: Promise<{ teamId: string }>;
 }) {
     const { teamId } = React.use(params);
+    const pathname = usePathname();
+    const hideHeader = pathname?.includes("/zawodnik/");
     return (
         <div className={teamLayout.teamPage}>
-            <div className={teamLayout.sideBarBox}>
-                <div className={teamLayout.sideTeamInfo}>
-                    <SideTeamInfo teamId={teamId} />
+            {!hideHeader && (
+                <div className={teamLayout.sideBarBox}>
+                    <div className={teamLayout.sideTeamInfo}>
+                        <SideTeamInfo teamId={teamId} />
+                    </div>
                 </div>
-            </div>
+            )}
             <main>{children}</main>
         </div>
     );

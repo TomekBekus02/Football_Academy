@@ -1,0 +1,90 @@
+.table {
+    min-width: 330px;
+    height: 90px;
+    border-collapse: collapse;
+    text-align: center;
+    margin: 1rem;
+    border-radius: 12px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    transition: 0.3s ease;
+}
+
+.caption {
+    font-weight: 600;
+    font-size: 1.2rem;
+    margin-bottom: 0.5rem;
+    text-transform: uppercase;
+}
+
+.off {
+    border-top: 2px solid #1e90ff;
+}
+
+.mid {
+    border-top: 2px solid #28a745;
+}
+
+.def {
+    border-top: 2px solid #ffb400;
+}
+
+.gk {
+    border-top: 2px solid #e63946;
+}
+
+.table th {
+    padding: 0.6rem;
+    font-weight: 500;
+    position: relative;
+    cursor: help;
+    background-color: rgba(255, 255, 255, 0.85);
+    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.toolTipText {
+    visibility: hidden;
+    background-color: #333;
+    color: #fff;
+    text-align: center;
+    border-radius: 6px;
+    padding: 5px 8px;
+    position: absolute;
+    z-index: 1;
+    bottom: 125%;
+    left: 50%;
+    transform: translateX(-50%);
+    white-space: nowrap;
+    opacity: 0;
+    transition: opacity 0.3s;
+}
+
+.toolTip:hover .toolTipText {
+    visibility: visible;
+    opacity: 1;
+}
+
+.cell {
+    padding: 0.6rem 0.8rem;
+    font-weight: 500;
+    border-top: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.off th {
+    background-color: rgba(30, 144, 255, 0.1);
+}
+
+.mid th {
+    background-color: rgba(40, 167, 69, 0.1);
+}
+
+.def th {
+    background-color: rgba(255, 180, 0, 0.15);
+}
+
+.gk th {
+    background-color: rgba(230, 57, 70, 0.1);
+}
+
+.table tbody tr:hover {
+    background-color: rgba(0, 0, 0, 0.03);
+}

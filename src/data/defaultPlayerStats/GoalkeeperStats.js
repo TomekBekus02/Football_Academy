@@ -14,7 +14,7 @@ export const goalkeeperStats = {
         assists: 0.05,
         xpAssists: 0.04,
         createdChances: 0.1,
-        passAccuracy: 70.0,
+        passAccuracy: 90.0,
         longPassAccuracy: 55.0,
         progressivePasses: 2.0,
         crosses: {

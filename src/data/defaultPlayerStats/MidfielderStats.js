@@ -14,7 +14,7 @@ export const midFielderStats = {
         assists: 0.4,
         xpAssists: 0.35,
         createdChances: 2.0,
-        passAccuracy: 85.0,
+        passAccuracy: 87.0,
         longPassAccuracy: 75.0,
         progressivePasses: 8.0,
         crosses: {

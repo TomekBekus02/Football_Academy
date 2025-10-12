@@ -106,9 +106,12 @@ function transformPlayerStats(player: IPlayer, team: ITeam): IPlayerDetails {
             Attack: {
                 goals: Number((player.goals / player.appearances).toFixed(2)),
                 xpGoal: Number(
-                    (baseStats.Attack.xpGoal * goalMult * teamOffense).toFixed(
-                        2
-                    )
+                    (
+                        baseStats.Attack.xpGoal *
+                        goalMult *
+                        teamOffense *
+                        1.6
+                    ).toFixed(2)
                 ),
                 shots: Number(
                     (baseStats.Attack.shots * goalMult * teamOffense).toFixed(2)
@@ -220,13 +223,14 @@ function transformPlayerStats(player: IPlayer, team: ITeam): IPlayerDetails {
                     won: Number(
                         (
                             baseStats.Defense.groundDuels.won *
-                            (1 + (csMult - 1) * 0.4)
+                            (2.4 + (csMult - 1) * 0.4)
                         ).toFixed(1)
                     ),
                 },
                 fauls: Number(
                     (
-                        baseStats.Defense.fauls * yellowMult +
+                        baseStats.Defense.fauls +
+                        yellowMult +
                         redMult * 0.4
                     ).toFixed(1)
                 ),
@@ -251,9 +255,8 @@ function transformPlayerStats(player: IPlayer, team: ITeam): IPlayerDetails {
                     player.position === "Bramkarz"
                         ? Number(
                               (
-                                  baseStats.Goalkeeper.xpConcededGoals *
-                                  concededMult *
-                                  teamDefense
+                                  baseStats.Goalkeeper.xpConcededGoals +
+                                  concededMult * teamDefense
                               ).toFixed(2)
                           )
                         : 0,
