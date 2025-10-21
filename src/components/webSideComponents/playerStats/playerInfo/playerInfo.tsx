@@ -1,7 +1,9 @@
 import { IPlayerDetails } from "@/types/IPlayer";
 import Image from "next/image";
-import { Shirt, Swords, Volleyball, Footprints, Hand } from "lucide-react";
+import { Shirt } from "lucide-react";
 import { RedCard, YellowCard } from "@/components/icons/matchIcons";
+import { statIcons } from "@/components/icons/matchIcons";
+
 export default function PlayerInfo({ player }: { player: IPlayerDetails }) {
     return (
         <div>
@@ -17,20 +19,20 @@ export default function PlayerInfo({ player }: { player: IPlayerDetails }) {
                     <div>
                         <h4 className="toolTip">
                             <span className="toolTipText">Rozegrane mecze</span>
-                            <Swords />: {player.appearances}
+                            {statIcons.appearance}: {player.appearances}
                         </h4>
                         <h4 className="toolTip">
-                            <Volleyball />: {player.goals}
+                            {statIcons.goal}: {player.goals}
                             <span className="toolTipText">Bramki</span>
                         </h4>
                         <h4 className="toolTip">
-                            <Footprints />: {player.assists}
+                            {statIcons.assist}: {player.assists}
                             <span className="toolTipText">Asysty</span>
                         </h4>
                     </div>
                     <div>
                         <h4 className="toolTip">
-                            <Hand />: {player.cleanSheet}
+                            {statIcons.cleanSheet}: {player.cleanSheet}
                             <span className="toolTipText">Czyste konta</span>
                         </h4>
                         <h4 className="toolTip">
@@ -49,7 +51,7 @@ export default function PlayerInfo({ player }: { player: IPlayerDetails }) {
                 <h4>Data Ur. : {player.dateBirth}</h4>
                 <h4>Pozycja: {player.position}</h4>
                 <h4>
-                    <Shirt />: {player.shirtNumber}
+                    {statIcons.number}: {player.shirtNumber}
                 </h4>
             </div>
         </div>

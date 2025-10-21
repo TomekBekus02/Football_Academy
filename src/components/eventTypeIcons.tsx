@@ -8,12 +8,12 @@ import {
     DrawLoseIcon,
     DrawWinIcon,
 } from "@/components/icons/matchIcons";
-import { Volleyball } from "lucide-react";
+import { statIcons } from "@/components/icons/matchIcons";
 
 export const eventTypeIcon = (type: string) => {
     switch (type) {
         case "Goal":
-            return <Volleyball width={20} />;
+            return <h3>{statIcons.goal}</h3>;
         case "RedYellowCard":
             return <RedYellowCard width={25} />;
         case "YellowCard":
@@ -29,10 +29,6 @@ export const matchResultIcon = (
     oppositeTeamPenScore: number,
     IconSize: number
 ) => {
-    // console.log("yourTeamScore: ", yourTeamScore);
-    // console.log("yourTeamPenScore: ", yourTeamPenScore);
-    // console.log("oppositeTeamScore: ", oppositeTeamScore);
-    // console.log("oppositeTeamPenScore: ", oppositeTeamPenScore);
     if (yourTeamScore > oppositeTeamScore) {
         return <WinIcon width={IconSize} height={IconSize} />;
     } else if (yourTeamScore < oppositeTeamScore) {

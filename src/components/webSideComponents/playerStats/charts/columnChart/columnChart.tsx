@@ -6,6 +6,11 @@ import styles from "./columnChart.module.css";
 import defStyles from "../chartsStyle.module.css";
 import { useState } from "react";
 import Image from "next/image";
+import {
+    statIcons as icons,
+    RedCard,
+    YellowCard,
+} from "@/components/icons/matchIcons";
 
 const ReactApexChart = dynamic(() => import("react-apexcharts"), {
     ssr: false,
@@ -52,7 +57,7 @@ const defineChartData = (player: IPlayerStatsHistory[], position: string) => {
         redCard.color,
         cleanSheet.color,
     ];
-    let statIcons = ["👟", "⚽", "🎯", "🟨", "🟥", "🧤"];
+    let statIcons = ["👟", "⚽", "🅰️", "🟨", "🟥", "🧤"];
     if (position === "Bramkarz") {
         colorsData = [
             appearance.color,
@@ -61,7 +66,7 @@ const defineChartData = (player: IPlayerStatsHistory[], position: string) => {
             redCard.color,
             cleanSheet.color,
         ];
-        statIcons = ["👟", "🎯", "🟨", "🟥", "🧤"];
+        statIcons = ["👟", "🅰️", "🟨", "🟥", "🧤"];
     } else if (position === "Napastnik" || position === "Pomocnik") {
         colorsData = [
             appearance.color,
@@ -70,7 +75,7 @@ const defineChartData = (player: IPlayerStatsHistory[], position: string) => {
             yellowCard.color,
             redCard.color,
         ];
-        statIcons = ["👟", "⚽", "🎯", "🟨", "🟥"];
+        statIcons = ["👟", "⚽", "🅰️", "🟨", "🟥"];
     }
 
     const filteredSeries = seriesData.filter((stat) => {

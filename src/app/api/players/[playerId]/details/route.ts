@@ -181,7 +181,7 @@ function transformPlayerStats(player: IPlayer, team: ITeam): IPlayerDetails {
                     failed: Number(
                         (
                             baseStats.Playmaking.crosses.failed *
-                            (2 - assistMult)
+                            (2.2 - assistMult)
                         ).toFixed(1)
                     ),
                     succeded: Number(

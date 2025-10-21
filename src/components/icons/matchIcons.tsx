@@ -282,5 +282,19 @@ export const DrawLoseIcon = (props: React.SVGProps<SVGSVGElement>) => {
         </svg>
     );
 };
+
+export const statIcons = {
+    appearance: "👟",
+    goal: "⚽",
+    assist: "🅰️",
+    cleanSheet: "🧤",
+    number: "👕",
+    match: "⚔️",
+    win: "🏆",
+    draw: "🤝",
+    lose: "❌",
+    goalsFor: "🥅⚽",
+    goalsAgainst: "🥅❌",
+};
     
 
