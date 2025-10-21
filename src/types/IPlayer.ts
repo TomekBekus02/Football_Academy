@@ -23,6 +23,10 @@ export interface IStatPlayer {
     statCategory: string;
     statNumber: number;
 }
+export interface IPlayerStats {
+    statsHistory: IPlayerStatsHistory[];
+    playerDetails: IPlayerDetails;
+}
 
 export interface IPlayerDetails {
     _id: string;
@@ -89,4 +93,19 @@ interface IGoalkeeperStat {
     xpConcededGoals: number;
     saveSuccessRate: number;
     interventions: number;
+}
+
+export interface IPlayerStatsHistory {
+    team: {
+        teamId: string;
+        logo: string;
+    };
+    playerStats: {
+        appearances: number;
+        assists: number;
+        goals: number;
+        cleanSheets: number;
+        redCards: number;
+        yellowCards: number;
+    };
 }

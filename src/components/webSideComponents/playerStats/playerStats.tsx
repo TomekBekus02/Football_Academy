@@ -1,11 +1,12 @@
 import LoadProvider from "@/components/LoadProvider/LoadProvider";
 import { fetchPlayerStats } from "@/services/PlayersFetches/usePlayers";
-import { IPlayerDetails } from "@/types/IPlayer";
+import { IPlayerDetails, IPlayerStats } from "@/types/IPlayer";
 import { useQuery } from "@tanstack/react-query";
 import React from "react";
 import PlayerDetailedStats from "./playerDetailedStats/playerDetailedStats";
 import PlayerInfo from "./playerInfo/playerInfo";
-import RadarChart from "./charts/radarChart";
+import RadarChart from "./charts/radarChart/radarChart";
+import ColumnChart from "./charts/columnChart/columnChart";
 
 type playerStatsTypes = {
     teamId: string;
@@ -16,7 +17,7 @@ export default function PlayerStats({ teamId, playerId }: playerStatsTypes) {
         data: player,
         isLoading,
         error,
-    } = useQuery<IPlayerDetails>({
+    } = useQuery<IPlayerStats>({
         queryKey: ["Players", playerId],
         queryFn: ({ queryKey }) => {
             const [, playerId] = queryKey;
@@ -29,13 +30,17 @@ export default function PlayerStats({ teamId, playerId }: playerStatsTypes) {
             {player ? (
                 <div>
                     <div style={{ display: "flex" }}>
-                        <PlayerInfo player={player} />
-                        <PlayerDetailedStats player={player} />
+                        <PlayerInfo player={player.playerDetails} />
+                        <PlayerDetailedStats player={player.playerDetails} />
                     </div>
-                    <div>
+                    <div style={{ display: "flex" }}>
                         <RadarChart
-                            player={player}
-                            position={player.position}
+                            player={player.playerDetails}
+                            position={player.playerDetails.position}
+                        />
+                        <ColumnChart
+                            player={player.statsHistory}
+                            position={player.playerDetails.position}
                         />
                     </div>
                 </div>

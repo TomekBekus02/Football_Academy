@@ -1,0 +1,8 @@
+.radarWrapper {
+    width: 500px;
+    height: 500px;
+}
+
+.chartWrapper:hover {
+    transform: scale(1.02);
+}

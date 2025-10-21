@@ -1,18 +1,14 @@
 .chartWrapper {
-    width: 500px;
-    height: 500px;
     display: flex;
     justify-content: center;
     align-items: center;
     margin: 1rem;
-    background-color: var(--green-color);
     padding: 1rem;
     border-radius: 16px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.395);
     transition: all 0.3s ease;
 }
 
-/* Opcjonalny efekt hover dla całego wykresu */
 .chartWrapper:hover {
     transform: scale(1.02);
 }

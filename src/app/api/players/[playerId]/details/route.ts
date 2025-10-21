@@ -7,6 +7,7 @@ import { strickerStats } from "@/data/defaultPlayerStats/StrickerStats";
 import { midFielderStats } from "@/data/defaultPlayerStats/MidfielderStats";
 import { deffenderStats } from "@/data/defaultPlayerStats/DeffenderStats";
 import { goalkeeperStats } from "@/data/defaultPlayerStats/GoalkeeperStats";
+import Match from "@/models/match";
 
 async function countTeamAssist(teamId: string) {
     const result = await Player.aggregate([
@@ -107,20 +108,20 @@ function transformPlayerStats(player: IPlayer, team: ITeam): IPlayerDetails {
                 goals: Number((player.goals / player.appearances).toFixed(2)),
                 xpGoal: Number(
                     (
-                        baseStats.Attack.xpGoal *
-                        goalMult *
-                        teamOffense *
-                        1.6
+                        0.01 +
+                        baseStats.Attack.xpGoal * goalMult * teamOffense * 1.6
                     ).toFixed(2)
                 ),
                 shots: Number(
-                    (baseStats.Attack.shots * goalMult * teamOffense).toFixed(2)
+                    (
+                        0.2 +
+                        baseStats.Attack.shots * goalMult * teamOffense
+                    ).toFixed(2)
                 ),
                 shotsOntarget: Number(
                     (
-                        baseStats.Attack.shotsOntarget *
-                        goalMult *
-                        teamOffense
+                        0.1 +
+                        baseStats.Attack.shotsOntarget * goalMult * teamOffense
                     ).toFixed(2)
                 ),
                 offensiveDuels: {
@@ -143,16 +144,18 @@ function transformPlayerStats(player: IPlayer, team: ITeam): IPlayerDetails {
                 ),
                 xpAssists: Number(
                     (
+                        0.1 +
                         baseStats.Playmaking.xpAssists *
-                        assistMult *
-                        teamOffense
+                            assistMult *
+                            teamOffense
                     ).toFixed(2)
                 ),
                 createdChances: Number(
                     (
+                        0.1 +
                         baseStats.Playmaking.createdChances *
-                        assistMult *
-                        teamOffense
+                            assistMult *
+                            teamOffense
                     ).toFixed(1)
                 ),
                 passAccuracy: clamp(
@@ -168,9 +171,10 @@ function transformPlayerStats(player: IPlayer, team: ITeam): IPlayerDetails {
                 ),
                 progressivePasses: Number(
                     (
+                        0.2 +
                         baseStats.Playmaking.progressivePasses *
-                        assistMult *
-                        teamOffense
+                            assistMult *
+                            teamOffense
                     ).toFixed(1)
                 ),
                 crosses: {
@@ -302,6 +306,105 @@ function transformPlayerStats(player: IPlayer, team: ITeam): IPlayerDetails {
     };
 }
 
+async function transformPlayerStatsHistory(
+    playerId: string,
+    teamId: string,
+    position: string
+) {
+    const matches = await Match.find({
+        $or: [{ homeTeamId: teamId }, { awayTeamId: teamId }],
+    })
+        .select("homeTeamId homeTeamScore awayTeamId awayTeamScore events")
+        .lean();
+
+    const teams = await Team.find({
+        $nor: [{ _id: teamId }],
+    })
+        .select("_id name logo")
+        .lean();
+
+    const statsHistory = teams.map((team) => {
+        return {
+            team: {
+                teamId: team._id,
+                logo: team.logo,
+            },
+            playerStats: {
+                appearances: 0,
+                assists: 0,
+                goals: 0,
+                cleanSheets: 0,
+                redCards: 0,
+                yellowCards: 0,
+            },
+        };
+    });
+    matches.forEach((match) => {
+        let tempPlayerStats = {
+            appearances: 0,
+            assists: 0,
+            goals: 0,
+            cleanSheets: 0,
+            redCards: 0,
+            yellowCards: 0,
+        };
+        tempPlayerStats.appearances += 1;
+        if (position === "Bramkarz" || position === "Obrońca") {
+            if (match.homeTeamId.toString() !== teamId.toString()) {
+                if (match.homeTeamScore === 0) {
+                    tempPlayerStats.cleanSheets += 1;
+                }
+            } else if (match.awayTeamScore === 0) {
+                tempPlayerStats.cleanSheets += 1;
+            }
+        }
+        match.events.forEach((event: any) => {
+            switch (event.eventType) {
+                case "Goal":
+                    if (event.player.id.equals(playerId)) {
+                        tempPlayerStats.goals += 1;
+                    } else if (
+                        event.assist_player &&
+                        event.assist_player.id.equals(playerId)
+                    ) {
+                        tempPlayerStats.assists += 1;
+                    }
+                    break;
+                case "YellowCard":
+                    if (event.player.id.equals(playerId)) {
+                        tempPlayerStats.yellowCards += 1;
+                    }
+
+                    break;
+                case "RedCard":
+                    if (event.player.id.equals(playerId)) {
+                        tempPlayerStats.redCards += 1;
+                    }
+                    break;
+            }
+        });
+        let teamIdtoUpdate = "";
+        if (match.homeTeamId.toString() !== teamId.toString()) {
+            teamIdtoUpdate = match.homeTeamId.toString();
+        } else {
+            teamIdtoUpdate = match.awayTeamId.toString();
+        }
+        const teamStatHistory = statsHistory.find(
+            (s) => s.team.teamId.toString() === teamIdtoUpdate.toString()
+        );
+        if (teamStatHistory) {
+            const ps = teamStatHistory.playerStats;
+            ps.appearances += tempPlayerStats.appearances;
+            ps.goals += tempPlayerStats.goals;
+            ps.assists += tempPlayerStats.assists;
+            ps.cleanSheets += tempPlayerStats.cleanSheets;
+            ps.redCards += tempPlayerStats.redCards;
+            ps.yellowCards += tempPlayerStats.yellowCards;
+        }
+    });
+    return statsHistory;
+}
+
 export async function GET(
     request: NextRequest,
     { params }: { params: { playerId: string } }
@@ -313,8 +416,17 @@ export async function GET(
         if (player) {
             const team = await Team.findOne({ _id: player.teamId });
             if (team) {
-                const playerStats = transformPlayerStats(player, team);
-                return NextResponse.json(playerStats, { status: 200 });
+                const playerDetails = transformPlayerStats(player, team);
+                const statsHistory = await transformPlayerStatsHistory(
+                    player._id as string,
+                    team._id as string,
+                    player.position
+                );
+
+                return NextResponse.json(
+                    { statsHistory, playerDetails },
+                    { status: 200 }
+                );
             }
         }
         return NextResponse.json("", { status: 404 });

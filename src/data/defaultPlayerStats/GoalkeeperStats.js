@@ -27,8 +27,8 @@ export const goalkeeperStats = {
         yellowCards: 0.05,
         redCards: 0.005,
         headerDuels: {
-            lost: 0.2,
-            won: 0.3,
+            lost: 0.1,
+            won: 2.3,
         },
         groundDuels: {
             lost: 0.3,
