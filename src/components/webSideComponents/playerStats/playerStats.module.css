@@ -1,0 +1,11 @@
+.playerInfoWrapper {
+    display: flex;
+    justify-content: center;
+    margin: 20px;
+}
+.chartsBox {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+    width: 100%;
+}

@@ -17,7 +17,7 @@ export default function TeamLayout({
     const pathname = usePathname();
     const hideHeader = pathname?.includes("/zawodnik/");
     return (
-        <div className={teamLayout.teamPage}>
+        <div className={!hideHeader ? teamLayout.teamPage : ""}>
             {!hideHeader && (
                 <div className={teamLayout.sideBarBox}>
                     <div className={teamLayout.sideTeamInfo}>

@@ -35,10 +35,12 @@ export interface ITeamStats {
     draws: number;
     loses: number;
     assists: number;
-    goals_scored: number;
-    goals_conceded: number;
+    yellowCards: number;
+    redCards: number;
+    scoredGoals: number;
+    concededGoals: number;
     goals_balance: number;
-    avgTeamStats: IAvgTeamStats;
+    //avgTeamStats: IAvgTeamStats;
 }
 export interface IAvgTeamStats {
     shots: number;

@@ -16,8 +16,25 @@ async function countTeamAssist(teamId: string) {
     ]);
     return result[0]?.totalAssists || 0;
 }
+async function countTeamRedCards(teamId: string) {
+    const result = await Player.aggregate([
+        { $match: { teamId } },
+        { $group: { _id: null, totalRedCards: { $sum: "$redCards" } } },
+    ]);
+    return result[0]?.totalRedCards || 0;
+}
+async function countTeamYellowCards(teamId: string) {
+    const result = await Player.aggregate([
+        { $match: { teamId } },
+        { $group: { _id: null, totalYellowCards: { $sum: "$yellowCards" } } },
+    ]);
+    return result[0]?.totalYellowCards || 0;
+}
 
-function transformPlayerStats(player: IPlayer, team: ITeam): IPlayerDetails {
+async function transformPlayerStats(
+    player: IPlayer,
+    team: ITeam
+): Promise<IPlayerDetails> {
     const clamp = (value: number, min: number, max: number): number =>
         Math.floor(Math.min(Math.max(value, min), max));
 
@@ -82,9 +99,12 @@ function transformPlayerStats(player: IPlayer, team: ITeam): IPlayerDetails {
         0.4,
         2.0
     );
-    // team assists
-    let teamAssists = 0;
-    countTeamAssist(team._id as string).then((res) => (teamAssists = res));
+
+    const [teamAssists, teamYellowCards, teamRedCards] = await Promise.all([
+        countTeamAssist(team._id as string),
+        countTeamYellowCards(team._id as string),
+        countTeamRedCards(team._id as string),
+    ]);
 
     // team stats factor
     const teamOffense = team.scoredGoals / team.matches / leagueAvgGoals;
@@ -292,16 +312,18 @@ function transformPlayerStats(player: IPlayer, team: ITeam): IPlayerDetails {
             draws: team.draws,
             loses: team.loses,
             assists: teamAssists,
-            goals_scored: team.scoredGoals,
-            goals_conceded: team.concededGoals,
+            yellowCards: teamYellowCards,
+            redCards: teamRedCards,
+            scoredGoals: team.scoredGoals,
+            concededGoals: team.concededGoals,
             goals_balance: team.scoredGoals - team.concededGoals,
-            avgTeamStats: {
-                shots: 0,
-                passAccuracy: 0,
-                offDuelsRate: 0,
-                deffDuelsRate: 0,
-                fauls: 0,
-            },
+            // avgTeamStats: {
+            //     shots: 0,
+            //     passAccuracy: 0,
+            //     offDuelsRate: 0,
+            //     deffDuelsRate: 0,
+            //     fauls: 0,
+            // },
         },
     };
 }
@@ -416,7 +438,7 @@ export async function GET(
         if (player) {
             const team = await Team.findOne({ _id: player.teamId });
             if (team) {
-                const playerDetails = transformPlayerStats(player, team);
+                const playerDetails = await transformPlayerStats(player, team);
                 const statsHistory = await transformPlayerStatsHistory(
                     player._id as string,
                     team._id as string,

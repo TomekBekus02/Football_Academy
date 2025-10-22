@@ -6,11 +6,6 @@ import styles from "./columnChart.module.css";
 import defStyles from "../chartsStyle.module.css";
 import { useState } from "react";
 import Image from "next/image";
-import {
-    statIcons as icons,
-    RedCard,
-    YellowCard,
-} from "@/components/icons/matchIcons";
 
 const ReactApexChart = dynamic(() => import("react-apexcharts"), {
     ssr: false,
@@ -108,6 +103,7 @@ export default function ColumnChart({
         options: {
             chart: {
                 type: "bar",
+                toolbar: { show: false },
                 height: 350,
             },
             colors: chartData.colorsData,
@@ -184,7 +180,7 @@ export default function ColumnChart({
                 series={state.series}
                 type="bar"
                 height={500}
-                width={900}
+                width={1470}
             />
 
             <div className={styles.teamImages}>
@@ -194,8 +190,8 @@ export default function ColumnChart({
                         src={team}
                         alt=""
                         className={`${styles.teamLogo} imageStyle`}
-                        width={80}
-                        height={80}
+                        width={70}
+                        height={70}
                     />
                 ))}
             </div>

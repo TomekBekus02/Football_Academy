@@ -12,13 +12,5 @@ export default function SquadTeam({
     params: Promise<{ teamId: string; playerId: string }>;
 }) {
     const { teamId, playerId } = React.use(params);
-    const { data, isLoading, error } = useQuery<IPlayerDetails>({
-        queryKey: ["Players", playerId],
-        queryFn: ({ queryKey }) => {
-            const [, playerId] = queryKey;
-            return fetchPlayerStats(playerId as string);
-        },
-    });
-
     return <PlayerStats teamId={teamId} playerId={playerId} />;
 }

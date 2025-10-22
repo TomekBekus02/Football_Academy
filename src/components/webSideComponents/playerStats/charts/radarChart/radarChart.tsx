@@ -10,7 +10,7 @@ const ReactApexChart = dynamic(() => import("react-apexcharts"), {
 });
 
 interface RadarChartProps {
-    player: any;
+    player: IPlayerDetails;
     position: string;
 }
 
@@ -34,8 +34,8 @@ const defineChartData = (player: IPlayerDetails, position: string) => {
     ];
     let categories = [
         "% Podań",
-        "% Długich Podań",
-        "% Celnych Strzałów",
+        "% Dł. Podań",
+        "% Cel. Strzałów",
         "% Off Pojedynków",
         "% Odbiorów",
         "% Def Pojedynków",
@@ -140,10 +140,10 @@ export default function RadarChart({ player, position }: RadarChartProps) {
                 },
             },
             title: {
-                text: "Bilans statystyk",
+                text: "% Bilans statystyk",
                 style: {
-                    fontSize: "16px",
-                    fontWeight: "600",
+                    fontSize: "20px",
+                    fontWeight: "800",
                     color: "#d3d2d2ff",
                 },
             },
@@ -170,9 +170,10 @@ export default function RadarChart({ player, position }: RadarChartProps) {
             xaxis: {
                 categories: chartData.categories,
                 labels: {
+                    useHTML: true,
                     style: {
                         colors: "#333",
-                        fontSize: "12px",
+                        fontSize: "11px",
                         fontWeight: 500,
                     },
                 },
@@ -190,13 +191,13 @@ export default function RadarChart({ player, position }: RadarChartProps) {
     });
 
     return (
-        <div className={`${defStyles.chartWrapper} ${styles.radarWrapper}`}>
+        <div className={`${defStyles.chartWrapper} ${defStyles.squareWrapper}`}>
             <ReactApexChart
                 options={state.options as any}
                 series={state.series}
                 type="radar"
-                height={490}
-                width={500}
+                height={450}
+                width={450}
             />
         </div>
     );
