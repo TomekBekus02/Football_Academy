@@ -1,0 +1,13 @@
+.buttonsBox {
+    position: absolute;
+    left: 30px;
+    z-index: 1;
+}
+.button {
+    background-color: var(--primary-color);
+    color: antiquewhite;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.395);
+}
+.active {
+    background-color: var(--secondary-color);
+}

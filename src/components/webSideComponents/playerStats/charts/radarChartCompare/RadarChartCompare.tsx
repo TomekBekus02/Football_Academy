@@ -1,13 +1,28 @@
 "use client";
 import { IPlayerDetails } from "@/types/IPlayer";
-import { useState } from "react";
-import styles from "./radarChart.module.css";
+import { useEffect, useState } from "react";
+import styles from "./radarChartCompare.module.css";
 import defStyles from "../chartsStyle.module.css";
 import dynamic from "next/dynamic";
 
 const ReactApexChart = dynamic(() => import("react-apexcharts"), {
     ssr: false,
 });
+
+function getPositionColor(position: string) {
+    switch (position) {
+        case "Napastnik":
+            return "#1e90ff";
+        case "Pomocnik":
+            return "#28a745";
+        case "Obrońca":
+            return "#ffb400";
+        case "Bramkarz":
+            return "#e63946";
+        default:
+            return "#888";
+    }
+}
 
 interface RadarChartProps {
     player: IPlayerDetails;
@@ -170,9 +185,8 @@ export default function RadarChartCompare({
     position,
 }: RadarChartProps) {
     const [category, setCategory] = useState(StatCategoryEnum.Defense);
-    const chartData = defineChartData(player, category);
-
-    const [state] = useState({
+    let chartData = defineChartData(player, category);
+    const [state, setState] = useState({
         series: chartData.series,
         options: {
             chart: {
@@ -200,7 +214,13 @@ export default function RadarChartCompare({
             },
             yaxis: {
                 min: 0,
-                tickAmount: 3,
+                max: Math.ceil(
+                    Math.max(
+                        ...chartData.series[0].data,
+                        ...chartData.series[1].data
+                    )
+                ),
+                tickAmount: 4,
                 labels: {
                     formatter: (val: number) => `${val}`,
                     style: { colors: "#ffffffff", fontSize: "12px" },
@@ -252,30 +272,150 @@ export default function RadarChartCompare({
         },
     });
 
+    useEffect(() => {
+        chartData = defineChartData(player, category);
+        setState({
+            series: chartData.series,
+            options: {
+                chart: {
+                    type: "radar",
+                    toolbar: { show: false },
+                    dropShadow: {
+                        enabled: true,
+                        top: 5,
+                        left: 5,
+                        blur: 5,
+                        opacity: 0.2,
+                    },
+                    offsetX: 23,
+                },
+                stroke: { width: 2 },
+                fill: {
+                    opacity: 0.2,
+                    colors: [getPositionColor(position), "#888"],
+                },
+                markers: {
+                    size: 2,
+                    colors: ["#fff"],
+                    strokeColors: getPositionColor(position),
+                    strokeWidth: 2,
+                },
+                yaxis: {
+                    min: 0,
+                    max: Math.ceil(
+                        Math.max(
+                            ...chartData.series[0].data,
+                            ...chartData.series[1].data
+                        )
+                    ),
+                    tickAmount: 4,
+                    labels: {
+                        formatter: (val: number) => `${val}`,
+                        style: { colors: "#ffffffff", fontSize: "12px" },
+                    },
+                },
+                xaxis: {
+                    categories: chartData.categories,
+                    labels: {
+                        useHTML: true,
+                        style: {
+                            colors: "#333",
+                            fontSize: "11px",
+                            fontWeight: 500,
+                        },
+                    },
+                },
+                tooltip: {
+                    y: { formatter: (val: number) => `${val.toFixed(2)}/mecz` },
+                    theme: "dark",
+                    style: {
+                        background: getPositionColor(position),
+                        color: "#fff",
+                        fontSize: "12px",
+                    },
+                },
+                legend: {
+                    position: "bottom",
+                    horizontalAlign: "center",
+                    floating: false,
+                    fontSize: "14px",
+                    offsetY: -15,
+                    labels: {
+                        colors: "#ffffffff",
+                    },
+                    markers: {
+                        width: 10,
+                        height: 10,
+                        radius: 5,
+                    },
+                },
+                dataLabels: {
+                    enabled: false,
+                },
+                grid: {
+                    padding: {
+                        bottom: 10,
+                    },
+                },
+            },
+        });
+    }, [category]);
+
     return (
-        <div className={`${defStyles.chartWrapper} ${defStyles.squareWrapper}`}>
-            <ReactApexChart
-                options={state.options as any}
-                series={state.series}
-                type="radar"
-                height={450}
-                width={450}
-            />
+        <div style={{ position: "relative" }}>
+            <div className={`${styles.buttonsBox}`}>
+                {position !== "Bramkarz" && (
+                    <button
+                        className={`${styles.button} buttonStyle ${
+                            StatCategoryEnum.Attack === category &&
+                            styles.active
+                        }`}
+                        onClick={() => setCategory(StatCategoryEnum.Attack)}
+                    >
+                        Atak
+                    </button>
+                )}
+                <button
+                    className={`${styles.button} buttonStyle ${
+                        StatCategoryEnum.Playmaking === category &&
+                        styles.active
+                    }`}
+                    onClick={() => setCategory(StatCategoryEnum.Playmaking)}
+                >
+                    Pomoc
+                </button>
+                <button
+                    className={`${styles.button} buttonStyle ${
+                        StatCategoryEnum.Defense === category && styles.active
+                    }`}
+                    onClick={() => setCategory(StatCategoryEnum.Defense)}
+                >
+                    Obrona
+                </button>
+                {position === "Bramkarz" && (
+                    <button
+                        className={`${styles.button} buttonStyle ${
+                            StatCategoryEnum.Goalkeeper === category &&
+                            styles.active
+                        }`}
+                        onClick={() => setCategory(StatCategoryEnum.Goalkeeper)}
+                    >
+                        Bramka
+                    </button>
+                )}
+            </div>
+            <div
+                className={`${defStyles.chartWrapper} ${defStyles.squareWrapper}`}
+            >
+                <ReactApexChart
+                    options={state.options as any}
+                    series={state.series}
+                    type="radar"
+                    height={450}
+                    width={450}
+                />
+            </div>
         </div>
     );
 }
 
-function getPositionColor(position: string) {
-    switch (position) {
-        case "Napastnik":
-            return "#1e90ff";
-        case "Pomocnik":
-            return "#28a745";
-        case "Obrońca":
-            return "#ffb400";
-        case "Bramkarz":
-            return "#e63946";
-        default:
-            return "#888";
-    }
-}
