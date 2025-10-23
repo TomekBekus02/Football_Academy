@@ -16,11 +16,13 @@ type piechartTypes = {
 const defineChartData = (player: IPlayerDetails, team: ITeamStats) => {
     return {
         percentages: [
-            Number(((player.appearances * 100) / team.matches).toFixed(2)),
-            Number(((player.goals * 100) / team.scoredGoals).toFixed(2)),
-            Number(((player.assists * 100) / team.assists).toFixed(2)),
-            Number(((player.yellowCards * 100) / team.yellowCards).toFixed(2)),
-            Number(((player.redCards * 100) / team.redCards).toFixed(2)),
+            Number(((player.appearances * 100) / team.matches || 0).toFixed(2)),
+            Number(((player.goals * 100) / team.scoredGoals || 0).toFixed(2)),
+            Number(((player.assists * 100) / team.assists || 0).toFixed(2)),
+            Number(
+                ((player.yellowCards * 100) / team.yellowCards || 0).toFixed(2)
+            ),
+            Number(((player.redCards * 100) / team.redCards || 0).toFixed(2)),
         ],
         teamStats: [
             team.matches,
@@ -125,7 +127,7 @@ export default function PieChart({ player, team }: piechartTypes) {
             },
         },
     });
-
+    console.log(state.series);
     return (
         <div>
             <div

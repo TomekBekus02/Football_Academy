@@ -40,12 +40,32 @@ export interface ITeamStats {
     scoredGoals: number;
     concededGoals: number;
     goals_balance: number;
-    //avgTeamStats: IAvgTeamStats;
+    avgTeamStats: IAvgTeamStats;
 }
 export interface IAvgTeamStats {
-    shots: number;
-    passAccuracy: number;
-    offDuelsRate: number;
-    deffDuelsRate: number;
-    fauls: number;
+    offense: {
+        goals: number;
+        xpGoals: number;
+        shoots: number;
+        shotsOnTarget: number;
+        duelsWon: number;
+        duelsLost: number;
+    };
+    deffense: {
+        fauls: number;
+        yellowCards: number;
+        redCards: number;
+        airDuelsWon: number;
+        airDuelsLost: number;
+        groundDuelsWon: number;
+        groundDuelsLost: number;
+    };
+    playmaking: {
+        assists: number;
+        xpAssists: number;
+        createdChance: number;
+        progressivePasses: number;
+        successCrosses: number;
+        failedCrosses: number;
+    };
 }

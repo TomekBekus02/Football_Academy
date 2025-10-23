@@ -1,62 +1,21 @@
 import { connectDB } from "@/lib/mongodb";
 import Player, { IPlayer } from "@/models/player";
 import Team, { ITeam } from "@/models/team";
-import { IPlayerDetails } from "@/types/IPlayer";
+import { IPlayerDetails, IPlayerStatsDetails } from "@/types/IPlayer";
 import { NextRequest, NextResponse } from "next/server";
 import { strickerStats } from "@/data/defaultPlayerStats/StrickerStats";
 import { midFielderStats } from "@/data/defaultPlayerStats/MidfielderStats";
 import { deffenderStats } from "@/data/defaultPlayerStats/DeffenderStats";
 import { goalkeeperStats } from "@/data/defaultPlayerStats/GoalkeeperStats";
 import Match from "@/models/match";
+import { transformTeamStats } from "@/app/api/teams/[teamId]/details/route";
+import { ITeamStats } from "@/types/ITeam";
 
-async function countTeamAssist(teamId: string) {
-    const result = await Player.aggregate([
-        { $match: { teamId } },
-        { $group: { _id: null, totalAssists: { $sum: "$assists" } } },
-    ]);
-    return result[0]?.totalAssists || 0;
-}
-async function countTeamRedCards(teamId: string) {
-    const result = await Player.aggregate([
-        { $match: { teamId } },
-        { $group: { _id: null, totalRedCards: { $sum: "$redCards" } } },
-    ]);
-    return result[0]?.totalRedCards || 0;
-}
-async function countTeamYellowCards(teamId: string) {
-    const result = await Player.aggregate([
-        { $match: { teamId } },
-        { $group: { _id: null, totalYellowCards: { $sum: "$yellowCards" } } },
-    ]);
-    return result[0]?.totalYellowCards || 0;
-}
-
-async function transformPlayerStats(
+function setIndividualStatsFactor(
+    baseStats: IPlayerStatsDetails,
     player: IPlayer,
     team: ITeam
-): Promise<IPlayerDetails> {
-    const clamp = (value: number, min: number, max: number): number =>
-        Math.floor(Math.min(Math.max(value, min), max));
-
-    let baseStats = midFielderStats;
-    switch (player.position) {
-        case "Bramkarz":
-            baseStats = goalkeeperStats;
-            break;
-        case "Obrońca":
-            baseStats = deffenderStats;
-            break;
-        case "Pomocnik":
-            baseStats = midFielderStats;
-            break;
-        case "Napastnik":
-            baseStats = strickerStats;
-            break;
-    }
-
-    const leagueAvgGoals = 1.4;
-    const leagueAvgConceded = 1.4;
-    // individual stats factor
+) {
     const goalMult = clamp(
         player.goals / player.appearances / baseStats.Attack.goals,
         0.5,
@@ -99,16 +58,44 @@ async function transformPlayerStats(
         0.4,
         2.0
     );
+    return [goalMult, assistMult, csMult, yellowMult, redMult, concededMult];
+}
 
-    const [teamAssists, teamYellowCards, teamRedCards] = await Promise.all([
-        countTeamAssist(team._id as string),
-        countTeamYellowCards(team._id as string),
-        countTeamRedCards(team._id as string),
-    ]);
+const clamp = (value: number, min: number, max: number): number =>
+    Math.min(Math.max(value, min), max);
+
+async function transformPlayerStats(
+    player: IPlayer,
+    team: ITeam
+): Promise<IPlayerDetails> {
+    let baseStats = midFielderStats;
+    switch (player.position) {
+        case "Bramkarz":
+            baseStats = goalkeeperStats;
+            break;
+        case "Obrońca":
+            baseStats = deffenderStats;
+            break;
+        case "Pomocnik":
+            baseStats = midFielderStats;
+            break;
+        case "Napastnik":
+            baseStats = strickerStats;
+            break;
+    }
+
+    const leagueAvgGoals = 1.4;
+    const leagueAvgConceded = 1.4;
+
+    // individual stats factor
+    const [goalMult, assistMult, csMult, yellowMult, redMult, concededMult] =
+        setIndividualStatsFactor(baseStats, player, team);
 
     // team stats factor
     const teamOffense = team.scoredGoals / team.matches / leagueAvgGoals;
     const teamDefense = leagueAvgConceded / (team.concededGoals / team.matches);
+
+    const teamStats = await transformTeamStats(team);
 
     return {
         _id: player._id as string,
@@ -178,16 +165,21 @@ async function transformPlayerStats(
                             teamOffense
                     ).toFixed(1)
                 ),
-                passAccuracy: clamp(
-                    baseStats.Playmaking.passAccuracy + (assistMult - 1) * 5,
-                    70,
-                    95
+                passAccuracy: Math.round(
+                    clamp(
+                        baseStats.Playmaking.passAccuracy +
+                            (assistMult - 1) * 5,
+                        70,
+                        95
+                    )
                 ),
-                longPassAccuracy: clamp(
-                    baseStats.Playmaking.longPassAccuracy +
-                        (assistMult - 1) * 4,
-                    50,
-                    90
+                longPassAccuracy: Math.round(
+                    clamp(
+                        baseStats.Playmaking.longPassAccuracy +
+                            (assistMult - 1) * 4,
+                        50,
+                        90
+                    )
                 ),
                 progressivePasses: Number(
                     (
@@ -306,25 +298,7 @@ async function transformPlayerStats(
                         : 0,
             },
         },
-        teamStats: {
-            matches: team.matches,
-            wins: team.wins,
-            draws: team.draws,
-            loses: team.loses,
-            assists: teamAssists,
-            yellowCards: teamYellowCards,
-            redCards: teamRedCards,
-            scoredGoals: team.scoredGoals,
-            concededGoals: team.concededGoals,
-            goals_balance: team.scoredGoals - team.concededGoals,
-            // avgTeamStats: {
-            //     shots: 0,
-            //     passAccuracy: 0,
-            //     offDuelsRate: 0,
-            //     deffDuelsRate: 0,
-            //     fauls: 0,
-            // },
-        },
+        teamStats: teamStats,
     };
 }
 
@@ -444,7 +418,7 @@ export async function GET(
                     team._id as string,
                     player.position
                 );
-
+                console.log(JSON.stringify(playerDetails.teamStats, null, 2));
                 return NextResponse.json(
                     { statsHistory, playerDetails },
                     { status: 200 }
