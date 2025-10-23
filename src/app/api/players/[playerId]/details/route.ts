@@ -1,15 +1,31 @@
 import { connectDB } from "@/lib/mongodb";
 import Player, { IPlayer } from "@/models/player";
 import Team, { ITeam } from "@/models/team";
-import { IPlayerDetails, IPlayerStatsDetails } from "@/types/IPlayer";
+import {
+    IAttackStat,
+    IDeffenseStat,
+    IGoalkeeperStat,
+    IPlayerDetails,
+    IPlayerStatsDetails,
+    IPlaymakingStat,
+} from "@/types/IPlayer";
 import { NextRequest, NextResponse } from "next/server";
 import { strickerStats } from "@/data/defaultPlayerStats/StrickerStats";
 import { midFielderStats } from "@/data/defaultPlayerStats/MidfielderStats";
 import { deffenderStats } from "@/data/defaultPlayerStats/DeffenderStats";
 import { goalkeeperStats } from "@/data/defaultPlayerStats/GoalkeeperStats";
 import Match from "@/models/match";
-import { transformTeamStats } from "@/app/api/teams/[teamId]/details/route";
+import {
+    countTeamAssist,
+    countTeamGoals,
+    countTeamRedCards,
+    countTeamYellowCards,
+    transformTeamStats,
+} from "@/app/api/teams/[teamId]/details/route";
 import { ITeamStats } from "@/types/ITeam";
+
+const clamp = (value: number, min: number, max: number): number =>
+    Math.min(Math.max(value, min), max);
 
 function setIndividualStatsFactor(
     baseStats: IPlayerStatsDetails,
@@ -61,8 +77,27 @@ function setIndividualStatsFactor(
     return [goalMult, assistMult, csMult, yellowMult, redMult, concededMult];
 }
 
-const clamp = (value: number, min: number, max: number): number =>
-    Math.min(Math.max(value, min), max);
+function calculateTeamPlayerAvg(
+    GkStat: number,
+    DefStat: number,
+    MidStat: number,
+    FwdStat: number,
+    position = "",
+    composition = { goalkeeper: 1, defenders: 4, midfielders: 4, forwards: 2 }
+) {
+    const { goalkeeper, defenders, midfielders, forwards } = composition;
+    let players = 11;
+    if (position === "Bramkarz") {
+        players = 1;
+    }
+    return (
+        (GkStat * goalkeeper +
+            DefStat * defenders +
+            MidStat * midfielders +
+            FwdStat * forwards) /
+        players
+    );
+}
 
 async function transformPlayerStats(
     player: IPlayer,
@@ -95,7 +130,14 @@ async function transformPlayerStats(
     const teamOffense = team.scoredGoals / team.matches / leagueAvgGoals;
     const teamDefense = leagueAvgConceded / (team.concededGoals / team.matches);
 
-    const teamStats = await transformTeamStats(team);
+    // team stats
+    const [teamAssists, teamGoals, teamYellowCards, teamRedCards] =
+        await Promise.all([
+            countTeamAssist(team._id as string),
+            countTeamGoals(team._id as string),
+            countTeamYellowCards(team._id as string),
+            countTeamRedCards(team._id as string),
+        ]);
 
     return {
         _id: player._id as string,
@@ -278,12 +320,15 @@ async function transformPlayerStats(
                         : 0,
                 saveSuccessRate:
                     player.position === "Bramkarz"
-                        ? clamp(
-                              (baseStats.Goalkeeper.saveSuccessRate *
-                                  (csMult + 1 / Math.max(concededMult, 0.1))) /
-                                  2,
-                              55,
-                              92
+                        ? Math.round(
+                              clamp(
+                                  (baseStats.Goalkeeper.saveSuccessRate *
+                                      (csMult +
+                                          1 / Math.max(concededMult, 0.1))) /
+                                      2,
+                                  55,
+                                  92
+                              )
                           )
                         : 0,
                 interventions:
@@ -293,12 +338,262 @@ async function transformPlayerStats(
                                   baseStats.Goalkeeper.interventions * csMult,
                                   1.5,
                                   6.0
-                              )
+                              ).toFixed(2)
                           )
                         : 0,
             },
         },
-        teamStats: teamStats,
+        AvgTeammatesStatsdetails: {
+            Attack: {
+                goals: Number(
+                    calculateTeamPlayerAvg(
+                        0,
+                        deffenderStats.Attack.goals,
+                        midFielderStats.Attack.goals,
+                        strickerStats.Attack.goals
+                    ).toFixed(2)
+                ),
+                xpGoal: Number(
+                    calculateTeamPlayerAvg(
+                        0,
+                        deffenderStats.Attack.xpGoal,
+                        midFielderStats.Attack.xpGoal,
+                        strickerStats.Attack.xpGoal
+                    ).toFixed(2)
+                ),
+                shots: Number(
+                    calculateTeamPlayerAvg(
+                        0,
+                        deffenderStats.Attack.shots,
+                        midFielderStats.Attack.shots,
+                        strickerStats.Attack.shots
+                    ).toFixed(2)
+                ),
+                shotsOntarget: Number(
+                    calculateTeamPlayerAvg(
+                        0,
+                        deffenderStats.Attack.shotsOntarget,
+                        midFielderStats.Attack.shotsOntarget,
+                        strickerStats.Attack.shotsOntarget
+                    ).toFixed(2)
+                ),
+                offensiveDuels: {
+                    lost: Number(
+                        calculateTeamPlayerAvg(
+                            0,
+                            deffenderStats.Attack.offensiveDuels.lost,
+                            midFielderStats.Attack.offensiveDuels.lost,
+                            strickerStats.Attack.offensiveDuels.lost
+                        ).toFixed(1)
+                    ),
+                    won: Number(
+                        calculateTeamPlayerAvg(
+                            0,
+                            deffenderStats.Attack.offensiveDuels.won,
+                            midFielderStats.Attack.offensiveDuels.won,
+                            strickerStats.Attack.offensiveDuels.won
+                        ).toFixed(1)
+                    ),
+                },
+            },
+            Playmaking: {
+                assists: Number(
+                    calculateTeamPlayerAvg(
+                        0,
+                        deffenderStats.Playmaking.assists,
+                        midFielderStats.Playmaking.assists,
+                        strickerStats.Playmaking.assists
+                    ).toFixed(2)
+                ),
+                xpAssists: Number(
+                    calculateTeamPlayerAvg(
+                        0,
+                        deffenderStats.Playmaking.xpAssists,
+                        midFielderStats.Playmaking.xpAssists,
+                        strickerStats.Playmaking.xpAssists
+                    ).toFixed(2)
+                ),
+                createdChances: Number(
+                    calculateTeamPlayerAvg(
+                        0,
+                        deffenderStats.Playmaking.createdChances,
+                        midFielderStats.Playmaking.createdChances,
+                        strickerStats.Playmaking.createdChances
+                    ).toFixed(1)
+                ),
+                passAccuracy: Math.round(
+                    calculateTeamPlayerAvg(
+                        0,
+                        deffenderStats.Playmaking.passAccuracy,
+                        midFielderStats.Playmaking.passAccuracy,
+                        strickerStats.Playmaking.passAccuracy
+                    )
+                ),
+                longPassAccuracy: Math.round(
+                    calculateTeamPlayerAvg(
+                        0,
+                        deffenderStats.Playmaking.longPassAccuracy,
+                        midFielderStats.Playmaking.longPassAccuracy,
+                        strickerStats.Playmaking.longPassAccuracy
+                    )
+                ),
+                progressivePasses: Number(
+                    calculateTeamPlayerAvg(
+                        0,
+                        deffenderStats.Playmaking.progressivePasses,
+                        midFielderStats.Playmaking.progressivePasses,
+                        strickerStats.Playmaking.progressivePasses
+                    ).toFixed(1)
+                ),
+                crosses: {
+                    failed: Number(
+                        calculateTeamPlayerAvg(
+                            0,
+                            deffenderStats.Playmaking.crosses.failed,
+                            midFielderStats.Playmaking.crosses.failed,
+                            strickerStats.Playmaking.crosses.failed
+                        ).toFixed(1)
+                    ),
+                    succeded: Number(
+                        calculateTeamPlayerAvg(
+                            0,
+                            deffenderStats.Playmaking.crosses.succeded,
+                            midFielderStats.Playmaking.crosses.succeded,
+                            strickerStats.Playmaking.crosses.succeded
+                        ).toFixed(1)
+                    ),
+                },
+            },
+            Defense: {
+                cleanSheets: Number(
+                    calculateTeamPlayerAvg(
+                        0,
+                        deffenderStats.Defense.cleanSheets,
+                        midFielderStats.Defense.cleanSheets,
+                        strickerStats.Defense.cleanSheets
+                    ).toFixed(1)
+                ),
+                yellowCards: Number(
+                    calculateTeamPlayerAvg(
+                        goalkeeperStats.Defense.yellowCards,
+                        deffenderStats.Defense.yellowCards,
+                        midFielderStats.Defense.yellowCards,
+                        strickerStats.Defense.yellowCards
+                    ).toFixed(1)
+                ),
+                redCards: Number(
+                    calculateTeamPlayerAvg(
+                        goalkeeperStats.Defense.redCards,
+                        deffenderStats.Defense.redCards,
+                        midFielderStats.Defense.redCards,
+                        strickerStats.Defense.redCards
+                    ).toFixed(1)
+                ),
+                headerDuels: {
+                    lost: Number(
+                        calculateTeamPlayerAvg(
+                            0,
+                            deffenderStats.Defense.redCards,
+                            midFielderStats.Defense.redCards,
+                            strickerStats.Defense.redCards
+                        ).toFixed(1)
+                    ),
+                    won: Number(
+                        calculateTeamPlayerAvg(
+                            0,
+                            deffenderStats.Defense.redCards,
+                            midFielderStats.Defense.redCards,
+                            strickerStats.Defense.redCards
+                        ).toFixed(1)
+                    ),
+                },
+                groundDuels: {
+                    lost: Number(
+                        calculateTeamPlayerAvg(
+                            0,
+                            deffenderStats.Defense.groundDuels.lost,
+                            midFielderStats.Defense.groundDuels.lost,
+                            strickerStats.Defense.groundDuels.lost
+                        ).toFixed(1)
+                    ),
+                    won: Number(
+                        calculateTeamPlayerAvg(
+                            0,
+                            deffenderStats.Defense.groundDuels.won,
+                            midFielderStats.Defense.groundDuels.won,
+                            strickerStats.Defense.groundDuels.won
+                        ).toFixed(1)
+                    ),
+                },
+                fauls: Number(
+                    calculateTeamPlayerAvg(
+                        0,
+                        deffenderStats.Defense.fauls,
+                        midFielderStats.Defense.fauls,
+                        strickerStats.Defense.fauls
+                    ).toFixed(1)
+                ),
+                interceptions: Number(
+                    calculateTeamPlayerAvg(
+                        0,
+                        deffenderStats.Defense.interceptions,
+                        midFielderStats.Defense.interceptions,
+                        strickerStats.Defense.interceptions
+                    ).toFixed(1)
+                ),
+            },
+            Goalkeeper: {
+                cleanSheets: Number(
+                    calculateTeamPlayerAvg(
+                        goalkeeperStats.Goalkeeper.cleanSheets,
+                        0,
+                        0,
+                        0,
+                        "Bramkarz"
+                    ).toFixed(2)
+                ),
+                xpConcededGoals: Number(
+                    calculateTeamPlayerAvg(
+                        goalkeeperStats.Goalkeeper.xpConcededGoals,
+                        0,
+                        0,
+                        0,
+                        "Bramkarz"
+                    ).toFixed(2)
+                ),
+
+                saveSuccessRate: Math.round(
+                    calculateTeamPlayerAvg(
+                        goalkeeperStats.Goalkeeper.saveSuccessRate,
+                        0,
+                        0,
+                        0,
+                        "Bramkarz"
+                    )
+                ),
+                interventions: Number(
+                    calculateTeamPlayerAvg(
+                        goalkeeperStats.Goalkeeper.interventions,
+                        0,
+                        0,
+                        0,
+                        "Bramkarz"
+                    ).toFixed(2)
+                ),
+            },
+        },
+        teamStats: {
+            matches: team.matches,
+            wins: team.wins,
+            draws: team.draws,
+            loses: team.loses,
+            assists: teamAssists,
+            yellowCards: teamYellowCards,
+            redCards: teamRedCards,
+            scoredGoals: teamGoals,
+            concededGoals: team.concededGoals,
+            goals_balance: team.scoredGoals - team.concededGoals,
+        },
     };
 }
 
@@ -418,7 +713,6 @@ export async function GET(
                     team._id as string,
                     player.position
                 );
-                console.log(JSON.stringify(playerDetails.teamStats, null, 2));
                 return NextResponse.json(
                     { statsHistory, playerDetails },
                     { status: 200 }

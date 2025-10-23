@@ -42,6 +42,7 @@ export interface IPlayerDetails {
     redCards: number;
     yellowCards: number;
     AvgPlayerStatsdetails: IPlayerStatsDetails;
+    AvgTeammatesStatsdetails: IPlayerStatsDetails;
     teamStats: ITeamStats;
 }
 
@@ -51,7 +52,7 @@ export interface IPlayerStatsDetails {
     Defense: IDeffenseStat;
     Goalkeeper: IGoalkeeperStat;
 }
-interface IAttackStat {
+export interface IAttackStat {
     goals: number;
     xpGoal: number;
     shots: number;
@@ -61,7 +62,7 @@ interface IAttackStat {
         won: number;
     };
 }
-interface IPlaymakingStat {
+export interface IPlaymakingStat {
     assists: number;
     xpAssists: number;
     createdChances: number;
@@ -73,7 +74,7 @@ interface IPlaymakingStat {
         succeded: number;
     };
 }
-interface IDeffenseStat {
+export interface IDeffenseStat {
     cleanSheets: number;
     yellowCards: number;
     redCards: number;
@@ -88,7 +89,7 @@ interface IDeffenseStat {
     fauls: number;
     interceptions: number;
 }
-interface IGoalkeeperStat {
+export interface IGoalkeeperStat {
     cleanSheets: number;
     xpConcededGoals: number;
     saveSuccessRate: number;

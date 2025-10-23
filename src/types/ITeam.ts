@@ -40,7 +40,7 @@ export interface ITeamStats {
     scoredGoals: number;
     concededGoals: number;
     goals_balance: number;
-    avgTeamStats: IAvgTeamStats;
+    avgTeamStats?: IAvgTeamStats;
 }
 export interface IAvgTeamStats {
     offense: {

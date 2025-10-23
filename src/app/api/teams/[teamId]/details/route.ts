@@ -5,28 +5,28 @@ import { NextRequest, NextResponse } from "next/server";
 import { teamStats as baseStats } from "@/data/defaultPlayerStats/TeamStats";
 import { ITeamStats } from "@/types/ITeam";
 
-async function countTeamAssist(teamId: string) {
+export async function countTeamAssist(teamId: string) {
     const result = await Player.aggregate([
         { $match: { teamId } },
         { $group: { _id: null, totalAssists: { $sum: "$assists" } } },
     ]);
     return result[0]?.totalAssists || 0;
 }
-async function countTeamRedCards(teamId: string) {
+export async function countTeamRedCards(teamId: string) {
     const result = await Player.aggregate([
         { $match: { teamId } },
         { $group: { _id: null, totalRedCards: { $sum: "$redCards" } } },
     ]);
     return result[0]?.totalRedCards || 0;
 }
-async function countTeamYellowCards(teamId: string) {
+export async function countTeamYellowCards(teamId: string) {
     const result = await Player.aggregate([
         { $match: { teamId } },
         { $group: { _id: null, totalYellowCards: { $sum: "$yellowCards" } } },
     ]);
     return result[0]?.totalYellowCards || 0;
 }
-async function countTeamGoals(teamId: string) {
+export async function countTeamGoals(teamId: string) {
     const result = await Player.aggregate([
         { $match: { teamId } },
         { $group: { _id: null, totalGoals: { $sum: "$goals" } } },

@@ -85,14 +85,6 @@ export default function PieChart({ player, team }: piechartTypes) {
                     },
                 },
             },
-            title: {
-                text: "% Udział na tle drużyny",
-                style: {
-                    fontSize: "20px",
-                    fontWeight: "800",
-                    color: "#d3d2d2ff",
-                },
-            },
             plotOptions: {
                 pie: {
                     startAngle: -90,
@@ -127,7 +119,7 @@ export default function PieChart({ player, team }: piechartTypes) {
             },
         },
     });
-    console.log(state.series);
+
     return (
         <div>
             <div

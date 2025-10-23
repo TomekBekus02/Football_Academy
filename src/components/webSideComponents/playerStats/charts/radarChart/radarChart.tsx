@@ -138,14 +138,7 @@ export default function RadarChart({ player, position }: RadarChartProps) {
                     blur: 5,
                     opacity: 0.2,
                 },
-            },
-            title: {
-                text: "% Bilans statystyk",
-                style: {
-                    fontSize: "20px",
-                    fontWeight: "800",
-                    color: "#d3d2d2ff",
-                },
+                offsetY: -15,
             },
             stroke: { width: 2 },
             fill: {

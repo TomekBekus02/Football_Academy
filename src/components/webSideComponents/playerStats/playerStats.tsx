@@ -11,6 +11,7 @@ import styles from "./playerStats.module.css";
 import PieChart from "./charts/pieChart/pieChart";
 import { ITeamStats } from "@/types/ITeam";
 import { fetchTeamStats } from "@/services/TeamsFetches/useTeams";
+import RadarChartCompare from "./charts/radarChartCompare/RadarChartCompare";
 
 type playerStatsTypes = {
     teamId: string;
@@ -63,7 +64,7 @@ export default function PlayerStats({ teamId, playerId }: playerStatsTypes) {
                                         player={player.playerDetails}
                                         team={player.playerDetails.teamStats}
                                     />
-                                    <RadarChart
+                                    <RadarChartCompare
                                         player={player.playerDetails}
                                         position={player.playerDetails.position}
                                     />
