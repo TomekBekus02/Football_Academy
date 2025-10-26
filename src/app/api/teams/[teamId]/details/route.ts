@@ -75,6 +75,7 @@ function setTeamStatsFactor(
 
     return [offenseMult, defenseMult, disciplineMult, formMult];
 }
+
 export async function transformTeamStats(team: any): Promise<ITeamStats> {
     // team stats
     const [teamAssists, teamGoals, teamYellowCards, teamRedCards] =
@@ -213,7 +214,6 @@ export async function GET(
     { params }: { params: { teamId: string } }
 ) {
     try {
-    } catch (error) {
         const { teamId } = await params;
         await connectDB();
         const team = await Team.findById(teamId)
@@ -223,5 +223,7 @@ export async function GET(
             .lean();
         const transformedTeamStats = await transformTeamStats(team);
         return NextResponse.json(transformedTeamStats, { status: 200 });
+    } catch (error) {
+        return NextResponse.json({ status: 500, message: error });
     }
 }

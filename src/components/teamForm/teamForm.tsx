@@ -34,7 +34,7 @@ type teamFormType = {
     IconSize: number;
 };
 export default function TeamForm({ teamId, form, IconSize }: teamFormType) {
-    return form.length > 0 ? (
+    return form && form.length > 0 ? (
         <div>
             {form.map((m, index) => {
                 return (

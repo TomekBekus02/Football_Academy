@@ -1,3 +1,4 @@
+"use client";
 import LoadProvider from "@/components/LoadProvider/LoadProvider";
 import { fetchPlayerStats } from "@/services/PlayersFetches/usePlayers";
 import { IPlayerDetails, IPlayerStats } from "@/types/IPlayer";
@@ -29,17 +30,6 @@ export default function PlayerStats({ teamId, playerId }: playerStatsTypes) {
             return fetchPlayerStats(playerId as string);
         },
     });
-    // const {
-    //     data: team,
-    //     isLoading: teamLoading,
-    //     error: teamError,
-    // } = useQuery<ITeamStats>({
-    //     queryKey: ["teams", teamId],
-    //     queryFn: ({ queryKey }) => {
-    //         const [, teamId] = queryKey;
-    //         return fetchTeamStats(teamId as string);
-    //     },
-    // });
 
     return (
         <LoadProvider isLoading={isLoading} error={error}>

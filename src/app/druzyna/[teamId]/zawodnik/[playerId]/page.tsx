@@ -1,9 +1,4 @@
-"use client";
-import LoadProvider from "@/components/LoadProvider/LoadProvider";
 import PlayerStats from "@/components/webSideComponents/playerStats/playerStats";
-import { fetchPlayerStats } from "@/services/PlayersFetches/usePlayers";
-import { IPlayerDetails } from "@/types/IPlayer";
-import { useQuery } from "@tanstack/react-query";
 import React from "react";
 
 export default function SquadTeam({

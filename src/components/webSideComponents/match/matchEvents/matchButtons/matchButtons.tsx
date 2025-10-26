@@ -43,6 +43,7 @@ export default function matchButtons({
         }) => updatePlayerStats(matchId, matchPenalties),
         onSuccess: () => {
             queryClient.invalidateQueries({ queryKey: ["players"] });
+            queryClient.invalidateQueries({ queryKey: ["teamsStats"] });
             const transferPath =
                 tournamentId !== ""
                     ? `/admin/tournament/${tournamentId}`
