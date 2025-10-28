@@ -7,6 +7,7 @@ export interface ITeam extends Document {
     wins: number;
     draws: number;
     loses: number;
+    cleanSheets: number;
     scoredGoals: number;
     concededGoals: number;
     form: {
@@ -39,6 +40,7 @@ const TeamSchema: Schema<ITeam> = new Schema({
     wins: Number,
     draws: Number,
     loses: Number,
+    cleanSheets: Number,
     scoredGoals: Number,
     concededGoals: Number,
     form: [

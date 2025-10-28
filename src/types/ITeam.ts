@@ -6,6 +6,7 @@ export interface ITeam {
     wins: number;
     draws: number;
     loses: number;
+    cleanSheets: number;
     scoredGoals: number;
     concededGoals: number;
     form: Array<ITeamsForm>;
@@ -37,6 +38,7 @@ export interface ITeamStats {
     assists: number;
     yellowCards: number;
     redCards: number;
+    cleanSheets: number;
     scoredGoals: number;
     concededGoals: number;
     goals_balance: number;

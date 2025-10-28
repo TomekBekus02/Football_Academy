@@ -160,13 +160,16 @@ export async function updateTeamStats(
             (m) => m.matchId.toString() !== matchId
         );
     }
-
-    console.log("homeTeamScore", homeTeamScore, "awayTeamScore", awayTeamScore);
+    const ifHomeTeamCleanSheets = awayTeamScore == 0;
+    const ifAwayTeamCleanSheets = homeTeamScore == 0;
+    console.log("ifHomeTeamCleanSheets", ifHomeTeamCleanSheets, IncValue);
+    console.log("ifAwayTeamCleanSheets", ifAwayTeamCleanSheets, IncValue);
     await Promise.all([
         Team.findByIdAndUpdate(homeTeamId, {
             $inc: {
                 [homeTeamResult]: IncValue,
                 matches: IncValue,
+                cleanSheets: ifHomeTeamCleanSheets ? IncValue : 0,
                 scoredGoals: homeTeamScore * IncValue,
                 concededGoals: awayTeamScore * IncValue,
             },
@@ -178,6 +181,7 @@ export async function updateTeamStats(
             $inc: {
                 [awayTeamResult]: IncValue,
                 matches: IncValue,
+                cleanSheets: ifAwayTeamCleanSheets ? IncValue : 0,
                 scoredGoals: awayTeamScore * IncValue,
                 concededGoals: homeTeamScore * IncValue,
             },
