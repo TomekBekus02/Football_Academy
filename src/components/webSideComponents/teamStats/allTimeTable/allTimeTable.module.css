@@ -1,0 +1,65 @@
+.table {
+    border-collapse: collapse;
+    margin: 1.5rem 0;
+    font-size: 1.3rem;
+    text-align: center;
+    border-radius: 12px;
+    box-shadow: 0 4px 19px rgba(0, 0, 0, 0.395);
+}
+.table caption {
+    margin-bottom: 5px;
+}
+
+.table thead {
+    color: #cdcccc;
+    font-weight: 600;
+}
+
+.table th {
+    padding: 0.8rem;
+    letter-spacing: 0.5px;
+}
+
+.row {
+    transition: background-color 0.2s ease, transform 0.1s ease;
+}
+
+.row:hover {
+    background-color: #737374;
+    transform: scale(1.04);
+}
+
+.table td {
+    padding: 0.8rem;
+    vertical-align: middle;
+    border-bottom: 0.1px solid #8c8c8c;
+}
+
+.position {
+    font-weight: 600;
+    color: #8a8a8a;
+}
+
+.teamInfo {
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+    justify-content: flex-start;
+    padding-left: 0.8rem;
+}
+
+.teamName {
+    font-weight: 500;
+    color: #b6b6b6;
+    text-align: left;
+}
+
+.currentTeam {
+    font-weight: 600;
+    border-left: 6px solid #106704;
+}
+
+.points {
+    font-weight: 700;
+    color: #4193ff;
+}

@@ -30,6 +30,11 @@ export interface ITeamsForm {
     homeTeam: IshortTeamInfo;
     awayTeam: IshortTeamInfo;
 }
+export interface ITeamDetails {
+    detailsStats: ITeamStats;
+    allTimeTable: ITeamsTable[];
+    //headTohead: ,
+}
 export interface ITeamStats {
     matches: number;
     wins: number;
@@ -71,3 +76,14 @@ export interface IAvgTeamStats {
         failedCrosses: number;
     };
 }
+export interface ITeamsTable {
+    _id: string;
+    name: string;
+    logo: string;
+    wins: number;
+    draws: number;
+    loses: number;
+    goalBalance: number;
+    points: number;
+}
+[];

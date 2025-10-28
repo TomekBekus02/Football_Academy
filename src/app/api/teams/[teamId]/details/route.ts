@@ -3,7 +3,7 @@ import Player from "@/models/player";
 import Team from "@/models/team";
 import { NextRequest, NextResponse } from "next/server";
 import { teamStats as baseStats } from "@/data/defaultPlayerStats/TeamStats";
-import { ITeamStats } from "@/types/ITeam";
+import { ITeam, ITeamsTable, ITeamStats } from "@/types/ITeam";
 
 export async function countTeamAssist(teamId: string) {
     const result = await Player.aggregate([
@@ -104,6 +104,7 @@ export async function transformTeamStats(team: any): Promise<ITeamStats> {
         draws: team.draws,
         loses: team.loses,
         assists: teamAssists,
+        cleanSheets: team.cleanSheets,
         yellowCards: teamYellowCards,
         redCards: teamRedCards,
         scoredGoals: teamGoals,
@@ -209,6 +210,26 @@ export async function transformTeamStats(team: any): Promise<ITeamStats> {
         },
     };
 }
+
+function getAllTimeTable(teams: Array<ITeam>): Array<ITeamsTable> {
+    const teamTable = teams.map<ITeamsTable>((team) => {
+        return {
+            _id: team._id,
+            name: team.name,
+            logo: team.logo,
+            wins: team.wins,
+            draws: team.draws,
+            loses: team.loses,
+            goalBalance: team.scoredGoals - team.concededGoals,
+            points: team.wins * 3 + team.draws * 1,
+        };
+    });
+    const sortedTeamTable = teamTable.sort(
+        (a: any, b: any) => b.points - a.points
+    );
+    return sortedTeamTable;
+}
+
 export async function GET(
     req: NextRequest,
     { params }: { params: { teamId: string } }
@@ -221,8 +242,15 @@ export async function GET(
                 "_id matches wins draws loses assists concededGoals scoredGoals"
             )
             .lean();
-        const transformedTeamStats = await transformTeamStats(team);
-        return NextResponse.json(transformedTeamStats, { status: 200 });
+        const teams = await Team.find().lean<ITeam[]>();
+        const allTimeTable = getAllTimeTable(teams);
+        const transformedTeamDetailsStats = await transformTeamStats(team);
+        const teamStats = {
+            detailsStats: transformedTeamDetailsStats,
+            //headTohead: {},
+            allTimeTable: allTimeTable,
+        };
+        return NextResponse.json(teamStats, { status: 200 });
     } catch (error) {
         return NextResponse.json({ status: 500, message: error });
     }
