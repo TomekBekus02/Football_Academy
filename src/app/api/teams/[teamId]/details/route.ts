@@ -4,6 +4,8 @@ import Team from "@/models/team";
 import { NextRequest, NextResponse } from "next/server";
 import { teamStats as baseStats } from "@/data/defaultPlayerStats/TeamStats";
 import { ITeam, ITeamsTable, ITeamStats } from "@/types/ITeam";
+import Match from "@/models/match";
+import mongoose from "mongoose";
 
 export async function countTeamAssist(teamId: string) {
     const result = await Player.aggregate([
@@ -230,6 +232,8 @@ function getAllTimeTable(teams: Array<ITeam>): Array<ITeamsTable> {
     return sortedTeamTable;
 }
 
+async function headToheadBilance(myTeamId: string, opposingTeamId: string) {}
+
 export async function GET(
     req: NextRequest,
     { params }: { params: { teamId: string } }
@@ -245,9 +249,139 @@ export async function GET(
         const teams = await Team.find().lean<ITeam[]>();
         const allTimeTable = getAllTimeTable(teams);
         const transformedTeamDetailsStats = await transformTeamStats(team);
+
+        const myTeamId = new mongoose.Types.ObjectId(teamId);
+        const matches = await Match.aggregate([
+            {
+                $match: {
+                    $or: [{ homeTeamId: myTeamId }, { awayTeamId: myTeamId }],
+                },
+            },
+            {
+                $project: {
+                    opponentId: {
+                        $cond: [
+                            { $eq: ["$homeTeamId", myTeamId] },
+                            "$awayTeamId",
+                            "$homeTeamId",
+                        ],
+                    },
+                    goalsFor: {
+                        $cond: [
+                            { $eq: ["$homeTeamId", myTeamId] },
+                            "$homeTeamScore",
+                            "$awayTeamScore",
+                        ],
+                    },
+                    goalsAgainst: {
+                        $cond: [
+                            { $eq: ["$homeTeamId", myTeamId] },
+                            "$awayTeamScore",
+                            "$homeTeamScore",
+                        ],
+                    },
+                    result: {
+                        $cond: [
+                            { $eq: ["$homeTeamId", myTeamId] },
+                            {
+                                $cond: [
+                                    {
+                                        $gt: [
+                                            "$homeTeamScore",
+                                            "$awayTeamScore",
+                                        ],
+                                    },
+                                    "win",
+                                    {
+                                        $cond: [
+                                            {
+                                                $eq: [
+                                                    "$homeTeamScore",
+                                                    "$awayTeamScore",
+                                                ],
+                                            },
+                                            "draw",
+                                            "lose",
+                                        ],
+                                    },
+                                ],
+                            },
+                            {
+                                $cond: [
+                                    {
+                                        $gt: [
+                                            "$awayTeamScore",
+                                            "$homeTeamScore",
+                                        ],
+                                    },
+                                    "win",
+                                    {
+                                        $cond: [
+                                            {
+                                                $eq: [
+                                                    "$awayTeamScore",
+                                                    "$homeTeamScore",
+                                                ],
+                                            },
+                                            "draw",
+                                            "lose",
+                                        ],
+                                    },
+                                ],
+                            },
+                        ],
+                    },
+                },
+            },
+            {
+                $group: {
+                    _id: "$opponentId",
+                    wins: {
+                        $sum: { $cond: [{ $eq: ["$result", "win"] }, 1, 0] },
+                    },
+                    draws: {
+                        $sum: { $cond: [{ $eq: ["$result", "draw"] }, 1, 0] },
+                    },
+                    losses: {
+                        $sum: { $cond: [{ $eq: ["$result", "lose"] }, 1, 0] },
+                    },
+                    goalsFor: { $sum: "$goalsFor" },
+                    goalsAgainst: { $sum: "$goalsAgainst" },
+                },
+            },
+            {
+                $lookup: {
+                    from: "Teams",
+                    localField: "_id",
+                    foreignField: "_id",
+                    as: "opponent",
+                },
+            },
+            { $unwind: "$opponent" },
+            {
+                $project: {
+                    _id: 0,
+                    teamId: "$_id",
+                    teamName: "$opponent.name",
+                    teamLogo: "$opponent.logo",
+                    wins: 1,
+                    draws: 1,
+                    losses: 1,
+                    goalsFor: 1,
+                    goalsAgainst: 1,
+                    goalDifference: {
+                        $subtract: ["$goalsFor", "$goalsAgainst"],
+                    },
+                },
+            },
+            {
+                $sort: { opponentName: -1 },
+            },
+        ]);
+
         const teamStats = {
             detailsStats: transformedTeamDetailsStats,
-            //headTohead: {},
+            headTohead: matches,
             allTimeTable: allTimeTable,
         };
         return NextResponse.json(teamStats, { status: 200 });
@@ -255,3 +389,4 @@ export async function GET(
         return NextResponse.json({ status: 500, message: error });
     }
 }
+

@@ -1,5 +1,4 @@
 import { ITeamsTable } from "@/types/ITeam";
-import { table } from "console";
 import Image from "next/image";
 import styles from "./allTimeTable.module.css";
 

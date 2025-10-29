@@ -33,7 +33,7 @@ export interface ITeamsForm {
 export interface ITeamDetails {
     detailsStats: ITeamStats;
     allTimeTable: ITeamsTable[];
-    //headTohead: ,
+    headTohead: ITeamHead2Head[];
 }
 export interface ITeamStats {
     matches: number;
@@ -85,5 +85,17 @@ export interface ITeamsTable {
     loses: number;
     goalBalance: number;
     points: number;
+}
+[];
+export interface ITeamHead2Head {
+    teamId: string;
+    teamName: string;
+    teamLogo: string;
+    wins: number;
+    draws: number;
+    losses: number;
+    goalsFor: number;
+    goalsAgainst: number;
+    goalDifference: number;
 }
 [];

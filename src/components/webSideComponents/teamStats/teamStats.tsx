@@ -6,6 +6,7 @@ import { ITeamDetails, ITeamStats } from "@/types/ITeam";
 import { useQuery } from "@tanstack/react-query";
 import TeamDetailsStats from "./teamDetailsStats/teamDetailsStats";
 import AllTimeTable from "./allTimeTable/allTimeTable";
+import Head2Head from "./headToHeadTable/headToheadTable";
 
 type TeamStats = {
     teamId: string;
@@ -33,11 +34,12 @@ export default function TeamStats({ teamId }: TeamStats) {
                             team={teamStats.detailsStats.avgTeamStats}
                         />
                     </div>
-                    <div>
+                    <div style={{ display: "flex" }}>
                         <AllTimeTable
                             teams={teamStats.allTimeTable}
                             teamId={teamId}
                         />
+                        <Head2Head teams={teamStats.headTohead} />
                     </div>
                 </div>
             )}
