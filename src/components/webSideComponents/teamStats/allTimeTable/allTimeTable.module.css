@@ -30,7 +30,7 @@
 }
 
 .table td {
-    padding: 0.8rem;
+    padding: 0.3rem;
     vertical-align: middle;
     border-bottom: 0.1px solid #8c8c8c;
 }
@@ -44,7 +44,6 @@
     display: flex;
     align-items: center;
     gap: 0.8rem;
-    justify-content: flex-start;
     padding-left: 0.8rem;
 }
 

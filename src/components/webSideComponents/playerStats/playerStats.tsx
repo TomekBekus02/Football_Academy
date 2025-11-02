@@ -46,23 +46,44 @@ export default function PlayerStats({ teamId, playerId }: playerStatsTypes) {
                             </div>
                             <div>
                                 <div className={styles.chartsBox}>
-                                    <RadarChart
-                                        player={player.playerDetails}
-                                        position={player.playerDetails.position}
-                                    />
-                                    <PieChart
-                                        player={player.playerDetails}
-                                        team={player.playerDetails.teamStats}
-                                    />
-                                    <RadarChartCompare
-                                        player={player.playerDetails}
+                                    <div style={{ textAlign: "center" }}>
+                                        <h2>Procentowy rozkład Statystyk</h2>
+                                        <RadarChart
+                                            player={player.playerDetails}
+                                            position={
+                                                player.playerDetails.position
+                                            }
+                                        />
+                                    </div>
+                                    <div style={{ textAlign: "center" }}>
+                                        <h2>Statystyki względem zespołu</h2>
+                                        <PieChart
+                                            player={player.playerDetails}
+                                            team={
+                                                player.playerDetails.teamStats
+                                            }
+                                        />
+                                    </div>
+                                    <div style={{ textAlign: "center" }}>
+                                        <h2>
+                                            Procentowy rozkład Statystyk na tle
+                                            zespołu
+                                        </h2>
+                                        <RadarChartCompare
+                                            player={player.playerDetails}
+                                            position={
+                                                player.playerDetails.position
+                                            }
+                                        />
+                                    </div>
+                                </div>
+                                <div style={{ textAlign: "center" }}>
+                                    <h2>Bilans statystyk z każdym zespołem</h2>
+                                    <ColumnChart
+                                        player={player.statsHistory}
                                         position={player.playerDetails.position}
                                     />
                                 </div>
-                                <ColumnChart
-                                    player={player.statsHistory}
-                                    position={player.playerDetails.position}
-                                />
                             </div>
                         </div>
                     ) : (

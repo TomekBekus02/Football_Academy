@@ -157,14 +157,14 @@ export default function PlayerDetailedStats({
         },
     ];
     return (
-        <div style={{ display: "flex" }}>
-            {player.position !== "Bramkarz" && (
-                <TableStatCategory
-                    categories={offCategories}
-                    captionText="Ø Statystyki Ofensywne"
-                    position="off"
-                />
-            )}
+        <div
+            style={{
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+                flexWrap: "wrap",
+            }}
+        >
             <TableStatCategory
                 categories={MidCategories}
                 captionText="Ø Statystyki Rozgrywania"
@@ -175,6 +175,13 @@ export default function PlayerDetailedStats({
                 captionText="Ø Statystyki Defensywne"
                 position="def"
             />
+            {player.position !== "Bramkarz" && (
+                <TableStatCategory
+                    categories={offCategories}
+                    captionText="Ø Statystyki Ofensywne"
+                    position="off"
+                />
+            )}
             {player.position === "Bramkarz" && (
                 <TableStatCategory
                     categories={GKCategories}

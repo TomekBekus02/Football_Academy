@@ -181,9 +181,7 @@ export default function MatchLabel({ matches, isAdmin }: competitionProps) {
                                     </div>
                                 </div>
                             ) : (
-                                <div>
-                                    <p>there will be head-to-head record</p>
-                                </div>
+                                <div></div>
                             )}
                         </div>
                     )}

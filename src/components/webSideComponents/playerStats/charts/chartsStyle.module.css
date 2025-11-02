@@ -2,8 +2,7 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    margin: 1rem;
-    margin-top: 30px;
+    margin: 0.5rem 1rem;
     padding: 1rem;
     border-radius: 16px;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.395);

@@ -117,7 +117,13 @@ export default function TeamDetailsStats({ team }: { team: IAvgTeamStats }) {
         },
     ];
     return (
-        <div style={{ display: "flex" }}>
+        <div
+            style={{
+                display: "flex",
+                justifyContent: "center",
+                flexWrap: "wrap",
+            }}
+        >
             <TableStatCategory
                 categories={offCategories}
                 captionText="Ø Statystyki Ofensywne"

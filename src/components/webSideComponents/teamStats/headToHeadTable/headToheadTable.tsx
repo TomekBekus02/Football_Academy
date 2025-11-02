@@ -24,17 +24,19 @@ export default function Head2Head({ teams }: head2headParams) {
                     return (
                         <tr key={team.teamId} className={`${styles.row} `}>
                             <td className={styles.position}>{index + 1}.</td>
-                            <td className={styles.teamInfo}>
-                                <Image
-                                    src={team.teamLogo}
-                                    alt={team.teamName}
-                                    width={70}
-                                    height={70}
-                                    className="imageStyle"
-                                />
-                                <span className={`${styles.teamName}`}>
-                                    {team.teamName}
-                                </span>
+                            <td>
+                                <div className={styles.teamInfo}>
+                                    <Image
+                                        src={team.teamLogo}
+                                        alt={team.teamName}
+                                        width={70}
+                                        height={70}
+                                        className="imageStyle"
+                                    />
+                                    <span className={`${styles.teamName}`}>
+                                        {team.teamName}
+                                    </span>
+                                </div>
                             </td>
                             <td className={styles.record}>
                                 {team.wins}-{team.draws}-{team.losses}

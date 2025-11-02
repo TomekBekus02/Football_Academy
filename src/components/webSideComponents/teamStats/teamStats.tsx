@@ -34,7 +34,7 @@ export default function TeamStats({ teamId }: TeamStats) {
                             team={teamStats.detailsStats.avgTeamStats}
                         />
                     </div>
-                    <div style={{ display: "flex" }}>
+                    <div style={{ display: "flex", justifyContent: "center" }}>
                         <AllTimeTable
                             teams={teamStats.allTimeTable}
                             teamId={teamId}

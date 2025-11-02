@@ -1,0 +1,119 @@
+.card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    border-radius: 16px;
+    padding: 20px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.395);
+    min-width: 500px;
+    margin: 20px auto;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.25);
+}
+
+.topSection {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    width: 100%;
+}
+
+.imageStyle {
+    border-radius: 12px;
+    object-fit: cover;
+    border: 3px solid #309d35;
+    box-shadow: 0 0 10px rgba(0, 243, 36, 0.5);
+}
+
+.statsContainer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    width: 100%;
+}
+
+.statsRow {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    justify-content: center;
+    gap: 10px;
+}
+
+.toolTip {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    background: #605f5f;
+    border: 1px solid #959795;
+    border-radius: 8px;
+    padding: 6px 12px;
+    font-size: 17px;
+    font-weight: 600;
+    min-width: 69px;
+    height: 38px;
+}
+
+.toolTip:hover {
+    background: #038003;
+    color: white;
+    box-shadow: 0 3px 8px rgba(0, 112, 243, 0.3);
+    transform: translateY(-2px);
+}
+
+.toolTipText {
+    visibility: hidden;
+    opacity: 0;
+    background-color: #333;
+    color: #fff;
+    text-align: center;
+    border-radius: 6px;
+    padding: 5px 8px;
+    position: absolute;
+    bottom: 130%;
+    left: 50%;
+    transform: translateX(-50%);
+    transition: opacity 0.3s;
+    font-size: 12px;
+    white-space: nowrap;
+}
+
+.toolTip:hover .toolTipText {
+    visibility: visible;
+    opacity: 1;
+}
+
+.infoSection {
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+    margin: 12px 5px;
+    background: #605f5f;
+    border: 1px solid #959795;
+    border-radius: 10px;
+    padding: 10px;
+    font-size: 20px;
+    width: 90%;
+}
+.nameSection {
+    display: flex;
+    height: 100%;
+}
+.infoSection .toolTip {
+    width: 100%;
+    font-size: 20px;
+    display: flex;
+    justify-content: start;
+}
+
+.infoSection h4 {
+    margin: 4px 0;
+    font-weight: 500;
+    color: #e3e3e3;
+}
