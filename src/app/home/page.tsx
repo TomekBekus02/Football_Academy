@@ -12,19 +12,19 @@ export default function Home() {
           <div className={classes.mainBG}>
               <MainPageContent />
           </div>
-          <div className={classes.contentBox}>
+          <div id="oNas" className={classes.contentBox}>
               <AboutUs />
           </div>
           <div className={classes.contentBox}>
               <Standings />
           </div>
-          <div className={classes.contentBox}>
+          <div id="Treningi" className={classes.contentBox}>
               <Trainings />
           </div>
-          <div className={classes.contentBox}>
+          <div id="FAQ" className={classes.contentBox}>
               <FAQ />
           </div>
-          <div className={classes.contentBox}>
+          <div id="kontakt" className={classes.contentBox}>
               <Contact />
           </div>
       </div>

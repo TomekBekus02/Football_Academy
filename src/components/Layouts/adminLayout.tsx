@@ -29,7 +29,7 @@ export default function AdminLayout({ teamId }: { teamId: string }) {
                 </div>
                 <div className={navLayout.joinUsButtonContainer}>
                     <li>
-                        <Link href="*">Dołącz do nas</Link>
+                        <Link href="/kontakt">Dołącz do nas</Link>
                     </li>
                 </div>
             </ul>

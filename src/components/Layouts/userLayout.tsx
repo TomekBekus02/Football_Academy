@@ -40,12 +40,21 @@ export default function UserLayout({ teamId }: { teamId: string }) {
                         <Link href="/rozgrywki">Rozgrywki</Link>
                     </li>
                     <li>
-                        <Link href="*">Kontakt</Link>
+                        <Link href="/home#oNas">O nas</Link>
+                    </li>
+                    <li>
+                        <Link href="/home#Treningi">Treningi</Link>
+                    </li>
+                    <li>
+                        <Link href="/home#FAQ">FAQ</Link>
+                    </li>
+                    <li>
+                        <Link href="/home#kontakt">Kontakt</Link>
                     </li>
                 </div>
                 <div className={navLayout.joinUsButtonContainer}>
                     <li>
-                        <Link href="*">Dołącz do nas</Link>
+                        <Link href="/kontakt">Dołącz do nas</Link>
                     </li>
                 </div>
             </ul>
