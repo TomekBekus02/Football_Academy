@@ -3,7 +3,7 @@ import classes from "./card.module.css";
 type CardParams = {
     title: string;
     icon: string;
-    values: number;
+    values: number | string;
 };
 
 export default function Card({ title, icon, values }: CardParams) {

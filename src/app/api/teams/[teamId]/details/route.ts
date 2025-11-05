@@ -232,8 +232,6 @@ function getAllTimeTable(teams: Array<ITeam>): Array<ITeamsTable> {
     return sortedTeamTable;
 }
 
-async function headToheadBilance(myTeamId: string, opposingTeamId: string) {}
-
 export async function GET(
     req: NextRequest,
     { params }: { params: { teamId: string } }
