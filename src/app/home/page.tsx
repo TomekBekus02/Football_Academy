@@ -3,6 +3,7 @@ import MainPageContent from "./mainPageContent/mainPageContent";
 import Standings from "./standings/standings";
 import AboutUs from "./aboutUs/aboutUs";
 import FAQ from "./FAQ/FAQ";
+import Trainings from "./tranings/tranings";
 
 export default function Home() {
   return (
@@ -15,6 +16,9 @@ export default function Home() {
           </div>
           <div className={classes.contentBox}>
               <Standings />
+          </div>
+          <div className={classes.contentBox}>
+              <Trainings />
           </div>
           <div className={classes.contentBox}>
               <FAQ />

@@ -13,7 +13,7 @@
 .DetailsBox h2{
     padding: 15px;
     color: white;
-    background-color: rgba(255, 255, 255, 0.201);
+    background-color: rgba(65, 65, 65, 0.839);
     font-size: 26px;
     font-weight: 900;
 }
@@ -21,7 +21,7 @@
     padding: 8px 15px;
     margin-top: 15px;
     color: white;
-    background-color: rgba(255, 255, 255, 0.201);
+    background-color: rgba(65, 65, 65, 0.839);
     font-size: 20px;
 }
 .ageGroupBox{

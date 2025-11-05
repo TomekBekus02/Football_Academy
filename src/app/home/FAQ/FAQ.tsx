@@ -3,6 +3,7 @@ import { useState } from "react";
 import { ChevronDown } from "lucide-react";
 import faqs from "@/data/FAQ";
 import styles from "./FAQ.module.css";
+import mainStyles from "../main-page.module.css";
 
 export default function FAQ() {
     const [openIndex, setOpenIndex] = useState<number | null>(null);
@@ -13,7 +14,9 @@ export default function FAQ() {
 
     return (
         <div className={styles.container}>
-            <h2 className={styles.title}>Najczęściej zadawane pytania (FAQ)</h2>
+            <h2 className={mainStyles.title}>
+                Najczęściej zadawane pytania (FAQ)
+            </h2>
 
             <div className={styles.accordion}>
                 {faqs.map((faq, index) => (
