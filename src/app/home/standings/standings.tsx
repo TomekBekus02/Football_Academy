@@ -2,11 +2,12 @@ import { Swords, CircleX, Trophy, Handshake, Volleyball, Hand, Footprints, Diff 
 import classes from './standings.module.css'
 import Card from './card/card';
 import { statIcons } from "@/components/icons/matchIcons";
+import mainStyles from "../main-page.module.css";
 
 export default function standings() {
     return (
         <div className={classes.standingsBox}>
-            <h1>Statystyki Klubu</h1>
+            <h1 className={mainStyles.title}>Statystyki Klubu</h1>
             <div className={classes.cardsBox}>
                 <Card title="Mecze" icon={statIcons.match} values={22} />
                 <Card title="Zwycięstwa" icon={statIcons.win} values={12} />

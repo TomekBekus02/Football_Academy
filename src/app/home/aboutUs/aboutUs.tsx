@@ -2,11 +2,12 @@ import { aboutUsText } from "@/data/aboutUsText";
 import classes from "./aboutUs.module.css";
 import Label from "./label/label";
 import { Rocket, Heart, Crosshair, Sprout } from "lucide-react";
+import mainStyles from "../main-page.module.css";
 
 export default function aboutUs() {
     return (
         <div className={classes.aboutUsBox}>
-            <h1>O Nas</h1>
+            <h1 className={mainStyles.title}>O nas</h1>
             <div className={classes.labelsBox}>
                 <Label
                     title="Misja"
