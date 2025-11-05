@@ -4,6 +4,7 @@ import Standings from "./standings/standings";
 import AboutUs from "./aboutUs/aboutUs";
 import FAQ from "./FAQ/FAQ";
 import Trainings from "./tranings/tranings";
+import Contact from "./contact/contact";
 
 export default function Home() {
   return (
@@ -22,6 +23,9 @@ export default function Home() {
           </div>
           <div className={classes.contentBox}>
               <FAQ />
+          </div>
+          <div className={classes.contentBox}>
+              <Contact />
           </div>
       </div>
   );

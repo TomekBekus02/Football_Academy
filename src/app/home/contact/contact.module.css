@@ -1,0 +1,41 @@
+.contactSection {
+    display: grid;
+    grid-template-columns: 30% 70%;
+    gap: 2rem;
+    padding: 3rem 1rem;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.395);
+    border-radius: 16px;
+    margin-bottom: 50px;
+}
+
+.mapContainer {
+    flex: 1 1 400px;
+    min-height: 400px;
+    width: 850px;
+    border-radius: 12px;
+}
+
+.mapContainer iframe {
+    width: 90%;
+    height: 100%;
+    border: none;
+    border-radius: 12px;
+    padding: 0.3rem;
+}
+
+.infoContainer h1 {
+    margin-top: 1rem;
+    margin-bottom: 0.3rem;
+}
+.hours h3 {
+    margin: 5px 0px;
+}
+
+.infoContainer ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+.infoContainer li {
+    margin-bottom: 0.3rem;
+}
